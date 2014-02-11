@@ -21,6 +21,8 @@
 		EE845D4B18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
 		EE845D5318A988C800431CBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE845D5118A988C800431CBC /* InfoPlist.strings */; };
 		EE845D5518A988C800431CBC /* Happy_AppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE845D5418A988C800431CBC /* Happy_AppTests.m */; };
+		EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A2F2518A9AE2F0027D29B /* CoreData.framework */; };
+		EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		EE845D5018A988C800431CBC /* Happy-AppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Happy-AppTests-Info.plist"; sourceTree = "<group>"; };
 		EE845D5218A988C800431CBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EE845D5418A988C800431CBC /* Happy_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Happy_AppTests.m; sourceTree = "<group>"; };
+		EE9A2F2518A9AE2F0027D29B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */,
 				EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */,
 				EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */,
 				EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */,
@@ -101,6 +106,7 @@
 		EE845D2818A988C800431CBC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE9A2F2518A9AE2F0027D29B /* CoreData.framework */,
 				EE845D2918A988C800431CBC /* Foundation.framework */,
 				EE845D2B18A988C800431CBC /* CoreGraphics.framework */,
 				EE845D2D18A988C800431CBC /* UIKit.framework */,
@@ -130,6 +136,7 @@
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
 				EE845D3718A988C800431CBC /* Happy-App-Prefix.pch */,
+				EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -231,6 +238,7 @@
 			files = (
 				EE845D4218A988C800431CBC /* Images.xcassets in Resources */,
 				EE845D3418A988C800431CBC /* InfoPlist.strings in Resources */,
+				EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +469,7 @@
 				EE845D5A18A988C800431CBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EE845D5B18A988C800431CBC /* Build configuration list for PBXNativeTarget "Happy-AppTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +478,7 @@
 				EE845D5D18A988C800431CBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
