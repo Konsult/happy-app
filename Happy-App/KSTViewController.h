@@ -10,4 +10,10 @@
 
 @interface KSTViewController : UIViewController
 
+{
+    __weak IBOutlet UILabel *dateLabel;
+    NSMutableArray *happyItems;
+    NSString *happyItemsPlistPath;
+}
+
 @end

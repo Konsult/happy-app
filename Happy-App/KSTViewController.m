@@ -8,11 +8,7 @@
 
 #import "KSTViewController.h"
 
-@interface KSTViewController ()
-
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property NSMutableArray *happyItems;
-@property NSString *happyItemsPlistPath;
+@interface KSTViewController (Private)
 
 @end
 
@@ -32,6 +28,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark Helper methods
+
 - (void)getAndShowDate
 {
     NSDate *today = [NSDate date];
@@ -40,7 +38,7 @@
     [dateFormatter setTimeZone:systemTimeZone];
     [dateFormatter setDateFormat:@"EEEE, MMMM d"];
     NSString *dateString = [dateFormatter stringFromDate:today];
-    [self.dateLabel setText:dateString];
+    [dateLabel setText:dateString];
 }
 
 -(void)loadHappyItems
@@ -49,7 +47,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDir = [paths objectAtIndex:0];
     NSString *plistPath = [documentsDir stringByAppendingPathComponent:@"HappyItems.plist"];
-    self.happyItemsPlistPath = plistPath;
+    happyItemsPlistPath = plistPath;
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -60,37 +58,37 @@
     }
 
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
-    self.happyItems = happyItemsArray;
+    happyItems = happyItemsArray;
 
-    NSLog(@"Init with happy items: %@", self.happyItems);
+    NSLog(@"Init with happy items: %@", happyItems);
 
     [self showHappyItems];
 }
 
 -(void)showHappyItems
 {
-    for (int i = 0; i < self.happyItems.count; i++) {
-        NSDictionary *happyItem = [self.happyItems objectAtIndex:i];
+    for (int i = 0; i < happyItems.count; i++) {
+        NSDictionary *happyItem = [happyItems objectAtIndex:i];
         UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(100, (200 + (i * 55)) , 80, 50);
+        happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 80, 50);
         [self.view addSubview:happyItemButton];
     }
 }
 
 -(void)updateAndSaveHappyItem:(UIButton*)button
 {
-    NSMutableDictionary *happyItem = [self.happyItems objectAtIndex:[button tag]];
+    NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
     NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + 1];
     happyItem[@"value"] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);
 
-    [self.happyItems writeToFile:self.happyItemsPlistPath atomically:YES];
+    [happyItems writeToFile:happyItemsPlistPath atomically:YES];
 }
 
 @end
