@@ -34,7 +34,7 @@ happy today?</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="date" destination="DJD-Iv-SQB" id="nKM-zC-122"/>
+                        <outlet property="dateLabel" destination="DJD-Iv-SQB" id="pog-Dy-jeA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
