@@ -20,6 +20,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self getAndShowDate];
     [self loadHappyItems];
+    [self initPanRecognizer];
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,6 +30,16 @@
 }
 
 #pragma mark Helper methods
+- (IBAction)initPanRecognizer
+{
+    UIView *containerSubview = [self.view viewWithTag:99];
+    mainContainerSubView = containerSubview;
+
+    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
+    [panRecognizer setMinimumNumberOfTouches:1];
+    [panRecognizer setMaximumNumberOfTouches:1];
+    [self.view addGestureRecognizer:panRecognizer];
+}
 
 - (void)getAndShowDate
 {
@@ -76,7 +87,10 @@
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 80, 50);
-        [self.view addSubview:happyItemButton];
+
+        UIView *happyItemsContainerView = [self.view viewWithTag:5];
+
+        [happyItemsContainerView addSubview:happyItemButton];
     }
 }
 
@@ -89,6 +103,46 @@
     NSLog(@"Updated happy item: %@", happyItem);
 
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+}
+
+- (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
+{
+    CGPoint translation = [recognizer translationInView:self.view];
+
+    // move view by translation amount
+    [mainContainerSubView setFrame:CGRectMake((mainContainerSubView.frame.origin.x + translation.x), 0, 640, 568)];
+
+    // reset translation to 0 for next move
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+
+
+    if ([recognizer state] == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [recognizer velocityInView:self.view];
+
+        // slide left ended
+        if (velocity.x < 0) {
+            if (mainContainerSubView.frame.origin.x < -150 || velocity.x < -1000) {
+                [UIView animateWithDuration:0.3f animations:^{
+                    [mainContainerSubView setFrame:CGRectMake(-320, 0, 640, 568)];
+                }];
+            } else {
+                [UIView animateWithDuration:0.1f animations:^{
+                    [mainContainerSubView setFrame:CGRectMake(0, 0, 640, 568)];
+                }];
+            }
+        // slide right ended
+        } else if (velocity.x > 0) {
+            if (mainContainerSubView.frame.origin.x > -170 || velocity.x > 1000) {
+                [UIView animateWithDuration:0.3f animations:^{
+                    [mainContainerSubView setFrame:CGRectMake(0, 0, 640, 568)];
+                }];
+            } else {
+                [UIView animateWithDuration:0.1f animations:^{
+                    [mainContainerSubView setFrame:CGRectMake(-320, 0, 640, 568)];
+                }];
+            }
+        }
+    }
 }
 
 @end
