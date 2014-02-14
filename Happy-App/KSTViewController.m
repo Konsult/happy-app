@@ -19,8 +19,17 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self getAndShowDate];
-    [self loadHappyItems];
     [self initPanRecognizer];
+
+    // add circle for debug
+    circleView = [[UIView alloc] initWithFrame:CGRectMake(-150, 150, 380, 380)];
+    circleView.alpha = 0.5;
+    circleView.layer.cornerRadius = 190;
+    circleView.backgroundColor = [UIColor darkGrayColor];
+
+    [mainContainerSubView addSubview:circleView];
+
+    [self loadHappyItems];
 }
 
 - (void)didReceiveMemoryWarning
@@ -91,6 +100,8 @@
         UIView *happyItemsContainerView = [self.view viewWithTag:5];
 
         [happyItemsContainerView addSubview:happyItemButton];
+
+        [self rotateButton:happyItemButton];
     }
 }
 
@@ -143,6 +154,28 @@
             }
         }
     }
+}
+
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
+- (void)rotateButton:(UIButton *)button
+{
+    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(120 + ([button tag] * 30)), DEGREES_TO_RADIANS(290 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(290 + ([button tag] * 30)), DEGREES_TO_RADIANS(305 + ([button tag] * 30)), NO);
+    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(305 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), YES);
+    pathAnimation.removedOnCompletion = NO;
+    pathAnimation.path = path;
+    [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
+    [pathAnimation setFillMode:kCAFillModeForwards];
+    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    pathAnimation.duration = 1;
+
+    CGPathRelease(path);
+
+    [button.layer addAnimation:pathAnimation forKey:nil];
 }
 
 @end

@@ -15,6 +15,7 @@
     NSMutableArray *happyItems;
     NSString *happyItemsPlistPath;
     UIView *mainContainerSubView;
+    UIView *circleView;
 }
 
 @end
