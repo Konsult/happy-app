@@ -38,6 +38,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark Helper methods
 - (IBAction)initPanRecognizer
 {
@@ -82,20 +87,26 @@
 
     NSLog(@"Init with happy items: %@", happyItems);
 
-    [self showHappyItems];
+    [self performSelector:@selector(showHappyItems) withObject:self afterDelay:0.6];
+//    [self showHappyItems];
 }
 
 -(void)showHappyItems
 {
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
+        [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-50x50.png"] forState:UIControlStateNormal];
+        [happyItemButton.imageView setTintColor:[UIColor whiteColor]];
+        [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
+        [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [happyItemButton setTintColor:[UIColor whiteColor]];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 80, 50);
+        happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 130, 50);
 
         UIView *happyItemsContainerView = [self.view viewWithTag:5];
 
@@ -163,15 +174,15 @@
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(120 + ([button tag] * 30)), DEGREES_TO_RADIANS(290 + ([button tag] * 30)), YES);
-    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(290 + ([button tag] * 30)), DEGREES_TO_RADIANS(305 + ([button tag] * 30)), NO);
-    CGPathAddArc(path, NULL, circleView.center.x, circleView.center.y, 190, DEGREES_TO_RADIANS(305 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(120 + ([button tag] * 30)), DEGREES_TO_RADIANS(290 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(290 + ([button tag] * 30)), DEGREES_TO_RADIANS(305 + ([button tag] * 30)), NO);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(305 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), YES);
     pathAnimation.removedOnCompletion = NO;
     pathAnimation.path = path;
     [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
     [pathAnimation setFillMode:kCAFillModeForwards];
     [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    pathAnimation.duration = 1;
+    pathAnimation.duration = 0.8f;
 
     CGPathRelease(path);
 

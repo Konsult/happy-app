@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EE47EC9518AD685A00A5856E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE47EC9418AD685A00A5856E /* QuartzCore.framework */; };
-		EE47EC9818AD6FD100A5856E /* KSTRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EE47EC9718AD6FD100A5856E /* KSTRotation.m */; };
+		EE47EC9E18AE9FEF00A5856E /* icon-circle-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
 		EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2B18A988C800431CBC /* CoreGraphics.framework */; };
 		EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
@@ -39,8 +39,7 @@
 
 /* Begin PBXFileReference section */
 		EE47EC9418AD685A00A5856E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		EE47EC9618AD6FD100A5856E /* KSTRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTRotation.h; sourceTree = "<group>"; };
-		EE47EC9718AD6FD100A5856E /* KSTRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTRotation.m; sourceTree = "<group>"; };
+		EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-circle-50x50.png"; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -130,8 +129,6 @@
 				EE845D3B18A988C800431CBC /* Main.storyboard */,
 				EE845D3E18A988C800431CBC /* KSTViewController.h */,
 				EE845D3F18A988C800431CBC /* KSTViewController.m */,
-				EE47EC9618AD6FD100A5856E /* KSTRotation.h */,
-				EE47EC9718AD6FD100A5856E /* KSTRotation.m */,
 				EE845D4118A988C800431CBC /* Images.xcassets */,
 				EE845D3018A988C800431CBC /* Supporting Files */,
 			);
@@ -141,6 +138,7 @@
 		EE845D3018A988C800431CBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */,
 				EE845D3118A988C800431CBC /* Happy-App-Info.plist */,
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
@@ -249,6 +247,7 @@
 				EE845D3418A988C800431CBC /* InfoPlist.strings in Resources */,
 				EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
+				EE47EC9E18AE9FEF00A5856E /* icon-circle-50x50.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +268,6 @@
 			files = (
 				EE845D4018A988C800431CBC /* KSTViewController.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,
-				EE47EC9818AD6FD100A5856E /* KSTRotation.m in Sources */,
 				EE845D3A18A988C800431CBC /* KSTAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
