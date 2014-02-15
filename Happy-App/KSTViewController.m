@@ -26,7 +26,6 @@
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = 190;
     circleView.backgroundColor = [UIColor darkGrayColor];
-
 //    [mainContainerSubView addSubview:circleView];
 
     [self loadHappyItems];
@@ -93,12 +92,23 @@
 
 -(void)showHappyItems
 {
-    for (int i = 0; i < happyItems.count; i++) {
-        NSDictionary *happyItem = [happyItems objectAtIndex:i];
+    for (int i = 0; i <= happyItems.count; i++) {
+        NSDictionary *happyItem;
+
+        if (i == happyItems.count) {
+            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title", nil];
+        } else {
+            happyItem = [happyItems objectAtIndex:i];
+        }
+        
         UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
-        [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-50x50.png"] forState:UIControlStateNormal];
+        if (i == happyItems.count) {
+            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-add-50x50.png"] forState:UIControlStateNormal];
+        } else {
+            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-50x50.png"] forState:UIControlStateNormal];
+        }
         [happyItemButton.imageView setTintColor:[UIColor whiteColor]];
         [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
@@ -173,25 +183,18 @@
 
 - (void)rotateButton:(UIButton *)button
 {
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, 75, mainContainerSubView.frame.size.height - 230, 180, DEGREES_TO_RADIANS(120 + MIN(([button tag] * 30), 100)), DEGREES_TO_RADIANS(270 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, 75, mainContainerSubView.frame.size.height - 230, 180, DEGREES_TO_RADIANS(270 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), NO);
+
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(120 + ([button tag] * 30)), DEGREES_TO_RADIANS(290 + ([button tag] * 30)), YES);
-    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(290 + ([button tag] * 30)), DEGREES_TO_RADIANS(305 + ([button tag] * 30)), NO);
-    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, 190, DEGREES_TO_RADIANS(305 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), YES);
-    
-    CGPathAddLineToPoint(path,
-                         NULL,
-                         (30 + circleView.center.x + 180 * cos(DEGREES_TO_RADIANS(300 + ([button tag] * 30)))),
-                         (circleView.center.y + 180 * sin(DEGREES_TO_RADIANS(300 + ([button tag] * 30)))));
-    
-    
     pathAnimation.removedOnCompletion = NO;
     pathAnimation.path = path;
     [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
+    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :0.9 :0.9 :0.9]];
     [pathAnimation setFillMode:kCAFillModeForwards];
-    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    pathAnimation.duration = 0.8f;
+    pathAnimation.duration = 1.0f;
 
     CGPathRelease(path);
 

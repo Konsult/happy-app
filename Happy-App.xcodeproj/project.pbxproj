@@ -45,6 +45,8 @@
 		EE845D5518A988C800431CBC /* Happy_AppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE845D5418A988C800431CBC /* Happy_AppTests.m */; };
 		EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A2F2518A9AE2F0027D29B /* CoreData.framework */; };
 		EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */; };
+		EEDC0DB618AEC2060081A6C2 /* icon-circle-add-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = EEDC0DB518AEC2060081A6C2 /* icon-circle-add-50x50.png */; };
+		EEDC0DDF18AED2D30081A6C2 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EEDC0DCF18AED2D30081A6C2 /* SKBounceAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +103,9 @@
 		EE845D5418A988C800431CBC /* Happy_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Happy_AppTests.m; sourceTree = "<group>"; };
 		EE9A2F2518A9AE2F0027D29B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
+		EEDC0DB518AEC2060081A6C2 /* icon-circle-add-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-circle-add-50x50.png"; sourceTree = "<group>"; };
+		EEDC0DCE18AED2D30081A6C2 /* SKBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBounceAnimation.h; sourceTree = "<group>"; };
+		EEDC0DCF18AED2D30081A6C2 /* SKBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBounceAnimation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +219,8 @@
 		EE845D3018A988C800431CBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EEDC0DB818AED2D30081A6C2 /* SKBounceAnimation */,
+				EEDC0DB518AEC2060081A6C2 /* icon-circle-add-50x50.png */,
 				EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */,
 				EE845D3118A988C800431CBC /* Happy-App-Info.plist */,
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
@@ -240,6 +247,15 @@
 				EE845D5118A988C800431CBC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EEDC0DB818AED2D30081A6C2 /* SKBounceAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				EEDC0DCE18AED2D30081A6C2 /* SKBounceAnimation.h */,
+				EEDC0DCF18AED2D30081A6C2 /* SKBounceAnimation.m */,
+			);
+			path = SKBounceAnimation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,6 +354,7 @@
 				BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */,
 				EE845D4218A988C800431CBC /* Images.xcassets in Resources */,
 				BFF8A5DF18B5433D00B53B95 /* ButtonFamily@2x.png in Resources */,
+				EEDC0DB618AEC2060081A6C2 /* icon-circle-add-50x50.png in Resources */,
 				EE845D3418A988C800431CBC /* InfoPlist.strings in Resources */,
 				BFF8A5D818B5433D00B53B95 /* Background.png in Resources */,
 				BFF8A5E218B5433D00B53B95 /* ButtonLover.png in Resources */,
@@ -367,6 +384,7 @@
 			files = (
 				EE845D4018A988C800431CBC /* KSTViewController.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,
+				EEDC0DDF18AED2D30081A6C2 /* SKBounceAnimation.m in Sources */,
 				EE845D3A18A988C800431CBC /* KSTAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
