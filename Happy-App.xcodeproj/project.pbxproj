@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFF8A5D818B5433D00B53B95 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C418B5433D00B53B95 /* Background.png */; };
+		BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C518B5433D00B53B95 /* Background@2x.png */; };
+		BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */; };
+		BFF8A5DB18B5433D00B53B95 /* ButtonAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */; };
+		BFF8A5DC18B5433D00B53B95 /* ButtonAlive.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */; };
+		BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C918B5433D00B53B95 /* ButtonAlive@2x.png */; };
+		BFF8A5DE18B5433D00B53B95 /* ButtonFamily.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CA18B5433D00B53B95 /* ButtonFamily.png */; };
+		BFF8A5DF18B5433D00B53B95 /* ButtonFamily@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CB18B5433D00B53B95 /* ButtonFamily@2x.png */; };
+		BFF8A5E018B5433D00B53B95 /* ButtonHobbies.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CC18B5433D00B53B95 /* ButtonHobbies.png */; };
+		BFF8A5E118B5433D00B53B95 /* ButtonHobbies@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CD18B5433D00B53B95 /* ButtonHobbies@2x.png */; };
+		BFF8A5E218B5433D00B53B95 /* ButtonLover.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CE18B5433D00B53B95 /* ButtonLover.png */; };
+		BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5CF18B5433D00B53B95 /* ButtonLover@2x.png */; };
+		BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D018B5433D00B53B95 /* ButtonWeather.png */; };
+		BFF8A5E518B5433D00B53B95 /* ButtonWeather@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D118B5433D00B53B95 /* ButtonWeather@2x.png */; };
+		BFF8A5E618B5433D00B53B95 /* ButtonWork.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D218B5433D00B53B95 /* ButtonWork.png */; };
+		BFF8A5E718B5433D00B53B95 /* ButtonWork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D318B5433D00B53B95 /* ButtonWork@2x.png */; };
+		BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D418B5433D00B53B95 /* GraphMask.png */; };
+		BFF8A5E918B5433D00B53B95 /* GraphMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */; };
+		BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */; };
+		BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
 		EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2B18A988C800431CBC /* CoreGraphics.framework */; };
 		EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
@@ -36,6 +56,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BFF8A5C418B5433D00B53B95 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
+		BFF8A5C518B5433D00B53B95 /* Background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background@2x.png"; sourceTree = "<group>"; };
+		BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAdd.png; sourceTree = "<group>"; };
+		BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonAdd@2x.png"; sourceTree = "<group>"; };
+		BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAlive.png; sourceTree = "<group>"; };
+		BFF8A5C918B5433D00B53B95 /* ButtonAlive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonAlive@2x.png"; sourceTree = "<group>"; };
+		BFF8A5CA18B5433D00B53B95 /* ButtonFamily.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonFamily.png; sourceTree = "<group>"; };
+		BFF8A5CB18B5433D00B53B95 /* ButtonFamily@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonFamily@2x.png"; sourceTree = "<group>"; };
+		BFF8A5CC18B5433D00B53B95 /* ButtonHobbies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonHobbies.png; sourceTree = "<group>"; };
+		BFF8A5CD18B5433D00B53B95 /* ButtonHobbies@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonHobbies@2x.png"; sourceTree = "<group>"; };
+		BFF8A5CE18B5433D00B53B95 /* ButtonLover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonLover.png; sourceTree = "<group>"; };
+		BFF8A5CF18B5433D00B53B95 /* ButtonLover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonLover@2x.png"; sourceTree = "<group>"; };
+		BFF8A5D018B5433D00B53B95 /* ButtonWeather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonWeather.png; sourceTree = "<group>"; };
+		BFF8A5D118B5433D00B53B95 /* ButtonWeather@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWeather@2x.png"; sourceTree = "<group>"; };
+		BFF8A5D218B5433D00B53B95 /* ButtonWork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonWork.png; sourceTree = "<group>"; };
+		BFF8A5D318B5433D00B53B95 /* ButtonWork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWork@2x.png"; sourceTree = "<group>"; };
+		BFF8A5D418B5433D00B53B95 /* GraphMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphMask.png; sourceTree = "<group>"; };
+		BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GraphMask@2x.png"; sourceTree = "<group>"; };
+		BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SwipeArrows.png; sourceTree = "<group>"; };
+		BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SwipeArrows@2x.png"; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -84,6 +124,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BFF8A5C218B5433D00B53B95 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8A5C318B5433D00B53B95 /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BFF8A5C318B5433D00B53B95 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8A5C418B5433D00B53B95 /* Background.png */,
+				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
+				BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */,
+				BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */,
+				BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */,
+				BFF8A5C918B5433D00B53B95 /* ButtonAlive@2x.png */,
+				BFF8A5CA18B5433D00B53B95 /* ButtonFamily.png */,
+				BFF8A5CB18B5433D00B53B95 /* ButtonFamily@2x.png */,
+				BFF8A5CC18B5433D00B53B95 /* ButtonHobbies.png */,
+				BFF8A5CD18B5433D00B53B95 /* ButtonHobbies@2x.png */,
+				BFF8A5CE18B5433D00B53B95 /* ButtonLover.png */,
+				BFF8A5CF18B5433D00B53B95 /* ButtonLover@2x.png */,
+				BFF8A5D018B5433D00B53B95 /* ButtonWeather.png */,
+				BFF8A5D118B5433D00B53B95 /* ButtonWeather@2x.png */,
+				BFF8A5D218B5433D00B53B95 /* ButtonWork.png */,
+				BFF8A5D318B5433D00B53B95 /* ButtonWork@2x.png */,
+				BFF8A5D418B5433D00B53B95 /* GraphMask.png */,
+				BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */,
+				BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */,
+				BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		EE845D1D18A988C800431CBC = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +199,7 @@
 				EE845D3E18A988C800431CBC /* KSTViewController.h */,
 				EE845D3F18A988C800431CBC /* KSTViewController.m */,
 				EE845D4118A988C800431CBC /* Images.xcassets */,
+				BFF8A5C218B5433D00B53B95 /* Resources */,
 				EE845D3018A988C800431CBC /* Supporting Files */,
 			);
 			path = "Happy-App";
@@ -236,10 +312,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */,
+				BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */,
+				BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */,
+				BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */,
+				BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */,
+				BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */,
+				BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */,
+				BFF8A5E718B5433D00B53B95 /* ButtonWork@2x.png in Resources */,
+				BFF8A5E118B5433D00B53B95 /* ButtonHobbies@2x.png in Resources */,
+				BFF8A5DB18B5433D00B53B95 /* ButtonAdd@2x.png in Resources */,
+				BFF8A5E918B5433D00B53B95 /* GraphMask@2x.png in Resources */,
+				BFF8A5E018B5433D00B53B95 /* ButtonHobbies.png in Resources */,
+				BFF8A5DC18B5433D00B53B95 /* ButtonAlive.png in Resources */,
+				BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */,
 				EE845D4218A988C800431CBC /* Images.xcassets in Resources */,
+				BFF8A5DF18B5433D00B53B95 /* ButtonFamily@2x.png in Resources */,
 				EE845D3418A988C800431CBC /* InfoPlist.strings in Resources */,
+				BFF8A5D818B5433D00B53B95 /* Background.png in Resources */,
+				BFF8A5E218B5433D00B53B95 /* ButtonLover.png in Resources */,
 				EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */,
+				BFF8A5E518B5433D00B53B95 /* ButtonWeather@2x.png in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
+				BFF8A5DE18B5433D00B53B95 /* ButtonFamily.png in Resources */,
+				BFF8A5E618B5433D00B53B95 /* ButtonWork.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
