@@ -44,9 +44,6 @@
 #pragma mark Helper methods
 - (IBAction)initPanRecognizer
 {
-    UIView *containerSubview = [self.view viewWithTag:99];
-    mainContainerSubView = containerSubview;
-
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
@@ -117,8 +114,6 @@
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 130, 50);
 
-        UIView *happyItemsContainerView = [self.view viewWithTag:5];
-
         [happyItemsContainerView addSubview:happyItemButton];
 
         [self rotateButton:happyItemButton];
@@ -136,12 +131,18 @@
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
 }
 
+#define SCREEN_WIDTH 320
+#define MAIN_WIDTH 640
+#define MAIN_HEIGHT 568
+#define SLIDE_THRESHOLD 150
+#define VELOCITY_THRESHOLD 1000
+
 - (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
 {
     CGPoint translation = [recognizer translationInView:self.view];
 
     // move view by translation amount
-    [mainContainerSubView setFrame:CGRectMake((mainContainerSubView.frame.origin.x + translation.x), 0, 640, 568)];
+    [mainContainerView setFrame:CGRectMake((mainContainerView.frame.origin.x + translation.x), 0, MAIN_WIDTH, MAIN_HEIGHT)];
 
     // reset translation to 0 for next move
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -152,26 +153,26 @@
 
         // slide left ended
         if (velocity.x < 0) {
-            if (mainContainerSubView.frame.origin.x < -150 || velocity.x < -1000) {
-                [self showHappyItemStats];
+            if (mainContainerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
                 [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerSubView setFrame:CGRectMake(-320, 0, 640, 568)];
+                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [self showHappyItemStats];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerSubView setFrame:CGRectMake(0, 0, 640, 568)];
+                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         // slide right ended
         } else if (velocity.x > 0) {
-            if (mainContainerSubView.frame.origin.x > -170 || velocity.x > 1000) {
+            if (mainContainerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
                 [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerSubView setFrame:CGRectMake(0, 0, 640, 568)];
-                    [graphScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerSubView setFrame:CGRectMake(-320, 0, 640, 568)];
+                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         }
@@ -268,10 +269,8 @@
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [valueLabel setTextColor:[UIColor blackColor]];
     valueLabel.alpha = 0.8;
-
-    NSLog(@"value: %d, max: %d, height: %f", value, max, height);
     
-    [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.75 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [rectangle setFrame:frame];
         [rectangle addSubview:valueLabel];
     } completion:NULL];

@@ -14,10 +14,11 @@
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
     NSString *happyItemsPlistPath;
-    UIView *mainContainerSubView;
     UIView *circleView;
     __weak IBOutlet UIView *graphView;
     __weak IBOutlet UIScrollView *graphScrollView;
+    __weak IBOutlet UIView *mainContainerView;
+    __weak IBOutlet UIView *happyItemsContainerView;
 }
 
 @end
