@@ -16,6 +16,8 @@
     NSString *happyItemsPlistPath;
     UIView *mainContainerSubView;
     UIView *circleView;
+    __weak IBOutlet UIView *graphView;
+    __weak IBOutlet UIScrollView *graphScrollView;
 }
 
 @end
