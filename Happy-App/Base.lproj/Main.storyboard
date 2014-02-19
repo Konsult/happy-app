@@ -77,6 +77,8 @@ you happy?</string>
                         <outlet property="dateLabel" destination="DJD-Iv-SQB" id="sU7-dG-J5j"/>
                         <outlet property="graphScrollView" destination="nTP-dW-81d" id="5Do-rD-tHx"/>
                         <outlet property="graphView" destination="dzo-9B-v3Y" id="74A-Fp-i6D"/>
+                        <outlet property="happyItemsContainerView" destination="hiq-5n-POl" id="XKu-Hn-aVJ"/>
+                        <outlet property="mainContainerView" destination="nbq-fs-72T" id="W2g-D0-hCF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
