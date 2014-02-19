@@ -16,6 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background.png" translatesAutoresizingMaskIntoConstraints="NO" id="anf-aa-y8J" userLabel="bgImageView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <view tag="99" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-fs-72T" userLabel="containerSub">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -25,14 +30,14 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJD-Iv-SQB">
-                                                <rect key="frame" x="20" y="44" width="280" height="21"/>
+                                                <rect key="frame" x="20" y="25" width="280" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="e3O-lo-rsN">
-                                                <rect key="frame" x="20" y="65" width="241" height="62"/>
+                                                <rect key="frame" x="20" y="45" width="241" height="62"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">What makes you
@@ -42,7 +47,6 @@ happy today?</string>
                                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.6705882352941176" green="0.51372549019607838" blue="0.60784313725490191" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dzo-9B-v3Y" userLabel="graphView">
@@ -64,7 +68,6 @@ you happy?</string>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             </scrollView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.6705882353" green="0.51372549020000002" blue="0.60784313729999995" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -74,11 +77,12 @@ you happy?</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="bgImageView" destination="anf-aa-y8J" id="4h9-zj-APf"/>
+                        <outlet property="containerView" destination="nbq-fs-72T" id="8Td-d2-cVe"/>
                         <outlet property="dateLabel" destination="DJD-Iv-SQB" id="sU7-dG-J5j"/>
                         <outlet property="graphScrollView" destination="nTP-dW-81d" id="5Do-rD-tHx"/>
                         <outlet property="graphView" destination="dzo-9B-v3Y" id="74A-Fp-i6D"/>
                         <outlet property="happyItemsContainerView" destination="hiq-5n-POl" id="XKu-Hn-aVJ"/>
-                        <outlet property="mainContainerView" destination="nbq-fs-72T" id="W2g-D0-hCF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -86,6 +90,9 @@ you happy?</string>
             <point key="canvasLocation" x="102" y="-63"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Background.png" width="600" height="568"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

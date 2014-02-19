@@ -21,11 +21,11 @@
     [self getAndShowDate];
     [self initPanRecognizer];
     // add circle for debug
-    circleView = [[UIView alloc] initWithFrame:CGRectMake(-150, 150, 380, 380)];
+    circleView = [[UIView alloc] initWithFrame:CGRectMake(-157, 145, 400, 400)];
     circleView.alpha = 0.5;
-    circleView.layer.cornerRadius = 190;
+    circleView.layer.cornerRadius = 200;
     circleView.backgroundColor = [UIColor darkGrayColor];
-//    [mainContainerSubView addSubview:circleView];
+//    [happyItemsContainerView addSubview:circleView];
 
     [self loadHappyItems];
 }
@@ -92,7 +92,7 @@
         NSDictionary *happyItem;
 
         if (i == happyItems.count) {
-            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title", nil];
+            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title",@"ButtonAdd",@"imageRef", nil];
         } else {
             happyItem = [happyItems objectAtIndex:i];
         }
@@ -100,19 +100,14 @@
         UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == happyItems.count) {
-            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-add-50x50.png"] forState:UIControlStateNormal];
-        } else {
-            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-50x50.png"] forState:UIControlStateNormal];
-        }
-        [happyItemButton.imageView setTintColor:[UIColor whiteColor]];
-        [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [happyItemButton setImage:[UIImage imageNamed:happyItem[@"imageRef"]] forState:UIControlStateNormal];
+        [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, 0)];
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
         [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [happyItemButton setTintColor:[UIColor whiteColor]];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 130, 50);
+        happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 125, 50);
 
         [happyItemsContainerView addSubview:happyItemButton];
 
@@ -134,6 +129,7 @@
 #define SCREEN_WIDTH 320
 #define MAIN_WIDTH 640
 #define MAIN_HEIGHT 568
+#define BG_WIDTH 600
 #define SLIDE_THRESHOLD 150
 #define VELOCITY_THRESHOLD 1000
 
@@ -141,8 +137,9 @@
 {
     CGPoint translation = [recognizer translationInView:self.view];
 
-    // move view by translation amount
-    [mainContainerView setFrame:CGRectMake((mainContainerView.frame.origin.x + translation.x), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+    // move views by translation amount
+    [bgImageView setFrame:CGRectMake((bgImageView.frame.origin.x + translation.x), 0, BG_WIDTH, MAIN_HEIGHT)];
+    [containerView setFrame:CGRectMake(containerView.frame.origin.x + (translation.x * 1.5), 0, MAIN_WIDTH, MAIN_HEIGHT)];
 
     // reset translation to 0 for next move
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -153,26 +150,30 @@
 
         // slide left ended
         if (velocity.x < 0) {
-            if (mainContainerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
+            if (bgImageView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
                 [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                     [self showHappyItemStats];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         // slide right ended
         } else if (velocity.x > 0) {
-            if (mainContainerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
+            if (bgImageView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
                 [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                     [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         }
@@ -184,8 +185,12 @@
 
 - (void)rotateButton:(UIButton *)button
 {
+    CGPoint endPoint = CGPointMake((circleView.center.x + 30 + CIRCLE_RADIUS * cos(DEGREES_TO_RADIANS(270 + ([button tag] * 30)))), (circleView.center.y + CIRCLE_RADIUS * sin(DEGREES_TO_RADIANS(270 + ([button tag] * 30)))));
+    endAnimationPoint = endPoint;
+    
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(140), DEGREES_TO_RADIANS(280 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(140), DEGREES_TO_RADIANS(270 + ([button tag] * 30)), YES);
+    CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
 
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
@@ -197,9 +202,17 @@
     pathAnimation.duration = 0.8;
     pathAnimation.beginTime = CACurrentMediaTime() + ([button tag] * 0.1);
 
+    [pathAnimation setDelegate:self];
+    
     CGPathRelease(path);
 
     [button.layer addAnimation:pathAnimation forKey:nil];
+//    button.center = endPoint;
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+
 }
 
 - (void)showHappyItemStats
@@ -223,13 +236,19 @@
         
         [happyItemBarView addSubview:happyItemLabel];
         
-        UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 385, 50, 0)];
+        UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 360, 50, 0)];
         [rectangle setBackgroundColor:[UIColor whiteColor]];
         rectangle.alpha = 0.8;
 
+//        UIImage *rectMaskImage = [UIImage imageNamed:@"GraphMask"];
+//        CALayer *rectMaskLayer = [CALayer layer];
+//        rectMaskLayer.frame = rectangle.bounds;
+//        [rectMaskLayer setContents:(id)[rectMaskImage CGImage]];
+//        [rectangle.layer setMask:rectMaskLayer];
+
         [happyItemBarView addSubview:rectangle];
         
-        UIImage *circleIcon = [UIImage imageNamed:@"icon-circle-50x50.png"];
+        UIImage *circleIcon = [UIImage imageNamed:happyItem[@"imageRef"]];
         UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 50)];
         [circleIconView setImage:circleIcon];
         [circleIconView setTintColor:[UIColor whiteColor]];
@@ -259,9 +278,9 @@
 - (void)animateHappyBarGraph:(UIView *)rectangle :(int)value :(int)max
 {
     CGRect frame = rectangle.frame;
-    float height = 385 * ((float)value / (float)max);
+    float height = 360 * ((float)value / (float)max);
     frame.size.height = height;
-    frame.origin.y = 385 - height;
+    frame.origin.y = 360 - height;
     
     UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [valueLabel setText:[NSString stringWithFormat:@"%d", value]];
@@ -271,8 +290,8 @@
     valueLabel.alpha = 0.8;
     
     [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [rectangle setFrame:frame];
         [rectangle addSubview:valueLabel];
+        [rectangle setFrame:frame];
     } completion:NULL];
 }
 

@@ -15,10 +15,12 @@
     NSMutableArray *happyItems;
     NSString *happyItemsPlistPath;
     UIView *circleView;
-    __weak IBOutlet UIView *graphView;
-    __weak IBOutlet UIScrollView *graphScrollView;
-    __weak IBOutlet UIView *mainContainerView;
+    __weak IBOutlet UIView *bgImageView;
+    __weak IBOutlet UIView *containerView;
     __weak IBOutlet UIView *happyItemsContainerView;
+    __weak IBOutlet UIScrollView *graphScrollView;
+    __weak IBOutlet UIView *graphView;
+    CGPoint endAnimationPoint;
 }
 
 @end
