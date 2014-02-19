@@ -20,7 +20,6 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self getAndShowDate];
     [self initPanRecognizer];
-
     // add circle for debug
     circleView = [[UIView alloc] initWithFrame:CGRectMake(-150, 150, 380, 380)];
     circleView.alpha = 0.5;
@@ -116,7 +115,7 @@
         [happyItemButton setTintColor:[UIColor whiteColor]];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 130, 50);
+        happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 130, 50);
 
         UIView *happyItemsContainerView = [self.view viewWithTag:5];
 
@@ -180,21 +179,22 @@
 }
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define CIRCLE_RADIUS 190
 
 - (void)rotateButton:(UIButton *)button
 {
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, 75, mainContainerSubView.frame.size.height - 230, 180, DEGREES_TO_RADIANS(120 + MIN(([button tag] * 30), 100)), DEGREES_TO_RADIANS(270 + ([button tag] * 30)), YES);
-    CGPathAddArc(path, NULL, 75, mainContainerSubView.frame.size.height - 230, 180, DEGREES_TO_RADIANS(270 + ([button tag] * 30)), DEGREES_TO_RADIANS(300 + ([button tag] * 30)), NO);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(140), DEGREES_TO_RADIANS(280 + ([button tag] * 30)), YES);
 
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
     pathAnimation.removedOnCompletion = NO;
     pathAnimation.path = path;
     [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
-    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :0.9 :0.9 :0.9]];
+    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.2 :0.8 :0.5 :0.9]];
     [pathAnimation setFillMode:kCAFillModeForwards];
-    pathAnimation.duration = 1.0f;
+    pathAnimation.duration = 0.8;
+    pathAnimation.beginTime = CACurrentMediaTime() + ([button tag] * 0.1);
 
     CGPathRelease(path);
 
