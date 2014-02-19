@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B718B54FDD00F83A45 /* Background Blur.png */; };
+		BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */; };
 		BFF8A5D818B5433D00B53B95 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C418B5433D00B53B95 /* Background.png */; };
 		BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C518B5433D00B53B95 /* Background@2x.png */; };
 		BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */; };
@@ -56,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF69E3B718B54FDD00F83A45 /* Background Blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur.png"; sourceTree = "<group>"; };
+		BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur@2x.png"; sourceTree = "<group>"; };
 		BFF8A5C418B5433D00B53B95 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		BFF8A5C518B5433D00B53B95 /* Background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background@2x.png"; sourceTree = "<group>"; };
 		BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAdd.png; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 			children = (
 				BFF8A5C418B5433D00B53B95 /* Background.png */,
 				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
+				BF69E3B718B54FDD00F83A45 /* Background Blur.png */,
+				BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */,
 				BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */,
 				BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */,
 				BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */,
@@ -316,6 +322,7 @@
 				BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */,
 				BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */,
 				BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */,
+				BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */,
 				BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */,
 				BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */,
 				BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */,
@@ -335,6 +342,7 @@
 				BFF8A5E518B5433D00B53B95 /* ButtonWeather@2x.png in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
 				BFF8A5DE18B5433D00B53B95 /* ButtonFamily.png in Resources */,
+				BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */,
 				BFF8A5E618B5433D00B53B95 /* ButtonWork.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
