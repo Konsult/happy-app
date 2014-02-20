@@ -47,6 +47,8 @@
 		EE845D5518A988C800431CBC /* Happy_AppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE845D5418A988C800431CBC /* Happy_AppTests.m */; };
 		EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A2F2518A9AE2F0027D29B /* CoreData.framework */; };
 		EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */; };
+		EEB18F1018B55FD6004DC0C6 /* GraphBarBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = EEB18F0E18B55FD6004DC0C6 /* GraphBarBottom.png */; };
+		EEB18F1118B55FD6004DC0C6 /* GraphBarBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EEB18F0F18B55FD6004DC0C6 /* GraphBarBottom@2x.png */; };
 		EEDC0DB618AEC2060081A6C2 /* icon-circle-add-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = EEDC0DB518AEC2060081A6C2 /* icon-circle-add-50x50.png */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +108,8 @@
 		EE845D5418A988C800431CBC /* Happy_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Happy_AppTests.m; sourceTree = "<group>"; };
 		EE9A2F2518A9AE2F0027D29B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
+		EEB18F0E18B55FD6004DC0C6 /* GraphBarBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphBarBottom.png; sourceTree = "<group>"; };
+		EEB18F0F18B55FD6004DC0C6 /* GraphBarBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GraphBarBottom@2x.png"; sourceTree = "<group>"; };
 		EEDC0DB518AEC2060081A6C2 /* icon-circle-add-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-circle-add-50x50.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +150,8 @@
 		BFF8A5C318B5433D00B53B95 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EEB18F0E18B55FD6004DC0C6 /* GraphBarBottom.png */,
+				EEB18F0F18B55FD6004DC0C6 /* GraphBarBottom@2x.png */,
 				BFF8A5C418B5433D00B53B95 /* Background.png */,
 				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
 				BF69E3B718B54FDD00F83A45 /* Background Blur.png */,
@@ -335,11 +341,13 @@
 				BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */,
 				BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */,
 				BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */,
+				EEB18F1118B55FD6004DC0C6 /* GraphBarBottom@2x.png in Resources */,
 				BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */,
 				BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */,
 				BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */,
 				BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */,
 				BFF8A5E718B5433D00B53B95 /* ButtonWork@2x.png in Resources */,
+				EEB18F1018B55FD6004DC0C6 /* GraphBarBottom.png in Resources */,
 				BFF8A5E118B5433D00B53B95 /* ButtonHobbies@2x.png in Resources */,
 				BFF8A5DB18B5433D00B53B95 /* ButtonAdd@2x.png in Resources */,
 				BFF8A5E918B5433D00B53B95 /* GraphMask@2x.png in Resources */,

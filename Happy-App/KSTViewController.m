@@ -139,7 +139,8 @@
 
     // move views by translation amount
     [bgImageView setFrame:CGRectMake((bgImageView.frame.origin.x + translation.x), 0, BG_WIDTH, MAIN_HEIGHT)];
-    [containerView setFrame:CGRectMake(containerView.frame.origin.x + (translation.x * 1.5), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+    [bgBlurView setFrame:CGRectMake((bgImageView.frame.origin.x + translation.x * 1.5), 0, BG_WIDTH, MAIN_HEIGHT)];
+    [containerView setFrame:CGRectMake(containerView.frame.origin.x + (translation.x * 2), 0, MAIN_WIDTH, MAIN_HEIGHT)];
 
     // reset translation to 0 for next move
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -151,14 +152,16 @@
         // slide left ended
         if (velocity.x < 0) {
             if (bgImageView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
-                [UIView animateWithDuration:0.3f animations:^{
+                [UIView animateWithDuration:0.5f animations:^{
                     [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
                     [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                     [self showHappyItemStats];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
                     [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
                     [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
@@ -167,12 +170,14 @@
             if (bgImageView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
                 [UIView animateWithDuration:0.3f animations:^{
                     [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
                     [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                     [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
                     [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
                     [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
@@ -221,9 +226,9 @@
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * 64), 470);
   
-    for (int i = 0; i < happyItems.count; i++) {
+    for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIView *happyItemBarView = [[UIView alloc] initWithFrame:CGRectMake((i * 64), 0, 75, 450)];
+        UIView *happyItemBarView = [[UIView alloc] initWithFrame:CGRectMake(-75, 0, 75, 450)];
         
         UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 410, 50, 40)];
         [happyItemLabel setText:happyItem[@"title"]];
@@ -238,26 +243,31 @@
         
         UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 360, 50, 0)];
         [rectangle setBackgroundColor:[UIColor whiteColor]];
-        rectangle.alpha = 0.8;
-
-//        UIImage *rectMaskImage = [UIImage imageNamed:@"GraphMask"];
-//        CALayer *rectMaskLayer = [CALayer layer];
-//        rectMaskLayer.frame = rectangle.bounds;
-//        [rectMaskLayer setContents:(id)[rectMaskImage CGImage]];
-//        [rectangle.layer setMask:rectMaskLayer];
+        rectangle.alpha = 0.58;
 
         [happyItemBarView addSubview:rectangle];
         
         UIImage *circleIcon = [UIImage imageNamed:happyItem[@"imageRef"]];
         UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 50)];
         [circleIconView setImage:circleIcon];
-        [circleIconView setTintColor:[UIColor whiteColor]];
         
         [happyItemBarView addSubview:circleIconView];
         
-        [graphScrollView addSubview:happyItemBarView];
+        UIImage *graphBarBottom = [UIImage imageNamed:@"GraphBarBottom"];
+        UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 25)];
+        [graphBarBottomView setImage:graphBarBottom];
+        graphBarBottomView.alpha = 0.8;
         
-        [self animateHappyBarGraph:rectangle :[happyItem[@"value"] intValue] :max];
+        [happyItemBarView addSubview:graphBarBottomView];
+        
+        [UIView animateWithDuration:0.8f delay:(float)i * 0.2f usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [graphScrollView addSubview:happyItemBarView];
+            [happyItemBarView setFrame:CGRectMake((i * 64), 0, 75, 450)];
+        } completion:^(BOOL finished){
+            if (finished == YES) {
+                [self animateHappyBarGraph:rectangle :[happyItem[@"value"] intValue] :max];
+            }
+        }];
     }
 }
 

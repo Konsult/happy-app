@@ -21,6 +21,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background Blur.png" translatesAutoresizingMaskIntoConstraints="NO" id="55E-GW-7fx" userLabel="bgBlurView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <view tag="99" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-fs-72T" userLabel="containerSub">
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -77,6 +81,7 @@ you happy?</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="bgBlurView" destination="55E-GW-7fx" id="3bq-Kz-keO"/>
                         <outlet property="bgImageView" destination="anf-aa-y8J" id="4h9-zj-APf"/>
                         <outlet property="containerView" destination="nbq-fs-72T" id="8Td-d2-cVe"/>
                         <outlet property="dateLabel" destination="DJD-Iv-SQB" id="sU7-dG-J5j"/>
@@ -91,6 +96,7 @@ you happy?</string>
         </scene>
     </scenes>
     <resources>
+        <image name="Background Blur.png" width="600" height="568"/>
         <image name="Background.png" width="600" height="568"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -16,6 +16,7 @@
     NSString *happyItemsPlistPath;
     UIView *circleView;
     __weak IBOutlet UIView *bgImageView;
+    __weak IBOutlet UIImageView *bgBlurView;
     __weak IBOutlet UIView *containerView;
     __weak IBOutlet UIView *happyItemsContainerView;
     __weak IBOutlet UIScrollView *graphScrollView;
