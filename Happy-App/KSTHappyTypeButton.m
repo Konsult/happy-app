@@ -15,12 +15,16 @@
 
 #define BUTTON_PRESS_SCALE 1.25f
 #define BUTTON_PRESS_TRANSITION_DURATION 0.1f
+#define BLOOM_ANIMATION_DURATION 0.2f
+#define BLOOM_ANIMATION_SCALE 3
 
 @interface KSTHappyTypeButton (Private)
 
 - (void)buttonPressed:(KSTHappyTypeButton *)button;
 - (void)buttonUnpressed:(KSTHappyTypeButton *)button;
 - (void)toggleButton:(KSTHappyTypeButton *)button;
+
+- (void)animateBloom:(id)caller;
 
 @end
 
@@ -74,6 +78,18 @@
 - (void)toggleButton:(KSTHappyTypeButton *)button
 {
     self.selected = !self.selected;
+    
+    if (self.selected) {
+        UIImageView *bloom = [[UIImageView alloc] initWithImage:iconView.image];
+        [self addSubview:bloom];
+        [UIView animateWithDuration:BLOOM_ANIMATION_DURATION delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            bloom.layer.affineTransform = CGAffineTransformMakeScale(BLOOM_ANIMATION_SCALE, BLOOM_ANIMATION_SCALE);
+            bloom.layer.opacity = 0;
+        } completion:^(BOOL finished){
+            [bloom removeFromSuperview];
+        }];
+    }
+    
     [self buttonUnpressed:button];
 }
 
@@ -83,6 +99,11 @@
     [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
         iconView.layer.affineTransform = CGAffineTransformMakeScale(1, 1);
     }];
+}
+
+- (void)animateBloom:(id)caller
+{
+    
 }
 
 @end
