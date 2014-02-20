@@ -12,7 +12,7 @@
                         <viewControllerLayoutGuide type="top" id="Tta-Gk-jBj"/>
                         <viewControllerLayoutGuide type="bottom" id="vDi-LM-u45"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS" userLabel="mainView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -26,22 +26,22 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view tag="99" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-fs-72T" userLabel="containerSub">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="1136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view tag="5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hiq-5n-POl" userLabel="homeView">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1136"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJD-Iv-SQB">
-                                                <rect key="frame" x="20" y="25" width="280" height="21"/>
+                                                <rect key="frame" x="10" y="25" width="280" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="e3O-lo-rsN">
-                                                <rect key="frame" x="20" y="45" width="241" height="62"/>
+                                                <rect key="frame" x="10" y="45" width="241" height="62"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">What makes you
@@ -54,11 +54,11 @@ happy today?</string>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dzo-9B-v3Y" userLabel="graphView">
-                                        <rect key="frame" x="320" y="0.0" width="320" height="568"/>
+                                        <rect key="frame" x="320" y="0.0" width="320" height="1136"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="169" translatesAutoresizingMaskIntoConstraints="NO" id="nHt-Yq-1cW">
-                                                <rect key="frame" x="136" y="32" width="169" height="62"/>
+                                                <rect key="frame" x="141" y="32" width="169" height="62"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">What has made 
@@ -68,10 +68,16 @@ you happy?</string>
                                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </label>
                                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" indicatorStyle="white" translatesAutoresizingMaskIntoConstraints="NO" id="nTP-dW-81d">
-                                                <rect key="frame" x="0.0" y="118" width="320" height="470"/>
+                                                <rect key="frame" x="14" y="118" width="320" height="1038"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             </scrollView>
                                         </subviews>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4aF-Tv-coe" userLabel="addItemView">
+                                        <rect key="frame" x="25" y="568" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -81,13 +87,15 @@ you happy?</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="bgBlurView" destination="55E-GW-7fx" id="3bq-Kz-keO"/>
+                        <outlet property="addItemView" destination="4aF-Tv-coe" id="Xrb-Re-SO4"/>
+                        <outlet property="bgBlurView" destination="55E-GW-7fx" id="bJS-LF-DNh"/>
                         <outlet property="bgImageView" destination="anf-aa-y8J" id="4h9-zj-APf"/>
                         <outlet property="containerView" destination="nbq-fs-72T" id="8Td-d2-cVe"/>
                         <outlet property="dateLabel" destination="DJD-Iv-SQB" id="sU7-dG-J5j"/>
                         <outlet property="graphScrollView" destination="nTP-dW-81d" id="5Do-rD-tHx"/>
                         <outlet property="graphView" destination="dzo-9B-v3Y" id="74A-Fp-i6D"/>
                         <outlet property="happyItemsContainerView" destination="hiq-5n-POl" id="XKu-Hn-aVJ"/>
+                        <outlet property="mainView" destination="kh9-bI-dsS" id="yWf-Xq-f63"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

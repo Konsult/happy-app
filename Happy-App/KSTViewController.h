@@ -15,6 +15,7 @@
     NSMutableArray *happyItems;
     NSString *happyItemsPlistPath;
     UIView *circleView;
+    IBOutlet UIView *mainView;
     __weak IBOutlet UIView *bgImageView;
     __weak IBOutlet UIImageView *bgBlurView;
     __weak IBOutlet UIView *containerView;
@@ -22,6 +23,7 @@
     __weak IBOutlet UIScrollView *graphScrollView;
     __weak IBOutlet UIView *graphView;
     CGPoint endAnimationPoint;
+    __weak IBOutlet UIView *addItemView;
 }
 
 @end
