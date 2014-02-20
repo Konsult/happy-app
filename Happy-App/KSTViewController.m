@@ -43,6 +43,13 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqual:@"selected"] && [object isKindOfClass:[KSTHappyTypeButton class]]) {
+        [self updateAndSaveHappyItem:object];
+    }
+}
+
 #pragma mark Helper methods
 - (IBAction)initPanRecognizer
 {
@@ -104,7 +111,7 @@
                                                andImageName:happyItem[@"imageRef"]];
         
         [happyItemButton setTag:i];
-        [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
         CGRect frame = happyItemButton.frame;
         frame.origin = CGPointMake(-150, (200 + (i * 55)));
         happyItemButton.frame = frame;
@@ -115,10 +122,11 @@
     }
 }
 
--(void)updateAndSaveHappyItem:(UIButton*)button
+-(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + 1];
+    int change = button.selected ? 1 : -1;
+    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + change];
     happyItem[@"value"] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);

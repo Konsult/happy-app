@@ -13,6 +13,17 @@
 #define ALT_IMG_SUFFX @"Alt"
 #define TITLE_LEFT_MARGIN 8
 
+#define BUTTON_PRESS_SCALE 1.25f
+#define BUTTON_PRESS_TRANSITION_DURATION 0.1f
+
+@interface KSTHappyTypeButton (Private)
+
+- (void)buttonPressed:(KSTHappyTypeButton *)button;
+- (void)buttonUnpressed:(KSTHappyTypeButton *)button;
+- (void)toggleButton:(KSTHappyTypeButton *)button;
+
+@end
+
 @implementation KSTHappyTypeButton
 
 - (id)initWithFrame:(CGRect)frame
@@ -39,7 +50,40 @@
     self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
+    [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
+    [self addTarget:self action:@selector(buttonUnpressed:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
+    [self addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     return self;
 }
 
 @end
+
+@implementation KSTHappyTypeButton (Private)
+
+- (void)buttonPressed:(KSTHappyTypeButton *)button
+{
+    iconView.highlighted = YES;
+    [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
+        iconView.layer.affineTransform = CGAffineTransformMakeScale(BUTTON_PRESS_SCALE, BUTTON_PRESS_SCALE);
+    }];
+}
+
+
+- (void)toggleButton:(KSTHappyTypeButton *)button
+{
+    self.selected = !self.selected;
+    [self buttonUnpressed:button];
+}
+
+- (void)buttonUnpressed:(KSTHappyTypeButton *)button
+{
+    iconView.highlighted = self.selected;
+    [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
+        iconView.layer.affineTransform = CGAffineTransformMakeScale(1, 1);
+    }];
+}
+
+@end
+
