@@ -51,6 +51,7 @@
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0, ICON_DIAMETER + TITLE_LEFT_MARGIN, 0, 0)];
     [self setTitle:title forState:UIControlStateNormal];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:14.0]];
     self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
