@@ -261,8 +261,6 @@
     if (graphScrollView.subviews.count > 1) {
         return;
     }
-    
-    int max = [self findMaxHappyValue:happyItems];
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * 64), 470);
     
@@ -286,7 +284,7 @@
         
         UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 360, 50, 0)];
         [rectangle setBackgroundColor:[UIColor whiteColor]];
-        rectangle.alpha = 0.58;
+        rectangle.alpha = 0.70;
 
         [happyItemBarView addSubview:rectangle];
         
@@ -299,90 +297,41 @@
         UIImage *graphBarBottom = [UIImage imageNamed:@"GraphBarBottom"];
         UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 25)];
         [graphBarBottomView setImage:graphBarBottom];
-        graphBarBottomView.alpha = 0.8;
-        
+        [happyItemBarView addSubview:graphBarBottomView];
+
         [graphScrollView addSubview:happyItemBarView];
         
         [barViewsToAnimate addObject:happyItemBarView];
-        [rectViewsToAnimate addObject:[[NSDictionary alloc] initWithObjectsAndKeys:rectangle, @"view", graphBarBottomView, @"bottom", happyItem[@"value"], @"value", nil]];
+
+        NSNumber *value = happyItem[@"value"];
+        [rectViewsToAnimate addObject:[NSDictionary dictionaryWithObjectsAndKeys:rectangle, @"view", value, @"value", nil]];
     }
-   
-    [UIView animateWithDuration:0.1f delay:0.1f usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 1];
-        [barView setCenter:CGPointMake((barViewsToAnimate.count - 1) * 64 + 25, barView.center.y)];
-    } completion:^(BOOL finished){
-        NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 1];
-        UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 1];
-        [barView addSubview:rect[@"bottom"]];
-        [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-        } completion:NULL];
+    
+    for (int j = barViewsToAnimate.count - 1; j >= 0; --j) {
+        UIView *barView = [barViewsToAnimate objectAtIndex:j];
+        CGPoint center = CGPointMake(j * 64 + 25, barView.center.y);
+        NSNumber *last = [NSNumber numberWithBool:NO];
+        if (j == 0) {
+            last = [NSNumber numberWithBool:YES];
+        }
+        NSDictionary *barViewObject = [[NSDictionary alloc] initWithObjectsAndKeys:barView, @"view", [NSValue valueWithCGPoint:center], @"center", last, @"last", nil];
         
-        [UIView animateWithDuration:0.1f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 2];
-            [barView setCenter:CGPointMake((barViewsToAnimate.count - 2) * 64 + 25, barView.center.y)];
-        } completion:^(BOOL finished){
+        [self performSelector:@selector(slideInBarIcon:) withObject:barViewObject afterDelay:abs((j - barViewsToAnimate.count)) * 0.2f];
+    }
+    
+    [self performSelector:@selector(slideBarGraphsUp:) withObject:rectViewsToAnimate afterDelay:1.5f];
+}
 
-            NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 2];
-            UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 2];
-            [barView addSubview:rect[@"bottom"]];
-            [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-            } completion:NULL];
+- (void)slideInBarIcon:(NSDictionary *)barViewObject
+{
+    [UIView animateWithDuration:0.8f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [barViewObject[@"view"] setCenter:[barViewObject[@"center"] CGPointValue]];
+    } completion:NULL];
+}
 
-            [UIView animateWithDuration:0.1f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 3];
-                [barView setCenter:CGPointMake((barViewsToAnimate.count - 3) * 64 + 25, barView.center.y)];
-            } completion:^(BOOL finished){
-                NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 3];
-                UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 3];
-                [barView addSubview:rect[@"bottom"]];
-                [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-                } completion:NULL];
-                
-                [UIView animateWithDuration:0.1f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 4];
-                    [barView setCenter:CGPointMake((barViewsToAnimate.count - 4) * 64 + 25, barView.center.y)];
-                } completion:^(BOOL finished){
-                    
-                    NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 4];
-                    UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 4];
-                    [barView addSubview:rect[@"bottom"]];
-                    [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-                    } completion:NULL];
-
-                    [UIView animateWithDuration:0.1f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 5];
-                        [barView setCenter:CGPointMake((barViewsToAnimate.count - 5) * 64 + 25, barView.center.y)];
-                    } completion:^(BOOL finished){
-
-                        NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 5];
-                        UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 5];
-                        [barView addSubview:rect[@"bottom"]];
-                        [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                            [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-                        } completion:NULL];
-
-                        [UIView animateWithDuration:0.1f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                            UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 6];
-                            [barView setCenter:CGPointMake((barViewsToAnimate.count - 6) * 64 + 25, barView.center.y)];
-                        } completion:^(BOOL finished){
-
-                            NSDictionary *rect = [rectViewsToAnimate objectAtIndex:barViewsToAnimate.count - 6];
-                            UIView *barView = [barViewsToAnimate objectAtIndex:barViewsToAnimate.count - 6];
-                            [barView addSubview:rect[@"bottom"]];
-                            [UIView animateWithDuration:0.2f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                                [self animateHappyBarGraph:rect[@"view"] :[rect[@"value"] intValue] :max];
-                            } completion:NULL];
-
-                        }];
-                    }];
-                }];
-            }];
-        }];
-    }];
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    NSLog(@"animation stopped: %@", anim);
 }
 
 - (int)findMaxHappyValue:(NSArray *)items
@@ -399,7 +348,18 @@
     return max;
 }
 
-- (void)animateHappyBarGraph:(UIView *)rectangle :(int)value :(int)max
+- (void)slideBarGraphsUp:(NSMutableArray *)bars
+{
+    int max = [self findMaxHappyValue:happyItems];
+    for (int i = 0; i < bars.count; i++) {
+        NSDictionary *barObj = [bars objectAtIndex:i];
+        NSInteger value = [barObj[@"value"] integerValue];
+        
+        [self animateHappyBarGraph:barObj[@"view"] value:value max:max];
+    }
+}
+
+- (void)animateHappyBarGraph:(UIView *)rectangle value:(int)value max:(int)max
 {
     CGRect frame = rectangle.frame;
     float height = 360 * ((float)value / (float)max);
@@ -407,13 +367,21 @@
         frame.size.height = height;
         frame.origin.y = 360 - height;
     }
-    UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    
+    CGRect labelRect = CGRectMake(0, 0, 50, 30);
+    UIColor *labelColor = [UIColor blackColor];
+    if (height < 30) {
+        labelRect.origin.y = -30;
+        labelColor = [UIColor whiteColor];
+    }
+    
+    UILabel *valueLabel = [[UILabel alloc] initWithFrame:labelRect];
     [valueLabel setText:[NSString stringWithFormat:@"%d", value]];
     [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:24.0]];
     valueLabel.textAlignment = NSTextAlignmentCenter;
-    [valueLabel setTextColor:[UIColor blackColor]];
+    [valueLabel setTextColor:labelColor];
     valueLabel.alpha = 0.8;
-    
+
     [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [rectangle setFrame:frame];
     } completion:^(BOOL finished){
