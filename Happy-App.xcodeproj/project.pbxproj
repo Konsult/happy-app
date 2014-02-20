@@ -9,6 +9,19 @@
 /* Begin PBXBuildFile section */
 		BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B718B54FDD00F83A45 /* Background Blur.png */; };
 		BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */; };
+		BFD686E618B682E500CA0E6F /* ButtonAliveAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DA18B682E500CA0E6F /* ButtonAliveAlt.png */; };
+		BFD686E718B682E500CA0E6F /* ButtonAliveAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DB18B682E500CA0E6F /* ButtonAliveAlt@2x.png */; };
+		BFD686E818B682E500CA0E6F /* ButtonFamilyAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DC18B682E500CA0E6F /* ButtonFamilyAlt.png */; };
+		BFD686E918B682E500CA0E6F /* ButtonFamilyAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DD18B682E500CA0E6F /* ButtonFamilyAlt@2x.png */; };
+		BFD686EA18B682E500CA0E6F /* ButtonHobbiesAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DE18B682E500CA0E6F /* ButtonHobbiesAlt.png */; };
+		BFD686EB18B682E500CA0E6F /* ButtonHobbiesAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686DF18B682E500CA0E6F /* ButtonHobbiesAlt@2x.png */; };
+		BFD686EC18B682E500CA0E6F /* ButtonLoverAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E018B682E500CA0E6F /* ButtonLoverAlt.png */; };
+		BFD686ED18B682E500CA0E6F /* ButtonLoverAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E118B682E500CA0E6F /* ButtonLoverAlt@2x.png */; };
+		BFD686EE18B682E500CA0E6F /* ButtonWeatherAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E218B682E500CA0E6F /* ButtonWeatherAlt.png */; };
+		BFD686EF18B682E500CA0E6F /* ButtonWeatherAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E318B682E500CA0E6F /* ButtonWeatherAlt@2x.png */; };
+		BFD686F018B682E500CA0E6F /* ButtonWorkAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E418B682E500CA0E6F /* ButtonWorkAlt.png */; };
+		BFD686F118B682E500CA0E6F /* ButtonWorkAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD686E518B682E500CA0E6F /* ButtonWorkAlt@2x.png */; };
+		BFD686F418B6879A00CA0E6F /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD686F318B6879A00CA0E6F /* KSTHappyTypeButton.m */; };
 		BFF8A5D818B5433D00B53B95 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C418B5433D00B53B95 /* Background.png */; };
 		BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C518B5433D00B53B95 /* Background@2x.png */; };
 		BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */; };
@@ -65,6 +78,20 @@
 /* Begin PBXFileReference section */
 		BF69E3B718B54FDD00F83A45 /* Background Blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur.png"; sourceTree = "<group>"; };
 		BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur@2x.png"; sourceTree = "<group>"; };
+		BFD686DA18B682E500CA0E6F /* ButtonAliveAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAliveAlt.png; sourceTree = "<group>"; };
+		BFD686DB18B682E500CA0E6F /* ButtonAliveAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonAliveAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686DC18B682E500CA0E6F /* ButtonFamilyAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonFamilyAlt.png; sourceTree = "<group>"; };
+		BFD686DD18B682E500CA0E6F /* ButtonFamilyAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonFamilyAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686DE18B682E500CA0E6F /* ButtonHobbiesAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonHobbiesAlt.png; sourceTree = "<group>"; };
+		BFD686DF18B682E500CA0E6F /* ButtonHobbiesAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonHobbiesAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686E018B682E500CA0E6F /* ButtonLoverAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonLoverAlt.png; sourceTree = "<group>"; };
+		BFD686E118B682E500CA0E6F /* ButtonLoverAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonLoverAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686E218B682E500CA0E6F /* ButtonWeatherAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonWeatherAlt.png; sourceTree = "<group>"; };
+		BFD686E318B682E500CA0E6F /* ButtonWeatherAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWeatherAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686E418B682E500CA0E6F /* ButtonWorkAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonWorkAlt.png; sourceTree = "<group>"; };
+		BFD686E518B682E500CA0E6F /* ButtonWorkAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWorkAlt@2x.png"; sourceTree = "<group>"; };
+		BFD686F218B6879A00CA0E6F /* KSTHappyTypeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTHappyTypeButton.h; sourceTree = "<group>"; };
+		BFD686F318B6879A00CA0E6F /* KSTHappyTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTHappyTypeButton.m; sourceTree = "<group>"; };
 		BFF8A5C418B5433D00B53B95 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		BFF8A5C518B5433D00B53B95 /* Background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background@2x.png"; sourceTree = "<group>"; };
 		BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAdd.png; sourceTree = "<group>"; };
@@ -150,26 +177,38 @@
 		BFF8A5C318B5433D00B53B95 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				EEB18F0E18B55FD6004DC0C6 /* GraphBarBottom.png */,
-				EEB18F0F18B55FD6004DC0C6 /* GraphBarBottom@2x.png */,
-				BFF8A5C418B5433D00B53B95 /* Background.png */,
-				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
 				BF69E3B718B54FDD00F83A45 /* Background Blur.png */,
 				BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */,
+				BFF8A5C418B5433D00B53B95 /* Background.png */,
+				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
 				BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */,
 				BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */,
 				BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */,
 				BFF8A5C918B5433D00B53B95 /* ButtonAlive@2x.png */,
+				BFD686DA18B682E500CA0E6F /* ButtonAliveAlt.png */,
+				BFD686DB18B682E500CA0E6F /* ButtonAliveAlt@2x.png */,
 				BFF8A5CA18B5433D00B53B95 /* ButtonFamily.png */,
 				BFF8A5CB18B5433D00B53B95 /* ButtonFamily@2x.png */,
+				BFD686DC18B682E500CA0E6F /* ButtonFamilyAlt.png */,
+				BFD686DD18B682E500CA0E6F /* ButtonFamilyAlt@2x.png */,
 				BFF8A5CC18B5433D00B53B95 /* ButtonHobbies.png */,
 				BFF8A5CD18B5433D00B53B95 /* ButtonHobbies@2x.png */,
+				BFD686DE18B682E500CA0E6F /* ButtonHobbiesAlt.png */,
+				BFD686DF18B682E500CA0E6F /* ButtonHobbiesAlt@2x.png */,
 				BFF8A5CE18B5433D00B53B95 /* ButtonLover.png */,
 				BFF8A5CF18B5433D00B53B95 /* ButtonLover@2x.png */,
+				BFD686E018B682E500CA0E6F /* ButtonLoverAlt.png */,
+				BFD686E118B682E500CA0E6F /* ButtonLoverAlt@2x.png */,
 				BFF8A5D018B5433D00B53B95 /* ButtonWeather.png */,
 				BFF8A5D118B5433D00B53B95 /* ButtonWeather@2x.png */,
+				BFD686E218B682E500CA0E6F /* ButtonWeatherAlt.png */,
+				BFD686E318B682E500CA0E6F /* ButtonWeatherAlt@2x.png */,
 				BFF8A5D218B5433D00B53B95 /* ButtonWork.png */,
 				BFF8A5D318B5433D00B53B95 /* ButtonWork@2x.png */,
+				BFD686E418B682E500CA0E6F /* ButtonWorkAlt.png */,
+				BFD686E518B682E500CA0E6F /* ButtonWorkAlt@2x.png */,
+				EEB18F0E18B55FD6004DC0C6 /* GraphBarBottom.png */,
+				EEB18F0F18B55FD6004DC0C6 /* GraphBarBottom@2x.png */,
 				BFF8A5D418B5433D00B53B95 /* GraphMask.png */,
 				BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */,
 				BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */,
@@ -213,12 +252,14 @@
 		EE845D2F18A988C800431CBC /* Happy-App */ = {
 			isa = PBXGroup;
 			children = (
+				EE845D4118A988C800431CBC /* Images.xcassets */,
 				EE845D3818A988C800431CBC /* KSTAppDelegate.h */,
 				EE845D3918A988C800431CBC /* KSTAppDelegate.m */,
-				EE845D3B18A988C800431CBC /* Main.storyboard */,
+				BFD686F218B6879A00CA0E6F /* KSTHappyTypeButton.h */,
+				BFD686F318B6879A00CA0E6F /* KSTHappyTypeButton.m */,
 				EE845D3E18A988C800431CBC /* KSTViewController.h */,
 				EE845D3F18A988C800431CBC /* KSTViewController.m */,
-				EE845D4118A988C800431CBC /* Images.xcassets */,
+				EE845D3B18A988C800431CBC /* Main.storyboard */,
 				BFF8A5C218B5433D00B53B95 /* Resources */,
 				EE845D3018A988C800431CBC /* Supporting Files */,
 			);
@@ -337,23 +378,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD686E918B682E500CA0E6F /* ButtonFamilyAlt@2x.png in Resources */,
+				BFD686E718B682E500CA0E6F /* ButtonAliveAlt@2x.png in Resources */,
+				BFD686EC18B682E500CA0E6F /* ButtonLoverAlt.png in Resources */,
+				BFD686ED18B682E500CA0E6F /* ButtonLoverAlt@2x.png in Resources */,
 				BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */,
 				BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */,
 				BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */,
 				BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */,
 				EEB18F1118B55FD6004DC0C6 /* GraphBarBottom@2x.png in Resources */,
+				BFD686F118B682E500CA0E6F /* ButtonWorkAlt@2x.png in Resources */,
 				BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */,
+				BFD686F018B682E500CA0E6F /* ButtonWorkAlt.png in Resources */,
 				BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */,
 				BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */,
 				BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */,
 				BFF8A5E718B5433D00B53B95 /* ButtonWork@2x.png in Resources */,
 				EEB18F1018B55FD6004DC0C6 /* GraphBarBottom.png in Resources */,
+				BFD686EA18B682E500CA0E6F /* ButtonHobbiesAlt.png in Resources */,
 				BFF8A5E118B5433D00B53B95 /* ButtonHobbies@2x.png in Resources */,
 				BFF8A5DB18B5433D00B53B95 /* ButtonAdd@2x.png in Resources */,
 				BFF8A5E918B5433D00B53B95 /* GraphMask@2x.png in Resources */,
 				BFF8A5E018B5433D00B53B95 /* ButtonHobbies.png in Resources */,
 				BFF8A5DC18B5433D00B53B95 /* ButtonAlive.png in Resources */,
+				BFD686E818B682E500CA0E6F /* ButtonFamilyAlt.png in Resources */,
 				BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */,
+				BFD686EB18B682E500CA0E6F /* ButtonHobbiesAlt@2x.png in Resources */,
 				EE845D4218A988C800431CBC /* Images.xcassets in Resources */,
 				BFF8A5DF18B5433D00B53B95 /* ButtonFamily@2x.png in Resources */,
 				EEDC0DB618AEC2060081A6C2 /* icon-circle-add-50x50.png in Resources */,
@@ -362,6 +412,9 @@
 				BFF8A5E218B5433D00B53B95 /* ButtonLover.png in Resources */,
 				EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */,
 				BFF8A5E518B5433D00B53B95 /* ButtonWeather@2x.png in Resources */,
+				BFD686E618B682E500CA0E6F /* ButtonAliveAlt.png in Resources */,
+				BFD686EF18B682E500CA0E6F /* ButtonWeatherAlt@2x.png in Resources */,
+				BFD686EE18B682E500CA0E6F /* ButtonWeatherAlt.png in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
 				BFF8A5DE18B5433D00B53B95 /* ButtonFamily.png in Resources */,
 				BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */,
@@ -386,6 +439,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE845D4018A988C800431CBC /* KSTViewController.m in Sources */,
+				BFD686F418B6879A00CA0E6F /* KSTHappyTypeButton.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,
 				EE845D3A18A988C800431CBC /* KSTAppDelegate.m in Sources */,
 			);

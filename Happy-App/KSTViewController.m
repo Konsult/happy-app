@@ -8,6 +8,8 @@
 
 #import "KSTViewController.h"
 
+#import "KSTHappyTypeButton.h"
+
 @interface KSTViewController (Private)
 
 @end
@@ -97,17 +99,15 @@
             happyItem = [happyItems objectAtIndex:i];
         }
         
-        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc]
+                                               initWithTitle:happyItem[@"title"]
+                                               andImageName:happyItem[@"imageRef"]];
+        
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
-        [happyItemButton setImage:[UIImage imageNamed:happyItem[@"imageRef"]] forState:UIControlStateNormal];
-        [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, 0)];
-        [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
-        [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [happyItemButton setTintColor:[UIColor whiteColor]];
-        happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 125, 50);
+        CGRect frame = happyItemButton.frame;
+        frame.origin = CGPointMake(-150, (200 + (i * 55)));
+        happyItemButton.frame = frame;
 
         [happyItemsContainerView addSubview:happyItemButton];
 
