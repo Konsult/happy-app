@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface KSTHappyTypeButton : UIButton
+{
+    UIImageView *iconView;
+}
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName;
 
