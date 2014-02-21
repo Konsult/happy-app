@@ -28,7 +28,10 @@
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = 200;
     circleView.backgroundColor = [UIColor darkGrayColor];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
     [self loadHappyItems];
 }
 
@@ -217,7 +220,7 @@
     [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.2 :0.8 :0.5 :0.9]];
     [pathAnimation setFillMode:kCAFillModeForwards];
     pathAnimation.duration = 0.8;
-    pathAnimation.beginTime = CACurrentMediaTime() + ([button tag] * 0.1);
+    pathAnimation.beginTime = CACurrentMediaTime() + (([button tag] + 1) * 0.2f);
 
     [pathAnimation setDelegate:self];
     
@@ -225,7 +228,7 @@
 
     [button.layer addAnimation:pathAnimation forKey:nil];
     NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
-    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: 0.8f];
+    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: happyItems.count * 0.3f];
 }
 
 - (void)setButtonCenter:(id)button
