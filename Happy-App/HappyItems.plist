@@ -3,34 +3,52 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>title</key>
+		<string>Being Alive</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonAlive</string>
+	</dict>
+	<dict>
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
-		<string>My Family &amp; Friends</string>
+		<string>Family &amp; Friends</string>
+		<key>imageRef</key>
+		<string>ButtonFamily</string>
 	</dict>
 	<dict>
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
 		<string>My Lover</string>
+		<key>imageRef</key>
+		<string>ButtonLover</string>
 	</dict>
 	<dict>
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
 		<string>My Work</string>
+		<key>imageRef</key>
+		<string>ButtonWork</string>
 	</dict>
 	<dict>
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
 		<string>My Hobbies</string>
+		<key>imageRef</key>
+		<string>ButtonHobbies</string>
 	</dict>
 	<dict>
 		<key>title</key>
 		<string>Beautiful Weather</string>
 		<key>value</key>
 		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
 	</dict>
 </array>
 </plist>

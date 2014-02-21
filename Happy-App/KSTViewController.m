@@ -8,6 +8,9 @@
 
 #import "KSTViewController.h"
 
+#import "KSTHappyTypeButton.h"
+#import "KSTBarGraphItem.h"
+
 @interface KSTViewController (Private)
 
 @end
@@ -21,11 +24,10 @@
     [self getAndShowDate];
     [self initPanRecognizer];
     // add circle for debug
-    circleView = [[UIView alloc] initWithFrame:CGRectMake(-150, 150, 380, 380)];
+    circleView = [[UIView alloc] initWithFrame:CGRectMake(-157, 140, 400, 400)];
     circleView.alpha = 0.5;
-    circleView.layer.cornerRadius = 190;
+    circleView.layer.cornerRadius = 200;
     circleView.backgroundColor = [UIColor darkGrayColor];
-//    [mainContainerSubView addSubview:circleView];
 
     [self loadHappyItems];
 }
@@ -39,6 +41,13 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqual:@"selected"] && [object isKindOfClass:[KSTHappyTypeButton class]]) {
+        [self updateAndSaveHappyItem:object];
+    }
 }
 
 #pragma mark Helper methods
@@ -83,7 +92,6 @@
     NSLog(@"Init with happy items: %@", happyItems);
 
     [self performSelector:@selector(showHappyItems) withObject:self afterDelay:0.6];
-//    [self showHappyItems];
 }
 
 -(void)showHappyItems
@@ -92,27 +100,20 @@
         NSDictionary *happyItem;
 
         if (i == happyItems.count) {
-            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title", nil];
+            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title",@"ButtonAdd",@"imageRef", nil];
         } else {
             happyItem = [happyItems objectAtIndex:i];
         }
         
-        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc]
+                                               initWithTitle:happyItem[@"title"]
+                                               andImageName:happyItem[@"imageRef"]];
         [happyItemButton setTag:i];
-        [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == happyItems.count) {
-            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-add-50x50.png"] forState:UIControlStateNormal];
-        } else {
-            [happyItemButton setImage:[UIImage imageNamed:@"icon-circle-50x50.png"] forState:UIControlStateNormal];
-        }
-        [happyItemButton.imageView setTintColor:[UIColor whiteColor]];
-        [happyItemButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-        [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
-        [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [happyItemButton setTintColor:[UIColor whiteColor]];
-        happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(-150, (200 + (i * 55)) , 130, 50);
+
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        CGRect frame = happyItemButton.frame;
+        frame.origin = CGPointMake(-150, (200 + (i * 55)));
+        happyItemButton.frame = frame;
 
         [happyItemsContainerView addSubview:happyItemButton];
 
@@ -120,10 +121,11 @@
     }
 }
 
--(void)updateAndSaveHappyItem:(UIButton*)button
+-(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + 1];
+    int change = button.selected ? 1 : -1;
+    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + change];
     happyItem[@"value"] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);
@@ -134,45 +136,61 @@
 #define SCREEN_WIDTH 320
 #define MAIN_WIDTH 640
 #define MAIN_HEIGHT 568
-#define SLIDE_THRESHOLD 150
-#define VELOCITY_THRESHOLD 1000
+#define BG_WIDTH 600
+#define SLIDE_THRESHOLD 80
+#define VELOCITY_THRESHOLD 750
 
 - (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
 {
     CGPoint translation = [recognizer translationInView:self.view];
-
-    // move view by translation amount
-    [mainContainerView setFrame:CGRectMake((mainContainerView.frame.origin.x + translation.x), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+    CGPoint velocity = [recognizer velocityInView:self.view];
+    
+    if (translation.x < 0) {
+        [bgImageView setFrame:CGRectMake(MAX(bgImageView.frame.origin.x + translation.x, (-BG_WIDTH + 320)), 0, BG_WIDTH, MAIN_HEIGHT)];
+        [bgBlurView setFrame:CGRectMake(MAX(bgBlurView.frame.origin.x + translation.x * 1.5, (-BG_WIDTH + 320)), 0, BG_WIDTH, MAIN_HEIGHT)];
+        [containerView setFrame:CGRectMake(MAX(containerView.frame.origin.x + (translation.x * 2), (-MAIN_WIDTH / 2)), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+    } else if (translation.x > 0) {
+        [bgImageView setFrame:CGRectMake(MIN(bgImageView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, MAIN_HEIGHT)];
+        [bgBlurView setFrame:CGRectMake(MIN(bgBlurView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, MAIN_HEIGHT)];
+        [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * 2, 0), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+    }
 
     // reset translation to 0 for next move
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
 
-
     if ([recognizer state] == UIGestureRecognizerStateEnded) {
-        CGPoint velocity = [recognizer velocityInView:self.view];
-
         // slide left ended
         if (velocity.x < 0) {
-            if (mainContainerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
-                [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+            if (containerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
+                [UIView animateWithDuration:0.5f animations:^{
+                    [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                } completion:^(BOOL finished) {
                     [self showHappyItemStats];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         // slide right ended
         } else if (velocity.x > 0) {
-            if (mainContainerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
+            if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
                 [UIView animateWithDuration:0.3f animations:^{
-                    [mainContainerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                } completion:^(BOOL finished) {
                     [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
                 }];
             } else {
                 [UIView animateWithDuration:0.1f animations:^{
-                    [mainContainerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [bgBlurView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
                 }];
             }
         }
@@ -180,12 +198,16 @@
 }
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
-#define CIRCLE_RADIUS 190
+#define CIRCLE_RADIUS 185
 
 - (void)rotateButton:(UIButton *)button
 {
+    CGPoint endPoint = CGPointMake((circleView.center.x + 30 + CIRCLE_RADIUS * cos(DEGREES_TO_RADIANS(270 + ([button tag] * 30)))), (circleView.center.y + CIRCLE_RADIUS * sin(DEGREES_TO_RADIANS(270 + ([button tag] * 30)))));
+    endAnimationPoint = endPoint;
+    
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(140), DEGREES_TO_RADIANS(280 + ([button tag] * 30)), YES);
+    CGPathAddArc(path, NULL, circleView.center.x + 30, circleView.center.y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(140), DEGREES_TO_RADIANS(270 + ([button tag] * 30)), YES);
+    CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
 
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
@@ -197,52 +219,46 @@
     pathAnimation.duration = 0.8;
     pathAnimation.beginTime = CACurrentMediaTime() + ([button tag] * 0.1);
 
+    [pathAnimation setDelegate:self];
+    
     CGPathRelease(path);
 
     [button.layer addAnimation:pathAnimation forKey:nil];
+    NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
+    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: 0.8f];
+}
+
+- (void)setButtonCenter:(id)button
+{
+    [button[@"view"] setCenter:[button[@"point"] CGPointValue]];
 }
 
 - (void)showHappyItemStats
 {
-    int max = [self findMaxHappyValue:happyItems];
+    if (graphScrollView.subviews.count > 0) {
+        return;
+    }
+    
+    NSNumber *max = [NSNumber numberWithInt:[self findMaxValue:happyItems]];
 
-    graphScrollView.contentSize = CGSizeMake((happyItems.count * 64), 470);
-  
-    for (int i = 0; i < happyItems.count; i++) {
+    graphScrollView.contentSize = CGSizeMake((happyItems.count * 64 + 14), 470);
+    
+    for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIView *happyItemBarView = [[UIView alloc] initWithFrame:CGRectMake((i * 64), 0, 75, 450)];
         
-        UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 410, 50, 40)];
-        [happyItemLabel setText:happyItem[@"title"]];
-        [happyItemLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0]];
-        [happyItemLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        happyItemLabel.numberOfLines = 0;
-        happyItemLabel.textAlignment = NSTextAlignmentCenter;
-        [happyItemLabel setTextColor:[UIColor whiteColor]];
-        [happyItemLabel setTintColor:[UIColor clearColor]];
-        
-        [happyItemBarView addSubview:happyItemLabel];
-        
-        UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 385, 50, 0)];
-        [rectangle setBackgroundColor:[UIColor whiteColor]];
-        rectangle.alpha = 0.8;
-
-        [happyItemBarView addSubview:rectangle];
-        
-        UIImage *circleIcon = [UIImage imageNamed:@"icon-circle-50x50.png"];
-        UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 50)];
-        [circleIconView setImage:circleIcon];
-        [circleIconView setTintColor:[UIColor whiteColor]];
-        
-        [happyItemBarView addSubview:circleIconView];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[@"title"] andImageName:happyItem[@"imageRef"] andValue:happyItem[@"value"]];
         
         [graphScrollView addSubview:happyItemBarView];
+
+        CGPoint center = CGPointMake(14 + i * 64 + 25, happyItemBarView.center.y);
         
-        [self animateHappyBarGraph:rectangle :[happyItem[@"value"] intValue] :max];
+        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(float)(abs(i - happyItems.count) * 0.2f)];
+        
+        [happyItemBarView performSelector:@selector(animateBarWithMax:) withObject:max afterDelay:(float)happyItems.count * 0.2f + 0.4f];
     }
 }
 
-- (int)findMaxHappyValue:(NSArray *)items
+- (int)findMaxValue:(NSArray *)items
 {
     int max = 0;
     
@@ -254,26 +270,6 @@
     }
     
     return max;
-}
-
-- (void)animateHappyBarGraph:(UIView *)rectangle :(int)value :(int)max
-{
-    CGRect frame = rectangle.frame;
-    float height = 385 * ((float)value / (float)max);
-    frame.size.height = height;
-    frame.origin.y = 385 - height;
-    
-    UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    [valueLabel setText:[NSString stringWithFormat:@"%d", value]];
-    [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:24.0]];
-    valueLabel.textAlignment = NSTextAlignmentCenter;
-    [valueLabel setTextColor:[UIColor blackColor]];
-    valueLabel.alpha = 0.8;
-    
-    [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [rectangle setFrame:frame];
-        [rectangle addSubview:valueLabel];
-    } completion:NULL];
 }
 
 @end
