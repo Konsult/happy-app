@@ -9,6 +9,7 @@
 #import "KSTViewController.h"
 
 #import "KSTHappyTypeButton.h"
+#import "KSTBarGraphItem.h"
 
 @interface KSTViewController (Private)
 
@@ -27,7 +28,6 @@
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = 200;
     circleView.backgroundColor = [UIColor darkGrayColor];
-//    [happyItemsContainerView addSubview:circleView];
 
     [self loadHappyItems];
 }
@@ -92,7 +92,6 @@
     NSLog(@"Init with happy items: %@", happyItems);
 
     [self performSelector:@selector(showHappyItems) withObject:self afterDelay:0.6];
-//    [self showHappyItems];
 }
 
 -(void)showHappyItems
@@ -109,7 +108,6 @@
         KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc]
                                                initWithTitle:happyItem[@"title"]
                                                andImageName:happyItem[@"imageRef"]];
-        
         [happyItemButton setTag:i];
 
         [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
@@ -141,27 +139,6 @@
 #define BG_WIDTH 600
 #define SLIDE_THRESHOLD 80
 #define VELOCITY_THRESHOLD 750
-
--(void)showAddView:(UIButton*)button
-{
-//    NSData *archivedButton = [NSKeyedArchiver archivedDataWithRootObject:button];
-//    UIButton *newButton = [NSKeyedUnarchiver unarchiveObjectWithData:archivedButton];
-
-    NSLog(@"center after (%f, %f)", button.center.x, button.center.y);
-    [UIView animateWithDuration:0.5f delay:0.1f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [bgBlurView setCenter:CGPointMake((-BG_WIDTH/2) + 321, MAIN_HEIGHT/2)];
-        [containerView setCenter:CGPointMake(MAIN_WIDTH/2, 110)];
-    } completion:^(BOOL finished){
-        NSLog(@"center after (%f, %f)", button.center.x, button.center.y);
-//        [button removeFromSuperview];
-//        [button setCenter:CGPointMake(<#CGFloat x#>, <#CGFloat y#>)]
-//        [addItemView addSubview:button];
-        
-//        [UIView animateWithDuration:0.5f delay:0.1f options:UIViewAnimationOptionCurveEaseOut animations:^{
-//            [containerView setFrame:CGRectMake(0, -MAIN_HEIGHT, MAIN_WIDTH, MAIN_HEIGHT)];
-//        } completion:NULL];
-    }];
-}
 
 - (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
 {
@@ -258,83 +235,30 @@
 
 - (void)showHappyItemStats
 {
-    if (graphScrollView.subviews.count > 1) {
+    if (graphScrollView.subviews.count > 0) {
         return;
     }
-
-    graphScrollView.contentSize = CGSizeMake((happyItems.count * 64), 470);
     
-    NSMutableArray *barViewsToAnimate = [[NSMutableArray alloc] init];
-    NSMutableArray *rectViewsToAnimate = [[NSMutableArray alloc] init];
-  
+    NSNumber *max = [NSNumber numberWithInt:[self findMaxValue:happyItems]];
+
+    graphScrollView.contentSize = CGSizeMake((happyItems.count * 64 + 14), 470);
+    
     for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIView *happyItemBarView = [[UIView alloc] initWithFrame:CGRectMake(-75, 0, 75, 450)];
         
-        UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 410, 50, 40)];
-        [happyItemLabel setText:happyItem[@"title"]];
-        [happyItemLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0]];
-        [happyItemLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        happyItemLabel.numberOfLines = 0;
-        happyItemLabel.textAlignment = NSTextAlignmentCenter;
-        [happyItemLabel setTextColor:[UIColor whiteColor]];
-        [happyItemLabel setTintColor:[UIColor clearColor]];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[@"title"] andImageName:happyItem[@"imageRef"] andValue:happyItem[@"value"]];
         
-        [happyItemBarView addSubview:happyItemLabel];
-        
-        UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(14, 360, 50, 0)];
-        [rectangle setBackgroundColor:[UIColor whiteColor]];
-        rectangle.alpha = 0.70;
-
-        [happyItemBarView addSubview:rectangle];
-        
-        UIImage *circleIcon = [UIImage imageNamed:happyItem[@"imageRef"]];
-        UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 50)];
-        [circleIconView setImage:circleIcon];
-        
-        [happyItemBarView addSubview:circleIconView];
-        
-        UIImage *graphBarBottom = [UIImage imageNamed:@"GraphBarBottom"];
-        UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 360, 50, 25)];
-        [graphBarBottomView setImage:graphBarBottom];
-        [happyItemBarView addSubview:graphBarBottomView];
-
         [graphScrollView addSubview:happyItemBarView];
+
+        CGPoint center = CGPointMake(14 + i * 64 + 25, happyItemBarView.center.y);
         
-        [barViewsToAnimate addObject:happyItemBarView];
-
-        NSNumber *value = happyItem[@"value"];
-        [rectViewsToAnimate addObject:[NSDictionary dictionaryWithObjectsAndKeys:rectangle, @"view", value, @"value", nil]];
-    }
-    
-    for (int j = barViewsToAnimate.count - 1; j >= 0; --j) {
-        UIView *barView = [barViewsToAnimate objectAtIndex:j];
-        CGPoint center = CGPointMake(j * 64 + 25, barView.center.y);
-        NSNumber *last = [NSNumber numberWithBool:NO];
-        if (j == 0) {
-            last = [NSNumber numberWithBool:YES];
-        }
-        NSDictionary *barViewObject = [[NSDictionary alloc] initWithObjectsAndKeys:barView, @"view", [NSValue valueWithCGPoint:center], @"center", last, @"last", nil];
+        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(float)(abs(i - happyItems.count) * 0.2f)];
         
-        [self performSelector:@selector(slideInBarIcon:) withObject:barViewObject afterDelay:abs((j - barViewsToAnimate.count)) * 0.2f];
+        [happyItemBarView performSelector:@selector(animateBarWithMax:) withObject:max afterDelay:(float)happyItems.count * 0.2f + 0.4f];
     }
-    
-    [self performSelector:@selector(slideBarGraphsUp:) withObject:rectViewsToAnimate afterDelay:1.5f];
 }
 
-- (void)slideInBarIcon:(NSDictionary *)barViewObject
-{
-    [UIView animateWithDuration:0.8f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [barViewObject[@"view"] setCenter:[barViewObject[@"center"] CGPointValue]];
-    } completion:NULL];
-}
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    NSLog(@"animation stopped: %@", anim);
-}
-
-- (int)findMaxHappyValue:(NSArray *)items
+- (int)findMaxValue:(NSArray *)items
 {
     int max = 0;
     
@@ -346,47 +270,6 @@
     }
     
     return max;
-}
-
-- (void)slideBarGraphsUp:(NSMutableArray *)bars
-{
-    int max = [self findMaxHappyValue:happyItems];
-    for (int i = 0; i < bars.count; i++) {
-        NSDictionary *barObj = [bars objectAtIndex:i];
-        NSInteger value = [barObj[@"value"] integerValue];
-        
-        [self animateHappyBarGraph:barObj[@"view"] value:value max:max];
-    }
-}
-
-- (void)animateHappyBarGraph:(UIView *)rectangle value:(int)value max:(int)max
-{
-    CGRect frame = rectangle.frame;
-    float height = 360 * ((float)value / (float)max);
-    if (height > 0) {
-        frame.size.height = height;
-        frame.origin.y = 360 - height;
-    }
-    
-    CGRect labelRect = CGRectMake(0, 0, 50, 30);
-    UIColor *labelColor = [UIColor blackColor];
-    if (height < 30) {
-        labelRect.origin.y = -30;
-        labelColor = [UIColor whiteColor];
-    }
-    
-    UILabel *valueLabel = [[UILabel alloc] initWithFrame:labelRect];
-    [valueLabel setText:[NSString stringWithFormat:@"%d", value]];
-    [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:24.0]];
-    valueLabel.textAlignment = NSTextAlignmentCenter;
-    [valueLabel setTextColor:labelColor];
-    valueLabel.alpha = 0.8;
-
-    [UIView animateWithDuration:0.8 delay:0.25 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [rectangle setFrame:frame];
-    } completion:^(BOOL finished){
-        [rectangle addSubview:valueLabel];
-    }];
 }
 
 @end
