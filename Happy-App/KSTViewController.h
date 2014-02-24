@@ -14,6 +14,8 @@
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
     NSString *happyItemsPlistPath;
+    UIView *mainContainerSubView;
+    UIView *circleView;
 }
 
 @end

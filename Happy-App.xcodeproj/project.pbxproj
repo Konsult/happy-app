@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B718B54FDD00F83A45 /* Background Blur.png */; };
-		BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */; };
 		BFF8A5D818B5433D00B53B95 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C418B5433D00B53B95 /* Background.png */; };
 		BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C518B5433D00B53B95 /* Background@2x.png */; };
 		BFF8A5DA18B5433D00B53B95 /* ButtonAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */; };
@@ -29,6 +27,8 @@
 		BFF8A5E918B5433D00B53B95 /* GraphMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */; };
 		BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */; };
 		BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */; };
+		EE47EC9518AD685A00A5856E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE47EC9418AD685A00A5856E /* QuartzCore.framework */; };
+		EE47EC9E18AE9FEF00A5856E /* icon-circle-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
 		EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2B18A988C800431CBC /* CoreGraphics.framework */; };
 		EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
@@ -58,8 +58,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BF69E3B718B54FDD00F83A45 /* Background Blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur.png"; sourceTree = "<group>"; };
-		BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur@2x.png"; sourceTree = "<group>"; };
 		BFF8A5C418B5433D00B53B95 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		BFF8A5C518B5433D00B53B95 /* Background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background@2x.png"; sourceTree = "<group>"; };
 		BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonAdd.png; sourceTree = "<group>"; };
@@ -80,6 +78,8 @@
 		BFF8A5D518B5433D00B53B95 /* GraphMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GraphMask@2x.png"; sourceTree = "<group>"; };
 		BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SwipeArrows.png; sourceTree = "<group>"; };
 		BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SwipeArrows@2x.png"; sourceTree = "<group>"; };
+		EE47EC9418AD685A00A5856E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-circle-50x50.png"; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -108,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE47EC9518AD685A00A5856E /* QuartzCore.framework in Frameworks */,
 				EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */,
 				EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */,
 				EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */,
@@ -141,8 +142,6 @@
 			children = (
 				BFF8A5C418B5433D00B53B95 /* Background.png */,
 				BFF8A5C518B5433D00B53B95 /* Background@2x.png */,
-				BF69E3B718B54FDD00F83A45 /* Background Blur.png */,
-				BF69E3B818B54FDD00F83A45 /* Background Blur@2x.png */,
 				BFF8A5C618B5433D00B53B95 /* ButtonAdd.png */,
 				BFF8A5C718B5433D00B53B95 /* ButtonAdd@2x.png */,
 				BFF8A5C818B5433D00B53B95 /* ButtonAlive.png */,
@@ -187,6 +186,7 @@
 		EE845D2818A988C800431CBC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE47EC9418AD685A00A5856E /* QuartzCore.framework */,
 				EE9A2F2518A9AE2F0027D29B /* CoreData.framework */,
 				EE845D2918A988C800431CBC /* Foundation.framework */,
 				EE845D2B18A988C800431CBC /* CoreGraphics.framework */,
@@ -214,6 +214,7 @@
 		EE845D3018A988C800431CBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EE47EC9D18AE9FEF00A5856E /* icon-circle-50x50.png */,
 				EE845D3118A988C800431CBC /* Happy-App-Info.plist */,
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
@@ -322,7 +323,6 @@
 				BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */,
 				BFF8A5E418B5433D00B53B95 /* ButtonWeather.png in Resources */,
 				BFF8A5D918B5433D00B53B95 /* Background@2x.png in Resources */,
-				BF69E3BA18B54FDD00F83A45 /* Background Blur@2x.png in Resources */,
 				BFF8A5E818B5433D00B53B95 /* GraphMask.png in Resources */,
 				BFF8A5DD18B5433D00B53B95 /* ButtonAlive@2x.png in Resources */,
 				BFF8A5E318B5433D00B53B95 /* ButtonLover@2x.png in Resources */,
@@ -342,8 +342,8 @@
 				BFF8A5E518B5433D00B53B95 /* ButtonWeather@2x.png in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
 				BFF8A5DE18B5433D00B53B95 /* ButtonFamily.png in Resources */,
-				BF69E3B918B54FDD00F83A45 /* Background Blur.png in Resources */,
 				BFF8A5E618B5433D00B53B95 /* ButtonWork.png in Resources */,
+				EE47EC9E18AE9FEF00A5856E /* icon-circle-50x50.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
