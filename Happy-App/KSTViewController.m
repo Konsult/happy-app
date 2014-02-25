@@ -26,10 +26,21 @@
 #define LAYER3_RTL_MULT 1.75
 #define SWIPE_ANIM_DUR 0.5f
 #define SWIPE_BOUNCEBACK_DUR 0.1f
-#define BUTTON_X 15
+#define BUTTON_START_X -150
 #define BUTTON_START_Y 200
-#define BUTTON_WIDTH 80
-#define BUTTON_HEIGHT 50
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define CIRCLE_RADIUS 185
+#define CIRCLE_CENTER_X 75
+#define CIRCLE_CENTER_Y 340
+#define CIRCLE_ANIMATION_DUR 0.8f
+#define CIRCLE_ANIMATION_INTERVAL 0.2f
+#define BUTTON_DEGREE_INTEVAL 30
+#define CIRCLE_ANIMATION_START_DEGREE 140
+#define CIRCLE_ANIMATION_END_DEGREE 270
+#define BEZIER_CURVE_P1_X 0.2f
+#define BEZIER_CURVE_P1_Y 0.8f
+#define BEZIER_CURVE_P2_X 0.5f
+#define BEZIER_CURVE_P2_Y 0.9f
 
 @interface KSTViewController (Private)
 
@@ -62,6 +73,10 @@
     if ([keyPath isEqual:@"selected"] && [object isKindOfClass:[KSTHappyTypeButton class]]) {
         [self updateAndSaveHappyItem:object];
     }
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark Init methods
@@ -165,16 +180,16 @@
 
     NSLog(@"Init with happy items: %@", happyItems);
 
-    [self showHappyItems];
+    [self addHappyItems];
 }
 
--(void)showHappyItems
+-(void)addHappyItems
 {
     for (int i = 0; i <= happyItems.count; i++) {
         NSDictionary *happyItem;
 
         if (i == happyItems.count) {
-            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title",@"ButtonAdd",@"imageRef", nil];
+            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",HAPPY_ITEM_KEY_TITLE,@"ButtonAdd",HAPPY_ITEM_KEY_IMAGEREF, nil];
         } else {
             happyItem = [happyItems objectAtIndex:i];
         }
@@ -185,11 +200,45 @@
 
         [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
         CGRect buttonFrame = happyItemButton.frame;
-        buttonFrame.origin = CGPointMake(BUTTON_X, (BUTTON_START_Y + (i * (BUTTON_HEIGHT))));
+        buttonFrame.origin = CGPointMake(BUTTON_START_X, BUTTON_START_Y);
         happyItemButton.frame = buttonFrame;
 
         [homeView addSubview:happyItemButton];
+
+        [self rotateHappyButton:happyItemButton];
     }
+}
+
+- (void)rotateHappyButton:(UIButton *)button
+{
+    CGPoint endPoint = CGPointMake((CIRCLE_CENTER_X + CIRCLE_RADIUS * cos(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))), (CIRCLE_CENTER_Y + CIRCLE_RADIUS * sin(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))));
+
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)), YES);
+    CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
+
+    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+
+    pathAnimation.removedOnCompletion = NO;
+    pathAnimation.path = path;
+    [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
+    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
+    [pathAnimation setFillMode:kCAFillModeForwards];
+    pathAnimation.duration = CIRCLE_ANIMATION_DUR;
+    pathAnimation.beginTime = CACurrentMediaTime() + (([button tag] + 1) * CIRCLE_ANIMATION_INTERVAL);
+
+    [pathAnimation setDelegate:self];
+
+    CGPathRelease(path);
+
+    [button.layer addAnimation:pathAnimation forKey:nil];
+    NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
+    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: happyItems.count * CIRCLE_ANIMATION_INTERVAL + CIRCLE_ANIMATION_DUR];
+}
+
+- (void)setButtonCenter:(NSDictionary *)buttonDic
+{
+    [buttonDic[@"view"] setCenter:[buttonDic[@"point"] CGPointValue]];
 }
 
 -(void)updateAndSaveHappyItem:(UIButton*)button
