@@ -18,6 +18,8 @@
     __weak IBOutlet UIImageView *blurImageView;
     __weak IBOutlet UIView *containerView;
     __weak IBOutlet UIView *homeView;
+    __weak IBOutlet UIView *graphView;
+    __weak IBOutlet UIScrollView *graphScrollView;
 }
 
 @end
