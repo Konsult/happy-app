@@ -7,7 +7,11 @@
 //
 
 #import "KSTViewController.h"
+#import "KSTHappyTypeButton.h"
 
+#define HAPPY_ITEM_KEY_VALUE @"value"
+#define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
+#define HAPPY_ITEM_KEY_TITLE @"title"
 #define SCREEN_WIDTH 320
 #define CONTAINER_WIDTH 640
 #define CONTAINER_HEIGHT 568
@@ -40,6 +44,10 @@
     [self initPanRecognizer];
 
     [self getAndShowDate];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     [self loadHappyItems];
 }
 
@@ -47,6 +55,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqual:@"selected"] && [object isKindOfClass:[KSTHappyTypeButton class]]) {
+        [self updateAndSaveHappyItem:object];
+    }
 }
 
 #pragma mark Init methods
@@ -155,16 +170,24 @@
 
 -(void)showHappyItems
 {
-    for (int i = 0; i < happyItems.count; i++) {
-        NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    for (int i = 0; i <= happyItems.count; i++) {
+        NSDictionary *happyItem;
+
+        if (i == happyItems.count) {
+            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",@"title",@"ButtonAdd",@"imageRef", nil];
+        } else {
+            happyItem = [happyItems objectAtIndex:i];
+        }
+
+        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
+
         [happyItemButton setTag:i];
-        [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
-        [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
-        happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(BUTTON_X, (BUTTON_START_Y + (i * (BUTTON_HEIGHT))) , BUTTON_WIDTH, BUTTON_HEIGHT);
-        [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        CGRect buttonFrame = happyItemButton.frame;
+        buttonFrame.origin = CGPointMake(BUTTON_X, (BUTTON_START_Y + (i * (BUTTON_HEIGHT))));
+        happyItemButton.frame = buttonFrame;
+
         [homeView addSubview:happyItemButton];
     }
 }
@@ -172,8 +195,8 @@
 -(void)updateAndSaveHappyItem:(UIButton*)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + 1];
-    happyItem[@"value"] = newHappyValue;
+    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[HAPPY_ITEM_KEY_VALUE] intValue] + 1];
+    happyItem[HAPPY_ITEM_KEY_VALUE] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);
 
