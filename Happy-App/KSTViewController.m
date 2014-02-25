@@ -51,11 +51,15 @@
 }
 
 #define SCREEN_WIDTH 320
-#define MAIN_WIDTH 640
-#define MAIN_HEIGHT 568
+#define CONTAINER_WIDTH 640
+#define CONTAINER_HEIGHT 568
 #define BG_WIDTH 600
 #define SLIDE_THRESHOLD 80
 #define VELOCITY_THRESHOLD 750
+#define LAYER_1_MULT 2
+#define LAYER_2_MULT 1.5
+#define SWIPE_ANIM_DUR 0.5f
+#define SWIPE_BOUNCEBACK_DUR 0.1f
 
 - (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
 {
@@ -63,13 +67,15 @@
     CGPoint velocity = [recognizer velocityInView:self.view];
     
     if (translation.x < 0) {
-        [backgroundImageView setFrame:CGRectMake(MAX(backgroundImageView.frame.origin.x + translation.x, (-BG_WIDTH + 320)), 0, BG_WIDTH, MAIN_HEIGHT)];
-        [blurImageView setFrame:CGRectMake(MAX(blurImageView.frame.origin.x + translation.x * 1.5, (-BG_WIDTH + 320)), 0, BG_WIDTH, MAIN_HEIGHT)];
-        [containerView setFrame:CGRectMake(MAX(containerView.frame.origin.x + (translation.x * 2), (-MAIN_WIDTH / 2)), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+        [backgroundImageView setFrame:CGRectMake(MAX(backgroundImageView.frame.origin.x + translation.x, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [blurImageView setFrame:CGRectMake(MAX(blurImageView.frame.origin.x + translation.x * LAYER_2_MULT, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [containerView setFrame:CGRectMake(MAX(containerView.frame.origin.x + (translation.x * LAYER_1_MULT), (-SCREEN_WIDTH)), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
     } else if (translation.x > 0) {
-        [backgroundImageView setFrame:CGRectMake(MIN(backgroundImageView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, MAIN_HEIGHT)];
-        [blurImageView setFrame:CGRectMake(MIN(blurImageView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, MAIN_HEIGHT)];
-        [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * 2, 0), 0, MAIN_WIDTH, MAIN_HEIGHT)];
+        // FIXME: These translation multipliers do not give proper parallax effect.
+        // Need to readjust BG sizes or find better way to move back to home view
+        [backgroundImageView setFrame:CGRectMake(MIN(backgroundImageView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [blurImageView setFrame:CGRectMake(MIN(blurImageView.frame.origin.x + translation.x * 1.75, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * 2, 0), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
     }
     
     // reset translation to 0 for next move
@@ -79,35 +85,35 @@
         // slide left ended
         if (velocity.x < 0) {
             if (containerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
-                [UIView animateWithDuration:0.5f animations:^{
-                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 } completion:^(BOOL finished) {
                     // animate to right "graph" view has finished
                 }];
             } else {
-                [UIView animateWithDuration:0.1f animations:^{
-                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 }];
             }
             // slide right ended
         } else if (velocity.x > 0) {
-            if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > 1000) {
-                [UIView animateWithDuration:0.3f animations:^{
-                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, MAIN_HEIGHT)];
-                    [containerView setFrame:CGRectMake(0, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+            if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > VELOCITY_THRESHOLD) {
+                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 } completion:^(BOOL finished) {
                     // animate to left "home" view has finished
                 }];
             } else {
-                [UIView animateWithDuration:0.1f animations:^{
-                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + 320), 0, MAIN_WIDTH, MAIN_HEIGHT)];
-                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, MAIN_WIDTH, MAIN_HEIGHT)];
+                [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 }];
             }
         }
@@ -138,6 +144,11 @@
     [self showHappyItems];
 }
 
+#define BUTTON_X 15
+#define BUTTON_START_Y 200
+#define BUTTON_WIDTH 80
+#define BUTTON_HEIGHT 50
+
 -(void)showHappyItems
 {
     for (int i = 0; i < happyItems.count; i++) {
@@ -148,7 +159,7 @@
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(15, (200 + (i * 55)) , 80, 50);
+        happyItemButton.frame = CGRectMake(BUTTON_X, (BUTTON_START_Y + (i * (BUTTON_HEIGHT))) , BUTTON_WIDTH, BUTTON_HEIGHT);
         [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [homeView addSubview:happyItemButton];
     }
