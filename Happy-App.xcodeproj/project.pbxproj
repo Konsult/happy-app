@@ -30,6 +30,7 @@
 		BFF8A5EA18B5433D00B53B95 /* SwipeArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D618B5433D00B53B95 /* SwipeArrows.png */; };
 		BFF8A5EB18B5433D00B53B95 /* SwipeArrows@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */; };
 		EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */; };
+		EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
 		EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2B18A988C800431CBC /* CoreGraphics.framework */; };
 		EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
@@ -83,6 +84,8 @@
 		BFF8A5D718B5433D00B53B95 /* SwipeArrows@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SwipeArrows@2x.png"; sourceTree = "<group>"; };
 		EE15DCC618BD301C00BE8337 /* KSTHappyTypeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTHappyTypeButton.h; sourceTree = "<group>"; };
 		EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTHappyTypeButton.m; sourceTree = "<group>"; };
+		EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTBarGraphItem.h; sourceTree = "<group>"; };
+		EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTBarGraphItem.m; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -202,6 +205,8 @@
 		EE845D2F18A988C800431CBC /* Happy-App */ = {
 			isa = PBXGroup;
 			children = (
+				EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */,
+				EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */,
 				EE15DCC618BD301C00BE8337 /* KSTHappyTypeButton.h */,
 				EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */,
 				EE845D3818A988C800431CBC /* KSTAppDelegate.h */,
@@ -367,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */,
 				EE845D4018A988C800431CBC /* KSTViewController.m in Sources */,
 				EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,

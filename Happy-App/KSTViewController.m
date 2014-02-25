@@ -8,6 +8,7 @@
 
 #import "KSTViewController.h"
 #import "KSTHappyTypeButton.h"
+#import "KSTBarGraphItem.h"
 
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
