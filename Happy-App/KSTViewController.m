@@ -9,6 +9,9 @@
 #import "KSTViewController.h"
 #import "KSTHappyTypeButton.h"
 
+#define HAPPY_ITEM_KEY_VALUE @"value"
+#define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
+#define HAPPY_ITEM_KEY_TITLE @"title"
 #define SCREEN_WIDTH 320
 #define CONTAINER_WIDTH 640
 #define CONTAINER_HEIGHT 568
@@ -167,7 +170,7 @@
 
 -(void)showHappyItems
 {
-    for (int i = 0; i <=    happyItems.count; i++) {
+    for (int i = 0; i <= happyItems.count; i++) {
         NSDictionary *happyItem;
 
         if (i == happyItems.count) {
@@ -176,7 +179,7 @@
             happyItem = [happyItems objectAtIndex:i];
         }
 
-        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[@"title"] andImageName:happyItem[@"imageRef"]];
+        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
 
         [happyItemButton setTag:i];
 
@@ -192,8 +195,8 @@
 -(void)updateAndSaveHappyItem:(UIButton*)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + 1];
-    happyItem[@"value"] = newHappyValue;
+    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[HAPPY_ITEM_KEY_VALUE] intValue] + 1];
+    happyItem[HAPPY_ITEM_KEY_VALUE] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);
 

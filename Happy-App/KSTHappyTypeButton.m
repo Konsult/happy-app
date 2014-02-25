@@ -24,8 +24,6 @@
 - (void)buttonUnpressed:(KSTHappyTypeButton *)button;
 - (void)toggleButton:(KSTHappyTypeButton *)button;
 
-- (void)animateBloom:(id)caller;
-
 @end
 
 @implementation KSTHappyTypeButton
@@ -58,8 +56,7 @@
     [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
     [self addTarget:self action:@selector(buttonUnpressed:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
     [self addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+
     return self;
 }
 
@@ -74,7 +71,6 @@
         iconView.layer.affineTransform = CGAffineTransformMakeScale(BUTTON_PRESS_SCALE, BUTTON_PRESS_SCALE);
     }];
 }
-
 
 - (void)toggleButton:(KSTHappyTypeButton *)button
 {
@@ -100,11 +96,6 @@
     [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
         iconView.layer.affineTransform = CGAffineTransformMakeScale(1, 1);
     }];
-}
-
-- (void)animateBloom:(id)caller
-{
-    
 }
 
 @end
