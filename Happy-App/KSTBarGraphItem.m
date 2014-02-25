@@ -10,9 +10,18 @@
 
 
 #define BAR_WIDTH 50
-#define BAR_HEIGHT 450
-#define LABEL_HEIGHT 40
+#define BAR_VIEW_HEIGHT 450
+#define BAR_GRAPH_MAX_HEIGHT 360
+#define ICON_LABEL_HEIGHT 40
 #define ICON_HEIGHT_WIDTH 50
+#define ICON_LABEL_FONT_SIZE 12.0f
+#define ICON_INTRO_ANIM_DUR 0.8f
+#define ICON_INTRO_SPRING 0.8f
+#define GRAPH_BAR_BOTTOM_IMG @"GraphBarBottom"
+#define GRAPH_LABEL_HEIGHT 30
+#define BAR_ANIM_DUR 0.8f
+#define BAR_ANIM_SPRING 0.8f
+#define BAR_ALPHA 0.7f
 
 @implementation KSTBarGraphItem
 
@@ -24,16 +33,16 @@
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
 {
-    self = [super initWithFrame:CGRectMake(-BAR_WIDTH, 0, BAR_WIDTH, BAR_HEIGHT)];
+    self = [super initWithFrame:CGRectMake(-BAR_WIDTH, 0, BAR_WIDTH, BAR_VIEW_HEIGHT)];
     if (!self) {
         return nil;
     }
     
     value = barValue;
     
-    UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, BAR_HEIGHT - LABEL_HEIGHT, BAR_WIDTH, LABEL_HEIGHT)];
+    UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT, BAR_WIDTH, ICON_LABEL_HEIGHT)];
     [happyItemLabel setText:title];
-    [happyItemLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0]];
+    [happyItemLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:ICON_LABEL_FONT_SIZE]];
     [happyItemLabel setLineBreakMode:NSLineBreakByWordWrapping];
     happyItemLabel.numberOfLines = 0;
     happyItemLabel.textAlignment = NSTextAlignmentCenter;
@@ -42,7 +51,7 @@
     [self addSubview:happyItemLabel];
     
     UIImage *circleIcon = [UIImage imageNamed:imageName];
-    UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_HEIGHT - LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH)];
+    UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH)];
     [circleIconView setImage:circleIcon];
     
     [self addSubview:circleIconView];
@@ -54,47 +63,47 @@
 {
     CGPoint center = [centerPointValue CGPointValue];
     
-    [UIView animateWithDuration:0.8f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:ICON_INTRO_ANIM_DUR delay:0 usingSpringWithDamping:ICON_INTRO_SPRING initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self setCenter:center];
     } completion:NULL];
 }
 
 - (void)animateBarWithMax:(NSNumber *)maxValue
 {
-    int max = [maxValue integerValue];
+    int max = [maxValue intValue];
     
-    UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(0, BAR_HEIGHT - LABEL_HEIGHT - ICON_HEIGHT_WIDTH, BAR_WIDTH, 0)];
+    UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, BAR_WIDTH, 0)];
     [rectangle setBackgroundColor:[UIColor whiteColor]];
-    rectangle.alpha = 0.70;
+    rectangle.alpha = BAR_ALPHA;
     
     [self addSubview:rectangle];
     
-    UIImage *graphBarBottom = [UIImage imageNamed:@"GraphBarBottom"];
-    UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_HEIGHT - LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH / 2)];
+    UIImage *graphBarBottom = [UIImage imageNamed:GRAPH_BAR_BOTTOM_IMG];
+    UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH / 2)];
     [graphBarBottomView setImage:graphBarBottom];
     
     CGRect frame = rectangle.frame;
-    float height = 360 * ([value floatValue] / (float)max);
+    float height = BAR_GRAPH_MAX_HEIGHT * ([value floatValue] / (float)max);
     if (height > 0) {
         frame.size.height = height;
-        frame.origin.y = 360 - height;
+        frame.origin.y = BAR_GRAPH_MAX_HEIGHT - height;
     }
     
-    CGRect labelRect = CGRectMake(0, 0, 50, 30);
+    CGRect labelRect = CGRectMake(0, 0, BAR_WIDTH, GRAPH_LABEL_HEIGHT);
     UIColor *labelColor = [UIColor blackColor];
-    if (height < 30) {
-        labelRect.origin.y = -30;
+    if (height < GRAPH_LABEL_HEIGHT) {
+        labelRect.origin.y = -GRAPH_LABEL_HEIGHT;
         labelColor = [UIColor whiteColor];
     }
     
     UILabel *valueLabel = [[UILabel alloc] initWithFrame:labelRect];
     [valueLabel setText:[NSString stringWithFormat:@"%@", value]];
-    [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:24.0]];
+    [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:ICON_LABEL_FONT_SIZE * 2]];
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [valueLabel setTextColor:labelColor];
-    valueLabel.alpha = 0.8;
+    valueLabel.alpha = BAR_ALPHA;
     
-    [UIView animateWithDuration:0.8 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:BAR_ANIM_DUR delay:0 usingSpringWithDamping:BAR_ANIM_SPRING initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self addSubview:graphBarBottomView];
         [rectangle setFrame:frame];
     } completion:^(BOOL finished){
