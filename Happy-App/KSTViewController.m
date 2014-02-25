@@ -8,6 +8,25 @@
 
 #import "KSTViewController.h"
 
+#define SCREEN_WIDTH 320
+#define CONTAINER_WIDTH 640
+#define CONTAINER_HEIGHT 568
+#define BG_WIDTH 600
+#define SLIDE_THRESHOLD 80
+#define VELOCITY_THRESHOLD 750
+#define LAYER1_LTR_MULT 2
+#define LAYER2_LTR_MULT 1.5
+#define LAYER3_LTR_MULT 1
+#define LAYER1_RTL_MULT 2
+#define LAYER2_RTL_MULT 1.75
+#define LAYER3_RTL_MULT 1.75
+#define SWIPE_ANIM_DUR 0.5f
+#define SWIPE_BOUNCEBACK_DUR 0.1f
+#define BUTTON_X 15
+#define BUTTON_START_Y 200
+#define BUTTON_WIDTH 80
+#define BUTTON_HEIGHT 50
+
 @interface KSTViewController (Private)
 
 @end
@@ -18,6 +37,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    [self initPanRecognizer];
+
     [self getAndShowDate];
     [self loadHappyItems];
 }
@@ -28,8 +49,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark Helper methods
+#pragma mark Init methods
+- (IBAction)initPanRecognizer
+{
+    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
+    [panRecognizer setMinimumNumberOfTouches:1];
+    [panRecognizer setMaximumNumberOfTouches:1];
+    [self.view addGestureRecognizer:panRecognizer];
+}
 
+#pragma mark Helper methods
 - (void)getAndShowDate
 {
     NSDate *today = [NSDate date];
@@ -39,6 +68,65 @@
     [dateFormatter setDateFormat:@"EEEE, MMMM d"];
     NSString *dateString = [dateFormatter stringFromDate:today];
     [dateLabel setText:dateString];
+}
+
+- (void)slideViewWithPan:(UIPanGestureRecognizer *)recognizer
+{
+    CGPoint translation = [recognizer translationInView:self.view];
+    CGPoint velocity = [recognizer velocityInView:self.view];
+    
+    if (translation.x < 0) {
+        [backgroundImageView setFrame:CGRectMake(MAX(backgroundImageView.frame.origin.x + translation.x * LAYER3_LTR_MULT, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [blurImageView setFrame:CGRectMake(MAX(blurImageView.frame.origin.x + translation.x * LAYER2_LTR_MULT, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [containerView setFrame:CGRectMake(MAX(containerView.frame.origin.x + (translation.x * LAYER1_LTR_MULT), (-SCREEN_WIDTH)), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+    } else if (translation.x > 0) {
+        // FIXME: These translation multipliers do not give proper parallax effect.
+        // Need to readjust BG sizes or find better way to move back to home view
+        [backgroundImageView setFrame:CGRectMake(MIN(backgroundImageView.frame.origin.x + translation.x * LAYER3_RTL_MULT, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [blurImageView setFrame:CGRectMake(MIN(blurImageView.frame.origin.x + translation.x * LAYER2_RTL_MULT, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+        [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * LAYER1_RTL_MULT, 0), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+    }
+    
+    // reset translation to 0 for next move
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+    
+    if ([recognizer state] == UIGestureRecognizerStateEnded) {
+        // slide left ended
+        if (velocity.x < 0) {
+            if (containerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
+                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                } completion:^(BOOL finished) {
+                    // animate to right "graph" view has finished
+                }];
+            } else {
+                [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                }];
+            }
+            // slide right ended
+        } else if (velocity.x > 0) {
+            if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > VELOCITY_THRESHOLD) {
+                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                } completion:^(BOOL finished) {
+                    // animate to left "home" view has finished
+                }];
+            } else {
+                [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+                }];
+            }
+        }
+    }
 }
 
 -(void)loadHappyItems
@@ -69,14 +157,15 @@
 {
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
-        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton *happyItemButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [happyItemButton setTag:i];
         [happyItemButton addTarget:self action:@selector(updateAndSaveHappyItem:) forControlEvents:UIControlEventTouchUpInside];
         [happyItemButton setTitle:happyItem[@"title"] forState:UIControlStateNormal];
         happyItemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         happyItemButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        happyItemButton.frame = CGRectMake(20, (200 + (i * 55)) , 80, 50);
-        [self.view addSubview:happyItemButton];
+        happyItemButton.frame = CGRectMake(BUTTON_X, (BUTTON_START_Y + (i * (BUTTON_HEIGHT))) , BUTTON_WIDTH, BUTTON_HEIGHT);
+        [happyItemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [homeView addSubview:happyItemButton];
     }
 }
 
