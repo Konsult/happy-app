@@ -75,6 +75,10 @@
     }
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark Init methods
 - (IBAction)initPanRecognizer
 {
