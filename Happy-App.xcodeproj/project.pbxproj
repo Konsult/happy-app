@@ -45,6 +45,7 @@
 		BFC3B06718BD73A100503741 /* SwipeArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B06518BD73A100503741 /* SwipeArrow@2x.png */; };
 		EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */; };
 		EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */; };
+		EE538EC818BEB3B9004DA42D /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE538EC718BEB3B9004DA42D /* HappyItems.plist */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
 		EE845D2C18A988C800431CBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2B18A988C800431CBC /* CoreGraphics.framework */; };
 		EE845D2E18A988C800431CBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2D18A988C800431CBC /* UIKit.framework */; };
@@ -60,7 +61,6 @@
 		EE845D5318A988C800431CBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE845D5118A988C800431CBC /* InfoPlist.strings */; };
 		EE845D5518A988C800431CBC /* Happy_AppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE845D5418A988C800431CBC /* Happy_AppTests.m */; };
 		EE9A2F2618A9AE2F0027D29B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A2F2518A9AE2F0027D29B /* CoreData.framework */; };
-		EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +114,7 @@
 		EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTHappyTypeButton.m; sourceTree = "<group>"; };
 		EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTBarGraphItem.h; sourceTree = "<group>"; };
 		EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTBarGraphItem.m; sourceTree = "<group>"; };
+		EE538EC718BEB3B9004DA42D /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -134,7 +135,6 @@
 		EE845D5218A988C800431CBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EE845D5418A988C800431CBC /* Happy_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Happy_AppTests.m; sourceTree = "<group>"; };
 		EE9A2F2518A9AE2F0027D29B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,11 +266,11 @@
 		EE845D3018A988C800431CBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EE538EC718BEB3B9004DA42D /* HappyItems.plist */,
 				EE845D3118A988C800431CBC /* Happy-App-Info.plist */,
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
 				EE845D3718A988C800431CBC /* Happy-App-Prefix.pch */,
-				EE9A2F2D18A9B1EF0027D29B /* HappyItems.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -384,7 +384,6 @@
 				BFC3B04C18BD701E00503741 /* ButtonFamilyAlt.png in Resources */,
 				BFC3B04218BD701E00503741 /* Background.png in Resources */,
 				BFC3B04718BD701E00503741 /* ButtonAlive@2x.png in Resources */,
-				EE9A2F2E18A9B1EF0027D29B /* HappyItems.plist in Resources */,
 				BFC3B04018BD701E00503741 /* Background Blur.png in Resources */,
 				BFC3B05B18BD701E00503741 /* ButtonWork@2x.png in Resources */,
 				BFC3B04F18BD701E00503741 /* ButtonHobbies@2x.png in Resources */,
@@ -409,6 +408,7 @@
 				BFC3B04518BD701E00503741 /* ButtonAdd@2x.png in Resources */,
 				BFC3B04B18BD701E00503741 /* ButtonFamily@2x.png in Resources */,
 				BFC3B05F18BD701E00503741 /* GraphBarBottom@2x.png in Resources */,
+				EE538EC818BEB3B9004DA42D /* HappyItems.plist in Resources */,
 				EE845D3D18A988C800431CBC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
