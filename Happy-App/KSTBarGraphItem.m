@@ -70,6 +70,10 @@
 // Max value is greatest value across all happy items
 - (void)animateInBarRelativeToMax:(NSNumber *)maxValue
 {
+    if ([value intValue] == 0) {
+        return;
+    }
+
     int max = [maxValue intValue];
     
     UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, BAR_WIDTH, 0)];
