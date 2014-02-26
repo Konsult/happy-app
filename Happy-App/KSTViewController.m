@@ -248,11 +248,12 @@
     [buttonDic[@"view"] setCenter:[buttonDic[@"point"] CGPointValue]];
 }
 
--(void)updateAndSaveHappyItem:(UIButton*)button
+-(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[HAPPY_ITEM_KEY_VALUE] intValue] + 1];
-    happyItem[HAPPY_ITEM_KEY_VALUE] = newHappyValue;
+    int change = button.selected ? 1 : -1;
+    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + change];
+    happyItem[@"value"] = newHappyValue;
 
     NSLog(@"Updated happy item: %@", happyItem);
 
