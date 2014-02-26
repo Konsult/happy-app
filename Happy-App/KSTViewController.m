@@ -42,7 +42,6 @@
 #define BEZIER_CURVE_P1_Y 0.8f
 #define BEZIER_CURVE_P2_X 0.5f
 #define BEZIER_CURVE_P2_Y 0.9f
-#define BOUNCE_WIGGLE_ROOM 20
 #define BAR_WIDTH 50
 #define BAR_INTERVAL 15
 #define ICON_WIDTH 50
@@ -268,9 +267,9 @@
 
     NSNumber *max = [NSNumber numberWithInt:[self findMaxValue:happyItems]];
 
-    graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.frame.size.width + BOUNCE_WIGGLE_ROOM);
+    graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.contentSize.height);
 
-    for (int i = (int)happyItems.count - 1; i >= 0; i--) {
+    for (int i = happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
         KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
@@ -281,7 +280,8 @@
 
         [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(abs((float)i - happyItems.count) * ICON_ANIMATION_INTERVAL)];
 
-        [happyItemBarView performSelector:@selector(animateBarWithMax:) withObject:max afterDelay:(float)happyItems.count * ICON_ANIMATION_INTERVAL + ICON_ANIMATION_INTERVAL];
+        // Add 1 to delay multiple here to allow small bit of additional time for icon in bounce to finish before animating bars
+        [happyItemBarView performSelector:@selector(animateInBarRelativeToMax:) withObject:max afterDelay:(float)(happyItems.count + 1) * ICON_ANIMATION_INTERVAL];
     }
 }
 

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface KSTViewController : UIViewController
-
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;

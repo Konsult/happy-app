@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface KSTBarGraphItem : UIView
-
 {
     NSNumber* value;
 }
@@ -18,6 +17,6 @@
 
 - (void)slideInBarToCenterPoint:(NSValue *)centerPointValue;
 
-- (void)animateBarWithMax:(NSNumber *)max;
+- (void)animateInBarRelativeToMax:(NSNumber *)max;
 
 @end

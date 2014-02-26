@@ -8,7 +8,6 @@
 
 #import "KSTBarGraphItem.h"
 
-
 #define BAR_WIDTH 50
 #define BAR_VIEW_HEIGHT 450
 #define BAR_GRAPH_MAX_HEIGHT 360
@@ -68,7 +67,8 @@
     } completion:NULL];
 }
 
-- (void)animateBarWithMax:(NSNumber *)maxValue
+// Max value is greatest value across all happy items
+- (void)animateInBarRelativeToMax:(NSNumber *)maxValue
 {
     int max = [maxValue intValue];
     
