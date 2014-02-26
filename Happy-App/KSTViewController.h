@@ -19,6 +19,8 @@
     __weak IBOutlet UIView *homeView;
     __weak IBOutlet UIView *graphView;
     __weak IBOutlet UIScrollView *graphScrollView;
+    UIControl *arrowsGroup;
+    BOOL currentViewIsHome;
 }
 
 @end
