@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface KSTViewController : UIViewController
-
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
@@ -18,6 +17,8 @@
     __weak IBOutlet UIImageView *blurImageView;
     __weak IBOutlet UIView *containerView;
     __weak IBOutlet UIView *homeView;
+    __weak IBOutlet UIView *graphView;
+    __weak IBOutlet UIScrollView *graphScrollView;
 }
 
 @end
