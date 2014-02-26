@@ -41,8 +41,8 @@
 		BFC3B05F18BD701E00503741 /* GraphBarBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B03B18BD701E00503741 /* GraphBarBottom@2x.png */; };
 		BFC3B06018BD701E00503741 /* GraphMask.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B03C18BD701E00503741 /* GraphMask.png */; };
 		BFC3B06118BD701E00503741 /* GraphMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B03D18BD701E00503741 /* GraphMask@2x.png */; };
-		BFC3B06218BD701E00503741 /* SwipeArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B03E18BD701E00503741 /* SwipeArrows.png */; };
-		BFC3B06318BD701E00503741 /* SwipeArrows@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B03F18BD701E00503741 /* SwipeArrows@2x.png */; };
+		BFC3B06618BD73A100503741 /* SwipeArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B06418BD73A100503741 /* SwipeArrow.png */; };
+		BFC3B06718BD73A100503741 /* SwipeArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B06518BD73A100503741 /* SwipeArrow@2x.png */; };
 		EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */; };
 		EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
@@ -108,8 +108,8 @@
 		BFC3B03B18BD701E00503741 /* GraphBarBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GraphBarBottom@2x.png"; sourceTree = "<group>"; };
 		BFC3B03C18BD701E00503741 /* GraphMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphMask.png; sourceTree = "<group>"; };
 		BFC3B03D18BD701E00503741 /* GraphMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GraphMask@2x.png"; sourceTree = "<group>"; };
-		BFC3B03E18BD701E00503741 /* SwipeArrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SwipeArrows.png; sourceTree = "<group>"; };
-		BFC3B03F18BD701E00503741 /* SwipeArrows@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SwipeArrows@2x.png"; sourceTree = "<group>"; };
+		BFC3B06418BD73A100503741 /* SwipeArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SwipeArrow.png; sourceTree = "<group>"; };
+		BFC3B06518BD73A100503741 /* SwipeArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SwipeArrow@2x.png"; sourceTree = "<group>"; };
 		EE15DCC618BD301C00BE8337 /* KSTHappyTypeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTHappyTypeButton.h; sourceTree = "<group>"; };
 		EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTHappyTypeButton.m; sourceTree = "<group>"; };
 		EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTBarGraphItem.h; sourceTree = "<group>"; };
@@ -199,8 +199,8 @@
 				BFC3B03B18BD701E00503741 /* GraphBarBottom@2x.png */,
 				BFC3B03C18BD701E00503741 /* GraphMask.png */,
 				BFC3B03D18BD701E00503741 /* GraphMask@2x.png */,
-				BFC3B03E18BD701E00503741 /* SwipeArrows.png */,
-				BFC3B03F18BD701E00503741 /* SwipeArrows@2x.png */,
+				BFC3B06418BD73A100503741 /* SwipeArrow.png */,
+				BFC3B06518BD73A100503741 /* SwipeArrow@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -371,11 +371,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFC3B05418BD701E00503741 /* ButtonLoverAlt.png in Resources */,
+				BFC3B06718BD73A100503741 /* SwipeArrow@2x.png in Resources */,
 				BFC3B04918BD701E00503741 /* ButtonAliveAlt@2x.png in Resources */,
 				EE845D4218A988C800431CBC /* Images.xcassets in Resources */,
 				BFC3B05918BD701E00503741 /* ButtonWeatherAlt@2x.png in Resources */,
 				EE845D3418A988C800431CBC /* InfoPlist.strings in Resources */,
-				BFC3B06318BD701E00503741 /* SwipeArrows@2x.png in Resources */,
 				BFC3B05D18BD701E00503741 /* ButtonWorkAlt@2x.png in Resources */,
 				BFC3B05318BD701E00503741 /* ButtonLover@2x.png in Resources */,
 				BFC3B05118BD701E00503741 /* ButtonHobbiesAlt@2x.png in Resources */,
@@ -403,8 +403,8 @@
 				BFC3B05C18BD701E00503741 /* ButtonWorkAlt.png in Resources */,
 				BFC3B04318BD701E00503741 /* Background@2x.png in Resources */,
 				BFC3B05E18BD701E00503741 /* GraphBarBottom.png in Resources */,
-				BFC3B06218BD701E00503741 /* SwipeArrows.png in Resources */,
 				BFC3B04A18BD701E00503741 /* ButtonFamily.png in Resources */,
+				BFC3B06618BD73A100503741 /* SwipeArrow.png in Resources */,
 				BFC3B04E18BD701E00503741 /* ButtonHobbies.png in Resources */,
 				BFC3B04518BD701E00503741 /* ButtonAdd@2x.png in Resources */,
 				BFC3B04B18BD701E00503741 /* ButtonFamily@2x.png in Resources */,
