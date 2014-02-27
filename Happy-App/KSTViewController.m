@@ -47,6 +47,19 @@
 #define ICON_WIDTH 50
 #define ICON_ANIMATION_INTERVAL 0.2f
 
+#define ARROWS_HEIGHT_WIDTH 45
+#define ARROWS_Y 50
+#define ARROWS_CENTER_Y ARROWS_Y + (ARROWS_HEIGHT_WIDTH / 2)
+#define ARROWS_RIGHT_X 260
+#define ARROWS_RIGHT_CENTER_X ARROWS_RIGHT_X + (ARROWS_HEIGHT_WIDTH / 2)
+#define ARROWS_LEFT_X 15
+#define ARROWS_LEFT_CENTER_X ARROWS_LEFT_X + (ARROWS_HEIGHT_WIDTH / 2)
+#define ARROWS_TRAVEL_DISTANCE 245
+#define ARROWS_PADDING 15
+#define RUNWAY_DUR 1.75f
+#define RUNWAY_DELAY 0.1f
+#define RUNWAY_LOW_ALPHA 0.2f
+
 @interface KSTViewController (Private)
 
 @end
@@ -60,6 +73,10 @@
     [self initPanRecognizer];
 
     [self getAndShowDate];
+    [self addSwipeArrows];
+
+    canSlideToRightView = YES;
+    canSlideToLeftView = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -94,6 +111,30 @@
 }
 
 #pragma mark Helper methods
+
+- (void)addSwipeArrows
+{
+    UIImage *arrowImage = [UIImage imageNamed:@"SwipeArrow"];
+    arrowsGroup = [[UIControl alloc] initWithFrame:CGRectMake(ARROWS_RIGHT_X, ARROWS_Y, ARROWS_HEIGHT_WIDTH, ARROWS_HEIGHT_WIDTH)];
+
+    for (int i = 0; i < 3; i++) {
+        UIImageView *arrowView = [[UIImageView alloc] initWithImage:arrowImage];
+        [arrowView setFrame:CGRectMake(0, 0, arrowImage.size.width, arrowImage.size.height)];
+        [arrowView setCenter:CGPointMake(ARROWS_PADDING + (i * arrowImage.size.width), arrowsGroup.frame.size.height/2)];
+    
+        [UIView animateWithDuration:RUNWAY_DUR delay:(RUNWAY_DELAY * i) options:(UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction) animations:^{
+            arrowView.alpha = RUNWAY_LOW_ALPHA;
+        }completion:^(BOOL finished) {
+            arrowView.alpha = 1;
+        }];
+    
+        [arrowsGroup addSubview:arrowView];
+    }
+
+    [arrowsGroup addTarget:self action:@selector(slideToView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:arrowsGroup];
+}
+
 - (void)getAndShowDate
 {
     NSDate *today = [NSDate date];
@@ -109,14 +150,31 @@
 {
     CGPoint translation = [recognizer translationInView:self.view];
     CGPoint velocity = [recognizer velocityInView:self.view];
-    
+
     if (translation.x < 0) {
+        CGAffineTransform currentTransform = arrowsGroup.transform;
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
+        [arrowsGroup setTransform:newTransform];
+
+        CGPoint arrowsCenter = arrowsGroup.center;
+        arrowsCenter.x = MAX(arrowsCenter.x + (translation.x * LAYER1_LTR_MULT), ARROWS_LEFT_CENTER_X);
+        [arrowsGroup setCenter:arrowsCenter];
+
         [backgroundImageView setFrame:CGRectMake(MAX(backgroundImageView.frame.origin.x + translation.x * LAYER3_LTR_MULT, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
         [blurImageView setFrame:CGRectMake(MAX(blurImageView.frame.origin.x + translation.x * LAYER2_LTR_MULT, (-BG_WIDTH + SCREEN_WIDTH)), 0, BG_WIDTH, CONTAINER_HEIGHT)];
         [containerView setFrame:CGRectMake(MAX(containerView.frame.origin.x + (translation.x * LAYER1_LTR_MULT), (-SCREEN_WIDTH)), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
     } else if (translation.x > 0) {
         // FIXME: These translation multipliers do not give proper parallax effect.
         // Need to readjust BG sizes or find better way to move back to home view
+
+        CGAffineTransform currentTransform = arrowsGroup.transform;
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
+        [arrowsGroup setTransform:newTransform];
+
+        CGPoint arrowsCenter = arrowsGroup.center;
+        arrowsCenter.x = MIN(arrowsCenter.x + (translation.x * LAYER1_RTL_MULT), ARROWS_RIGHT_CENTER_X);
+        [arrowsGroup setCenter:arrowsCenter];
+
         [backgroundImageView setFrame:CGRectMake(MIN(backgroundImageView.frame.origin.x + translation.x * LAYER3_RTL_MULT, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
         [blurImageView setFrame:CGRectMake(MIN(blurImageView.frame.origin.x + translation.x * LAYER2_RTL_MULT, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
         [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * LAYER1_RTL_MULT, 0), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
@@ -126,43 +184,72 @@
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     
     if ([recognizer state] == UIGestureRecognizerStateEnded) {
-        // slide left ended
+        // slide left to graph ended
         if (velocity.x < 0) {
             if (containerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
-                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
-                    [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
-                    [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
-                } completion:^(BOOL finished) {
-                    // animate to right "graph" view has finished
-                    [self showHappyItemStats];
-                }];
+                if (canSlideToRightView) {
+                    [self slideToView];
+                }
             } else {
                 [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [arrowsGroup setCenter:CGPointMake(ARROWS_RIGHT_CENTER_X, ARROWS_CENTER_Y)];
+                    arrowsGroup.transform = CGAffineTransformIdentity;
                     [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
                     [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
                     [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 }];
             }
-            // slide right ended
+        // slide right to home ended
         } else if (velocity.x > 0) {
             if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > VELOCITY_THRESHOLD) {
-                [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
-                    [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
-                    [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
-                    [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
-                } completion:^(BOOL finished) {
-                    // animate to left "home" view has finished
-                    [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-                }];
+                if (canSlideToLeftView) {
+                    [self slideToView];
+                }
             } else {
                 [UIView animateWithDuration:SWIPE_BOUNCEBACK_DUR animations:^{
+                    [arrowsGroup setCenter:CGPointMake(ARROWS_LEFT_CENTER_X, ARROWS_CENTER_Y)];
+                    arrowsGroup.transform = CGAffineTransformMakeRotation(M_PI);
                     [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                     [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                     [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
                 }];
             }
         }
+    }
+}
+
+-(void)slideToView
+{
+    if (canSlideToRightView) {
+        // sliding to graph
+        [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+            [arrowsGroup setCenter:CGPointMake(ARROWS_LEFT_CENTER_X, ARROWS_CENTER_Y)];
+
+            arrowsGroup.transform = CGAffineTransformMakeRotation(M_PI);
+            [backgroundImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+            [blurImageView setFrame:CGRectMake((-BG_WIDTH + SCREEN_WIDTH), 0, BG_WIDTH, CONTAINER_HEIGHT)];
+            [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+        } completion:^(BOOL finished) {
+            // animate to right "graph" view has finished
+            canSlideToRightView = NO;
+            canSlideToLeftView = YES;
+            [self showHappyItemStats];
+        }];
+    } else if (canSlideToLeftView) {
+        // sliding to home
+        [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
+            [arrowsGroup setCenter:CGPointMake(ARROWS_RIGHT_CENTER_X, ARROWS_CENTER_Y)];
+
+            arrowsGroup.transform = CGAffineTransformIdentity;
+            [backgroundImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+            [blurImageView setFrame:CGRectMake(0, 0, BG_WIDTH, CONTAINER_HEIGHT)];
+            [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
+        } completion:^(BOOL finished) {
+            // animate to left "home" view has finished
+            canSlideToLeftView = NO;
+            canSlideToRightView = YES;
+            [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        }];
     }
 }
 
