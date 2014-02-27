@@ -75,7 +75,8 @@
     [self getAndShowDate];
     [self addSwipeArrows];
 
-    currentViewIsHome = YES;
+    canSlideToRightView = YES;
+    canSlideToLeftView = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -114,12 +115,12 @@
 - (void)addSwipeArrows
 {
     UIImage *arrowImage = [UIImage imageNamed:@"SwipeArrow"];
-    UIControl *arrows = [[UIControl alloc] initWithFrame:CGRectMake(ARROWS_RIGHT_X, ARROWS_Y, ARROWS_HEIGHT_WIDTH, ARROWS_HEIGHT_WIDTH)];
+    arrowsGroup = [[UIControl alloc] initWithFrame:CGRectMake(ARROWS_RIGHT_X, ARROWS_Y, ARROWS_HEIGHT_WIDTH, ARROWS_HEIGHT_WIDTH)];
 
     for (int i = 0; i < 3; i++) {
         UIImageView *arrowView = [[UIImageView alloc] initWithImage:arrowImage];
         [arrowView setFrame:CGRectMake(0, 0, arrowImage.size.width, arrowImage.size.height)];
-        [arrowView setCenter:CGPointMake(ARROWS_PADDING + (i * arrowImage.size.width), arrows.frame.size.height/2)];
+        [arrowView setCenter:CGPointMake(ARROWS_PADDING + (i * arrowImage.size.width), arrowsGroup.frame.size.height/2)];
     
         [UIView animateWithDuration:RUNWAY_DUR delay:(RUNWAY_DELAY * i) options:(UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction) animations:^{
             arrowView.alpha = RUNWAY_LOW_ALPHA;
@@ -127,13 +128,11 @@
             arrowView.alpha = 1;
         }];
     
-        [arrows addSubview:arrowView];
+        [arrowsGroup addSubview:arrowView];
     }
 
-    [arrows addTarget:self action:@selector(slideToView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:arrows];
-
-    arrowsGroup = arrows;
+    [arrowsGroup addTarget:self action:@selector(slideToView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:arrowsGroup];
 }
 
 - (void)getAndShowDate
@@ -188,7 +187,7 @@
         // slide left to graph ended
         if (velocity.x < 0) {
             if (containerView.frame.origin.x < -SLIDE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
-                if (currentViewIsHome) {
+                if (canSlideToRightView) {
                     [self slideToView];
                 }
             } else {
@@ -203,7 +202,7 @@
         // slide right to home ended
         } else if (velocity.x > 0) {
             if (containerView.frame.origin.x > (-SCREEN_WIDTH + SLIDE_THRESHOLD) || velocity.x > VELOCITY_THRESHOLD) {
-                if (!currentViewIsHome) {
+                if (canSlideToLeftView) {
                     [self slideToView];
                 }
             } else {
@@ -221,7 +220,7 @@
 
 -(void)slideToView
 {
-    if (currentViewIsHome) {
+    if (canSlideToRightView) {
         // sliding to graph
         [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
             [arrowsGroup setCenter:CGPointMake(ARROWS_LEFT_CENTER_X, ARROWS_CENTER_Y)];
@@ -232,10 +231,11 @@
             [containerView setFrame:CGRectMake(-SCREEN_WIDTH, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
         } completion:^(BOOL finished) {
             // animate to right "graph" view has finished
-            currentViewIsHome = NO;
+            canSlideToRightView = NO;
+            canSlideToLeftView = YES;
             [self showHappyItemStats];
         }];
-    } else {
+    } else if (canSlideToLeftView) {
         // sliding to home
         [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
             [arrowsGroup setCenter:CGPointMake(ARROWS_RIGHT_CENTER_X, ARROWS_CENTER_Y)];
@@ -246,7 +246,8 @@
             [containerView setFrame:CGRectMake(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
         } completion:^(BOOL finished) {
             // animate to left "home" view has finished
-            currentViewIsHome = YES;
+            canSlideToLeftView = NO;
+            canSlideToRightView = YES;
             [[graphScrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
         }];
     }

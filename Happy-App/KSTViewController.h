@@ -20,7 +20,8 @@
     __weak IBOutlet UIView *graphView;
     __weak IBOutlet UIScrollView *graphScrollView;
     UIControl *arrowsGroup;
-    BOOL currentViewIsHome;
+    BOOL canSlideToRightView;
+    BOOL canSlideToLeftView;
 }
 
 @end
