@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KSTAddButton.h"
 
-@interface KSTViewController : UIViewController
+@interface KSTViewController : UIViewController <UITextFieldDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
@@ -22,6 +23,7 @@
     UIControl *arrowsGroup;
     BOOL canSlideToRightView;
     BOOL canSlideToLeftView;
+    KSTAddButton *addButton;
 }
 
 @end

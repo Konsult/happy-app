@@ -46,18 +46,7 @@
     self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 
-    [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-
     return self;
-}
-
-@end
-
-@implementation KSTAddButton (Private)
-
-- (void)buttonPressed:(KSTAddButton *)button
-{
-    NSLog(@"You wish you could add something");
 }
 
 @end

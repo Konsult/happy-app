@@ -14,6 +14,7 @@
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
 #define HAPPY_ITEM_KEY_TITLE @"title"
+#define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define SCREEN_WIDTH 320
 #define CONTAINER_WIDTH 640
 #define CONTAINER_HEIGHT 568
@@ -78,6 +79,19 @@
 
     canSlideToRightView = YES;
     canSlideToLeftView = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -299,9 +313,11 @@
         [self rotateHappyButton:happyItemButton];
     }
 
-    KSTAddButton *addButton = [[KSTAddButton alloc] init];
+    addButton = [[KSTAddButton alloc] init];
 
     [addButton setTag:happyItems.count];
+
+    [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     [homeView addSubview:addButton];
     [self rotateHappyButton:addButton];
@@ -349,6 +365,74 @@
     NSLog(@"Updated happy item: %@", happyItem);
 
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+}
+
+- (void)addButtonPressed:(KSTAddButton *)button
+{
+    UITextField *addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, 296, button.frame.size.height)];
+    addHappyItemField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [addHappyItemField setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.7f]];
+    [addHappyItemField setPlaceholder:@"What makes you happy?"];
+    [addHappyItemField setTextColor:[UIColor darkGrayColor]];
+    [addHappyItemField setBorderStyle:UITextBorderStyleRoundedRect];
+
+    addHappyItemField.delegate = self;
+
+    UIImageView *addIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:ADD_BUTTON_IMAGE]];
+
+    [addHappyItemField setLeftView:addIcon];
+    [addHappyItemField setLeftViewMode:UITextFieldViewModeAlways];
+
+    [button removeFromSuperview];
+    [homeView addSubview:addHappyItemField];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+
+    [self.view setFrame:CGRectOffset(self.view.frame, 0, -keyboardFrame.size.height)];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary* userInfo = [notification userInfo];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    [self.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [UIView commitAnimations];
+
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+
+    [self addNewHappyItem:textField.text];
+
+    [textField removeFromSuperview];
+    [homeView addSubview:addButton];
+
+    return YES;
+}
+
+- (void)addNewHappyItem:(NSString *)happyItemText
+{
+    NSMutableDictionary *newHappyItem = [[NSMutableDictionary alloc] init];
+    [newHappyItem setValue:happyItemText forKey:HAPPY_ITEM_KEY_TITLE];
+    [newHappyItem setValue:[NSNumber numberWithInt:0] forKey:HAPPY_ITEM_KEY_VALUE];
+    [newHappyItem setValue:@"ButtonWeather" forKey:HAPPY_ITEM_KEY_IMAGEREF];
+
+    [happyItems addObject:newHappyItem];
+
+    NSLog(@"Happy Items: %@", happyItems);
 }
 
 - (void)showHappyItemStats

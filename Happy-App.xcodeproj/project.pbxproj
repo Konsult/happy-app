@@ -250,6 +250,7 @@
 		EE845D2F18A988C800431CBC /* Happy-App */ = {
 			isa = PBXGroup;
 			children = (
+				EE845D3B18A988C800431CBC /* Main.storyboard */,
 				EE538EC918BFC2DD004DA42D /* KSTAddButton.h */,
 				EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */,
 				EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */,
@@ -258,7 +259,6 @@
 				EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */,
 				EE845D3818A988C800431CBC /* KSTAppDelegate.h */,
 				EE845D3918A988C800431CBC /* KSTAppDelegate.m */,
-				EE845D3B18A988C800431CBC /* Main.storyboard */,
 				EE845D3E18A988C800431CBC /* KSTViewController.h */,
 				EE845D3F18A988C800431CBC /* KSTViewController.m */,
 				EE845D4118A988C800431CBC /* Images.xcassets */,
