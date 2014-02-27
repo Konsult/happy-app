@@ -8,6 +8,7 @@
 
 #import "KSTViewController.h"
 #import "KSTHappyTypeButton.h"
+#import "KSTAddButton.h"
 #import "KSTBarGraphItem.h"
 
 #define HAPPY_ITEM_KEY_VALUE @"value"
@@ -274,19 +275,15 @@
 
     NSLog(@"Init with happy items: %@", happyItems);
 
-    [self addHappyItems];
+    [self addHappyItemsAndAddButton];
 }
 
--(void)addHappyItems
+-(void)addHappyItemsAndAddButton
 {
-    for (int i = 0; i <= happyItems.count; i++) {
+    for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem;
 
-        if (i == happyItems.count) {
-            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",HAPPY_ITEM_KEY_TITLE,@"ButtonAdd",HAPPY_ITEM_KEY_IMAGEREF, nil];
-        } else {
-            happyItem = [happyItems objectAtIndex:i];
-        }
+        happyItem = [happyItems objectAtIndex:i];
 
         KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
 
@@ -301,6 +298,13 @@
 
         [self rotateHappyButton:happyItemButton];
     }
+
+    KSTAddButton *addButton = [[KSTAddButton alloc] init];
+
+    [addButton setTag:happyItems.count];
+
+    [homeView addSubview:addButton];
+    [self rotateHappyButton:addButton];
 }
 
 - (void)rotateHappyButton:(UIButton *)button
