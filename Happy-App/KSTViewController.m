@@ -38,6 +38,11 @@
 #define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
+#define BUTTON_SLOTS 5
+
+// Add properties
+#define TEXT_FIELD_WIDTH 296
+#define TEXT_FIELD_PLACEHOLDER @"What makes you happy?"
 
 // Rotation helper functions
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -93,7 +98,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self initPanRecognizer];
-    [self initTapRecognier];
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 
     [self getAndShowDate];
     [self addSwipeArrows];
@@ -144,11 +149,6 @@
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
     [self.view addGestureRecognizer:panRecognizer];
-}
-
-- (void)initTapRecognier
-{
-    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 }
 
 #pragma mark Helper methods
@@ -315,16 +315,14 @@
 
     NSLog(@"Init with happy items: %@", happyItems);
 
-    [self addHappyItemsAndAddButton];
+    [self addButtons];
 }
 
--(void)addHappyItemsAndAddButton
+-(void)addButtons
 {
-    if (!happyItemButtons.count) {
-        happyItemButtons = [[NSMutableArray alloc] init];
-    }
+    happyItemButtons = [[NSMutableArray alloc] init];
     
-    int counter = 5;
+    int counter = BUTTON_SLOTS;
     for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem;
 
@@ -342,14 +340,12 @@
         counter--;
     }
     
-    NSLog(@"Buttons on start: %lu", (unsigned long)happyItemButtons.count);
-    
     addButton = [[KSTAddButton alloc] init];
 
     [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     [homeView addSubview:addButton];
-    [self rotateHappyButton:addButton toSlot:90];
+    [self rotateHappyButton:addButton toSlot:BUTTON_SLOTS + 1];
 }
 
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
@@ -396,8 +392,7 @@
         case 5:
             endAngle = DEGREES_TO_RADIANS(60);
             break;
-        case 90:
-            slot = 6;
+        case 6:
             endAngle = DEGREES_TO_RADIANS(90);
             break;
         default:
@@ -449,12 +444,16 @@
 
 - (void)addButtonPressed:(KSTAddButton *)button
 {
-    addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, 296, button.frame.size.height)];
+    addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, TEXT_FIELD_WIDTH, button.frame.size.height)];
     addHappyItemField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [addHappyItemField setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.7f]];
-    [addHappyItemField setPlaceholder:@"What makes you happy?"];
+    [addHappyItemField setPlaceholder:TEXT_FIELD_PLACEHOLDER];
     [addHappyItemField setTextColor:[UIColor darkGrayColor]];
     [addHappyItemField setBorderStyle:UITextBorderStyleRoundedRect];
+
+    // Initializing empty text string to fix invalid context 0x0 error per these 2 sources:
+    // 1. http://stackoverflow.com/questions/19599266/invalid-context-0x0-under-ios-7-0-and-system-degradation
+    // 2. http://stackoverflow.com/questions/12800758/invalid-context-error-0x0-when-editing-uitextfield-using-mult-byte-keybord-w
     addHappyItemField.text = @"";
 
     addHappyItemField.delegate = self;
@@ -480,6 +479,10 @@
     [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
 
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    if (keyboardFrame.size.height == 0) {
+        return;
+    }
 
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:animationDuration];
@@ -499,6 +502,10 @@
     [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
 
+    if (CGPointEqualToPoint(self.view.frame.origin, CGPointZero)) {
+        return;
+    }
+    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:animationDuration];
     [UIView setAnimationCurve:animationCurve];
@@ -518,7 +525,10 @@
 {
     [textField resignFirstResponder];
 
-    if ([textField.text length] > 0) {
+    NSString *text = textField.text;
+    text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if ([text length] > 0) {
         [self addNewHappyItem:textField.text];
     }
 
@@ -534,16 +544,15 @@
     [newHappyItem setValue:happyItemText forKey:HAPPY_ITEM_KEY_TITLE];
     [newHappyItem setValue:[NSNumber numberWithInt:0] forKey:HAPPY_ITEM_KEY_VALUE];
     [newHappyItem setValue:@"ButtonWeather" forKey:HAPPY_ITEM_KEY_IMAGEREF];
+
+    KSTHappyTypeButton *newHappyItemButton = [self createAndPlaceHappyItemButtonWithData:newHappyItem andCenterPoint:CGPointZero andTag:(int)happyItems.count];
     
+    [happyItemButtons addObject:newHappyItemButton];
+
     [happyItems addObject:newHappyItem];
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
 
-    KSTHappyTypeButton *newHappyItemButton = [self createAndPlaceHappyItemButtonWithData:newHappyItem andCenterPoint:CGPointZero andTag:(int)happyItems.count - 1];
-    
-    [happyItemButtons addObject:newHappyItemButton];
-    NSLog(@"Added 1: %lu", (unsigned long)happyItemButtons.count);
-    
-    int counter = 5;
+    int counter = BUTTON_SLOTS;
     for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
         [self moveHappyItemButton:happyItemButtons[i] toSlot:counter];
         counter--;
