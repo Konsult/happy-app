@@ -11,14 +11,18 @@
 #import "KSTAddButton.h"
 #import "KSTBarGraphItem.h"
 
+// Keys to Happy Item dictionary
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
 #define HAPPY_ITEM_KEY_TITLE @"title"
-#define ADD_BUTTON_IMAGE @"ButtonAdd"
+
+// Main view properties
 #define SCREEN_WIDTH 320
 #define CONTAINER_WIDTH 640
 #define CONTAINER_HEIGHT 568
 #define BG_WIDTH 600
+
+// Pan/swipe animation options
 #define SLIDE_THRESHOLD 80
 #define VELOCITY_THRESHOLD 750
 #define LAYER1_LTR_MULT 2
@@ -29,28 +33,40 @@
 #define LAYER3_RTL_MULT 1.75
 #define SWIPE_ANIM_DUR 0.5f
 #define SWIPE_BOUNCEBACK_DUR 0.1f
+
+// Button properties
+#define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
+
+// Rotation helper functions
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define X_POINT_ON_CIRCLE(centerX, radius, angle) centerX + radius * cos(angle)
 #define Y_POINT_ON_CIRCLE(centerY, radius, angle) centerY + radius * sin(angle)
+
+// Rotation properties
 #define CIRCLE_RADIUS 185
 #define CIRCLE_CENTER_X 75
 #define CIRCLE_CENTER_Y 340
-#define CIRCLE_ANIMATION_DUR 0.8f
-#define CIRCLE_ANIMATION_INTERVAL 0.2f
 #define BUTTON_DEGREE_INTEVAL 30
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
+
+// Rotation animation options
+#define CIRCLE_ANIMATION_DUR 0.8f
+#define CIRCLE_ANIMATION_INTERVAL 0.2f
 #define BEZIER_CURVE_P1_X 0.2f
 #define BEZIER_CURVE_P1_Y 0.8f
 #define BEZIER_CURVE_P2_X 0.5f
 #define BEZIER_CURVE_P2_Y 0.9f
+
+// Bar graph properties
 #define BAR_WIDTH 50
 #define BAR_INTERVAL 15
 #define ICON_WIDTH 50
 #define ICON_ANIMATION_INTERVAL 0.2f
 
+// Scroll arrows properties
 #define ARROWS_HEIGHT_WIDTH 45
 #define ARROWS_Y 50
 #define ARROWS_CENTER_Y ARROWS_Y + (ARROWS_HEIGHT_WIDTH / 2)
@@ -60,6 +76,8 @@
 #define ARROWS_LEFT_CENTER_X ARROWS_LEFT_X + (ARROWS_HEIGHT_WIDTH / 2)
 #define ARROWS_TRAVEL_DISTANCE 245
 #define ARROWS_PADDING 15
+
+// Scroll arrows animation options
 #define RUNWAY_DUR 1.75f
 #define RUNWAY_DELAY 0.1f
 #define RUNWAY_LOW_ALPHA 0.2f
