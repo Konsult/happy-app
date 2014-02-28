@@ -13,6 +13,7 @@
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
+    NSMutableArray *happyItemButtons;
     NSString *happyItemsPlistPath;
     __weak IBOutlet UIImageView *backgroundImageView;
     __weak IBOutlet UIImageView *blurImageView;

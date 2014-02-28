@@ -32,6 +32,8 @@
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define X_POINT_ON_CIRCLE(centerX, radius, angle) centerX + radius * cos(angle)
+#define Y_POINT_ON_CIRCLE(centerY, radius, angle) centerY + radius * sin(angle)
 #define CIRCLE_RADIUS 185
 #define CIRCLE_CENTER_X 75
 #define CIRCLE_CENTER_Y 340
@@ -294,52 +296,106 @@
 
 -(void)addHappyItemsAndAddButton
 {
-    for (int i = 0; i < happyItems.count; i++) {
+    if (!happyItemButtons.count) {
+        happyItemButtons = [[NSMutableArray alloc] init];
+    }
+    
+    int counter = 5;
+    for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem;
 
         happyItem = [happyItems objectAtIndex:i];
 
-        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
+        KSTHappyTypeButton *happyItemButton = [self createAndPlaceHappyItemButtonWithData:happyItem andCenterPoint:CGPointZero andTag:i];
+        
+        [happyItemButtons addObject:happyItemButton];
 
-        [happyItemButton setTag:i];
-
-        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
-        CGRect buttonFrame = happyItemButton.frame;
-        buttonFrame.origin = CGPointMake(BUTTON_START_X, BUTTON_START_Y);
-        happyItemButton.frame = buttonFrame;
-
-        [homeView addSubview:happyItemButton];
-
-        [self rotateHappyButton:happyItemButton];
+        if (counter >= 0) {
+            [self rotateHappyButton:happyItemButton toSlot:counter];
+        } else {
+            [self moveHappyItemButton:happyItemButton toSlot:-1];
+        }
+        counter--;
     }
-
+    
+    NSLog(@"Buttons on start: %lu", (unsigned long)happyItemButtons.count);
+    
     addButton = [[KSTAddButton alloc] init];
-
-    [addButton setTag:happyItems.count];
 
     [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     [homeView addSubview:addButton];
-    [self rotateHappyButton:addButton];
+    [self rotateHappyButton:addButton toSlot:90];
 }
 
-- (void)rotateHappyButton:(UIButton *)button
+- (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
 {
-    CGPoint endPoint = CGPointMake((CIRCLE_CENTER_X + CIRCLE_RADIUS * cos(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))), (CIRCLE_CENTER_Y + CIRCLE_RADIUS * sin(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))));
+    KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:buttonData[HAPPY_ITEM_KEY_TITLE] andImageName:buttonData[HAPPY_ITEM_KEY_IMAGEREF]];
+    
+    [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+    
+    if (!CGPointEqualToPoint(center, CGPointZero)) {
+        [happyItemButton setCenter:center];
+    } else {
+        CGRect buttonFrame = happyItemButton.frame;
+        buttonFrame.origin = CGPointMake(BUTTON_START_X, BUTTON_START_Y);
+        happyItemButton.frame = buttonFrame;
+    }
+    
+    [happyItemButton setTag:tag];
+    
+    [homeView addSubview:happyItemButton];
+    
+    return happyItemButton;
+}
+
+- (void)rotateHappyButton:(UIButton *)button toSlot:(int)slot
+{
+    CGFloat endAngle;
+    
+    switch (slot) {
+        case 0:
+            endAngle = DEGREES_TO_RADIANS(270);
+            break;
+        case 1:
+            endAngle = DEGREES_TO_RADIANS(300);
+            break;
+        case 2:
+            endAngle = DEGREES_TO_RADIANS(330);
+            break;
+        case 3:
+            endAngle = DEGREES_TO_RADIANS(0);
+            break;
+        case 4:
+            endAngle = DEGREES_TO_RADIANS(30);
+            break;
+        case 5:
+            endAngle = DEGREES_TO_RADIANS(60);
+            break;
+        case 90:
+            slot = 6;
+            endAngle = DEGREES_TO_RADIANS(90);
+            break;
+        default:
+            endAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            break;
+    }
+    
+    CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
 
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)), YES);
+    CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
     CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
 
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
 
-    pathAnimation.removedOnCompletion = NO;
+    pathAnimation.removedOnCompletion = YES;
     pathAnimation.path = path;
     [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
     [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
     [pathAnimation setFillMode:kCAFillModeForwards];
     pathAnimation.duration = CIRCLE_ANIMATION_DUR;
-    pathAnimation.beginTime = CACurrentMediaTime() + (([button tag] + 1) * CIRCLE_ANIMATION_INTERVAL);
+    pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
 
     [pathAnimation setDelegate:self];
 
@@ -347,7 +403,7 @@
 
     [button.layer addAnimation:pathAnimation forKey:nil];
     NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
-    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: happyItems.count * CIRCLE_ANIMATION_INTERVAL + CIRCLE_ANIMATION_DUR];
+    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay:CIRCLE_ANIMATION_DUR + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL)];
 }
 
 - (void)setButtonCenter:(NSDictionary *)buttonDic
@@ -375,6 +431,7 @@
     [addHappyItemField setPlaceholder:@"What makes you happy?"];
     [addHappyItemField setTextColor:[UIColor darkGrayColor]];
     [addHappyItemField setBorderStyle:UITextBorderStyleRoundedRect];
+    addHappyItemField.text = @"";
 
     addHappyItemField.delegate = self;
 
@@ -429,10 +486,52 @@
     [newHappyItem setValue:happyItemText forKey:HAPPY_ITEM_KEY_TITLE];
     [newHappyItem setValue:[NSNumber numberWithInt:0] forKey:HAPPY_ITEM_KEY_VALUE];
     [newHappyItem setValue:@"ButtonWeather" forKey:HAPPY_ITEM_KEY_IMAGEREF];
-
+    
     [happyItems addObject:newHappyItem];
 
-    NSLog(@"Happy Items: %@", happyItems);
+    KSTHappyTypeButton *newHappyItemButton = [self createAndPlaceHappyItemButtonWithData:newHappyItem andCenterPoint:CGPointZero andTag:(int)happyItems.count - 1];
+    
+    [happyItemButtons addObject:newHappyItemButton];
+    NSLog(@"Added 1: %lu", (unsigned long)happyItemButtons.count);
+    
+    int counter = 5;
+    for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
+        [self moveHappyItemButton:happyItemButtons[i] toSlot:counter];
+        counter--;
+    }
+}
+
+- (void)moveHappyItemButton:(KSTHappyTypeButton *)button toSlot:(int)slot
+{
+    CGFloat endAngle;
+    
+    switch (slot) {
+        case 0:
+            endAngle = DEGREES_TO_RADIANS(270);
+            break;
+        case 1:
+            endAngle = DEGREES_TO_RADIANS(300);
+            break;
+        case 2:
+            endAngle = DEGREES_TO_RADIANS(330);
+            break;
+        case 3:
+            endAngle = DEGREES_TO_RADIANS(0);
+            break;
+        case 4:
+            endAngle = DEGREES_TO_RADIANS(30);
+            break;
+        case 5:
+            endAngle = DEGREES_TO_RADIANS(60);
+            break;
+        default:
+            endAngle = DEGREES_TO_RADIANS(210);
+            break;
+    }
+    
+    CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
+    
+    [button setCenter:endPoint];
 }
 
 - (void)showHappyItemStats
