@@ -442,6 +442,7 @@
 
     [button removeFromSuperview];
     [homeView addSubview:addHappyItemField];
+    [addHappyItemField becomeFirstResponder];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -488,6 +489,7 @@
     [newHappyItem setValue:@"ButtonWeather" forKey:HAPPY_ITEM_KEY_IMAGEREF];
     
     [happyItems addObject:newHappyItem];
+    [happyItems writeToFile:happyItemsPlistPath atomically:YES];
 
     KSTHappyTypeButton *newHappyItemButton = [self createAndPlaceHappyItemButtonWithData:newHappyItem andCenterPoint:CGPointZero andTag:(int)happyItems.count - 1];
     
