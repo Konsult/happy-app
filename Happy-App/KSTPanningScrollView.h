@@ -20,6 +20,9 @@
 @end
 
 @interface KSTPanningScrollView : UIScrollView
+{
+    BOOL delegateIsReceivingGestures;
+}
 
 @property(nonatomic,assign) id<KSTPanningScrollViewDelegate> delegate;
 
