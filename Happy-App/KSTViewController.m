@@ -333,9 +333,9 @@
         [happyItemButtons addObject:happyItemButton];
 
         if (counter >= 0) {
-            [self rotateHappyButton:happyItemButton toSlot:counter];
+            [self moveHappyButton:happyItemButton toSlot:counter withRotation:YES];
         } else {
-            [self moveHappyItemButton:happyItemButton toSlot:-1];
+            [self moveHappyButton:happyItemButton toSlot:-1 withRotation:NO];
         }
         counter--;
     }
@@ -345,7 +345,7 @@
     [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     [homeView addSubview:addButton];
-    [self rotateHappyButton:addButton toSlot:BUTTON_SLOTS + 1];
+    [self moveHappyButton:addButton toSlot:BUTTON_SLOTS + 1 withRotation:YES];
 }
 
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
@@ -369,11 +369,14 @@
     return happyItemButton;
 }
 
-- (void)rotateHappyButton:(UIButton *)button toSlot:(int)slot
+- (void)moveHappyButton:(UIButton *)button toSlot:(int)slot withRotation:(BOOL)rotate
 {
     CGFloat endAngle;
     
     switch (slot) {
+        case -1:
+            endAngle = DEGREES_TO_RADIANS(210);
+            break;
         case 0:
             endAngle = DEGREES_TO_RADIANS(270);
             break;
@@ -402,27 +405,31 @@
     
     CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
 
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
-    CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
-
-    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-
-    pathAnimation.removedOnCompletion = YES;
-    pathAnimation.path = path;
-    [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
-    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
-    [pathAnimation setFillMode:kCAFillModeForwards];
-    pathAnimation.duration = CIRCLE_ANIMATION_DUR;
-    pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
-
-    [pathAnimation setDelegate:self];
-
-    CGPathRelease(path);
-
-    [button.layer addAnimation:pathAnimation forKey:nil];
-    NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
-    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay:CIRCLE_ANIMATION_DUR + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL)];
+    if (rotate) {
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
+        CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
+        
+        CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+        
+        pathAnimation.removedOnCompletion = YES;
+        pathAnimation.path = path;
+        [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
+        [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
+        [pathAnimation setFillMode:kCAFillModeForwards];
+        pathAnimation.duration = CIRCLE_ANIMATION_DUR;
+        pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
+        
+        [pathAnimation setDelegate:self];
+        
+        CGPathRelease(path);
+        
+        [button.layer addAnimation:pathAnimation forKey:nil];
+        NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
+        [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay:CIRCLE_ANIMATION_DUR + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL)];
+    } else {
+        [button setCenter:endPoint];
+    }
 }
 
 - (void)setButtonCenter:(NSDictionary *)buttonDic
@@ -554,42 +561,9 @@
 
     int counter = BUTTON_SLOTS;
     for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
-        [self moveHappyItemButton:happyItemButtons[i] toSlot:counter];
+        [self moveHappyButton:happyItemButtons[i] toSlot:counter withRotation:NO];
         counter--;
     }
-}
-
-- (void)moveHappyItemButton:(KSTHappyTypeButton *)button toSlot:(int)slot
-{
-    CGFloat endAngle;
-    
-    switch (slot) {
-        case 0:
-            endAngle = DEGREES_TO_RADIANS(270);
-            break;
-        case 1:
-            endAngle = DEGREES_TO_RADIANS(300);
-            break;
-        case 2:
-            endAngle = DEGREES_TO_RADIANS(330);
-            break;
-        case 3:
-            endAngle = DEGREES_TO_RADIANS(0);
-            break;
-        case 4:
-            endAngle = DEGREES_TO_RADIANS(30);
-            break;
-        case 5:
-            endAngle = DEGREES_TO_RADIANS(60);
-            break;
-        default:
-            endAngle = DEGREES_TO_RADIANS(210);
-            break;
-    }
-    
-    CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
-    
-    [button setCenter:endPoint];
 }
 
 - (void)showHappyItemStats
