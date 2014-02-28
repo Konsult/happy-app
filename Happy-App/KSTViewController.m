@@ -332,7 +332,7 @@ typedef void(^animationCompletionBlock)(void);
 
         KSTHappyTypeButton *happyItemButton = [self createAndPlaceHappyItemButtonWithData:happyItem andCenterPoint:CGPointZero andTag:i];
         
-        [happyItemButtons addObject:happyItemButton];
+        [happyItemButtons insertObject:happyItemButton atIndex:0];
 
         if (counter >= 0) {
             [self moveHappyButton:happyItemButton toSlot:counter withRotation:YES];
@@ -423,7 +423,6 @@ typedef void(^animationCompletionBlock)(void);
         pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
         
         animationCompletionBlock pathAnimationCompleteBlock = ^void(void) {
-            NSLog(@"endpoint: (%f, %f)", endPoint.x, endPoint.y);
             [button setCenter:endPoint];
             [button.layer removeAnimationForKey:@"rotate"];
         };
