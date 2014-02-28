@@ -56,6 +56,8 @@
 #define BUTTON_DEGREE_INTEVAL 30
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
+#define kAnimationCompletionBlock @"animationCompletionBlock"
+typedef void(^animationCompletionBlock)(void);
 
 // Rotation animation options
 #define CIRCLE_ANIMATION_DUR 0.8f
@@ -412,7 +414,7 @@
         
         CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         
-        pathAnimation.removedOnCompletion = YES;
+        pathAnimation.removedOnCompletion = NO;
         pathAnimation.path = path;
         [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
         [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
@@ -420,21 +422,29 @@
         pathAnimation.duration = CIRCLE_ANIMATION_DUR;
         pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
         
+        animationCompletionBlock pathAnimationCompleteBlock = ^void(void) {
+            NSLog(@"endpoint: (%f, %f)", endPoint.x, endPoint.y);
+            [button setCenter:endPoint];
+            [button.layer removeAnimationForKey:@"rotate"];
+        };
+        [pathAnimation setValue:pathAnimationCompleteBlock forKey:kAnimationCompletionBlock];
+
         [pathAnimation setDelegate:self];
         
         CGPathRelease(path);
         
-        [button.layer addAnimation:pathAnimation forKey:nil];
-        NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
-        [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay:CIRCLE_ANIMATION_DUR + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL)];
+        [button.layer addAnimation:pathAnimation forKey:@"rotate"];
     } else {
         [button setCenter:endPoint];
     }
 }
 
-- (void)setButtonCenter:(NSDictionary *)buttonDic
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    [buttonDic[@"view"] setCenter:[buttonDic[@"point"] CGPointValue]];
+    if ([anim valueForKey:kAnimationCompletionBlock]) {
+        animationCompletionBlock completionBlock = [anim valueForKey:kAnimationCompletionBlock];
+        completionBlock();
+    }
 }
 
 -(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
