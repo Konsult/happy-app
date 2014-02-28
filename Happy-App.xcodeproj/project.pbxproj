@@ -116,8 +116,8 @@
 		EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTBarGraphItem.h; sourceTree = "<group>"; };
 		EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTBarGraphItem.m; sourceTree = "<group>"; };
 		EE538EC718BEB3B9004DA42D /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
-		EE538EC918BFC2DD004DA42D /* KSTAddButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSTAddButton.h; path = ../KSTAddButton.h; sourceTree = "<group>"; };
-		EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSTAddButton.m; path = ../KSTAddButton.m; sourceTree = "<group>"; };
+		EE538EC918BFC2DD004DA42D /* KSTAddButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTAddButton.h; sourceTree = "<group>"; };
+		EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTAddButton.m; sourceTree = "<group>"; };
 		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
