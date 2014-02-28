@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "KSTAddButton.h"
 
-@interface KSTViewController : UIViewController <UITextFieldDelegate>
+#import "KSTPanningScrollView.h"
+
+@interface KSTViewController : UIViewController <KSTPanningScrollViewDelegate, UITextFieldDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
