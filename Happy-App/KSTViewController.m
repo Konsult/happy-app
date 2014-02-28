@@ -615,4 +615,17 @@ typedef void(^animationCompletionBlock)(void);
     return max;
 }
 
+#pragma mark KSTPanningScrollViewDelegate Methods
+- (BOOL)canPanScrollView:(KSTPanningScrollView *)view inDirection:(KSTDirection)direction
+{
+    if (direction == KSTDirectionLeft && canSlideToLeftView)
+        return true;
+    return false;
+}
+
+- (void)panScrollView:(KSTPanningScrollView *)view
+{
+    [self slideViewWithPan:view.panGestureRecognizer];
+}
+
 @end

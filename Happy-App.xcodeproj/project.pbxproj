@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF482D4118BFDE8B00478604 /* KSTPanningScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482D4018BFDE8B00478604 /* KSTPanningScrollView.m */; };
 		BFC3B04018BD701E00503741 /* Background Blur.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B01C18BD701E00503741 /* Background Blur.png */; };
 		BFC3B04118BD701E00503741 /* Background Blur@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B01D18BD701E00503741 /* Background Blur@2x.png */; };
 		BFC3B04218BD701E00503741 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B01E18BD701E00503741 /* Background.png */; };
@@ -75,6 +76,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF482D3F18BFDE8B00478604 /* KSTPanningScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTPanningScrollView.h; sourceTree = "<group>"; };
+		BF482D4018BFDE8B00478604 /* KSTPanningScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTPanningScrollView.m; sourceTree = "<group>"; };
+		BF482D4318C0099700478604 /* KSTDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTDirection.h; sourceTree = "<group>"; };
 		BFC3B01C18BD701E00503741 /* Background Blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur.png"; sourceTree = "<group>"; };
 		BFC3B01D18BD701E00503741 /* Background Blur@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background Blur@2x.png"; sourceTree = "<group>"; };
 		BFC3B01E18BD701E00503741 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
@@ -255,12 +259,14 @@
 				EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */,
 				EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */,
 				EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */,
+				BF482D4318C0099700478604 /* KSTDirection.h */,
 				EE15DCC618BD301C00BE8337 /* KSTHappyTypeButton.h */,
 				EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */,
 				EE845D3818A988C800431CBC /* KSTAppDelegate.h */,
 				EE845D3918A988C800431CBC /* KSTAppDelegate.m */,
 				EE845D3E18A988C800431CBC /* KSTViewController.h */,
 				EE845D3F18A988C800431CBC /* KSTViewController.m */,
+				EE845D3B18A988C800431CBC /* Main.storyboard */,
 				EE845D4118A988C800431CBC /* Images.xcassets */,
 				BFF8A5C218B5433D00B53B95 /* Resources */,
 				EE845D3018A988C800431CBC /* Supporting Files */,
@@ -438,6 +444,7 @@
 				EE538ECB18BFC2DE004DA42D /* KSTAddButton.m in Sources */,
 				EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,
+				BF482D4118BFDE8B00478604 /* KSTPanningScrollView.m in Sources */,
 				EE845D3A18A988C800431CBC /* KSTAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
