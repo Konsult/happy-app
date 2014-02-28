@@ -75,6 +75,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self initPanRecognizer];
+    [self initTapRecognier];
 
     [self getAndShowDate];
     [self addSwipeArrows];
@@ -125,6 +126,11 @@
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
     [self.view addGestureRecognizer:panRecognizer];
+}
+
+- (void)initTapRecognier
+{
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 }
 
 #pragma mark Helper methods
@@ -425,7 +431,7 @@
 
 - (void)addButtonPressed:(KSTAddButton *)button
 {
-    UITextField *addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, 296, button.frame.size.height)];
+    addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, 296, button.frame.size.height)];
     addHappyItemField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [addHappyItemField setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.7f]];
     [addHappyItemField setPlaceholder:@"What makes you happy?"];
@@ -447,14 +453,28 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    NSDictionary *userInfo = [notification userInfo];
+    [self.view addGestureRecognizer:tapRecognizer];
+
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary* userInfo = [notification userInfo];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
     [self.view setFrame:CGRectOffset(self.view.frame, 0, -keyboardFrame.size.height)];
+    [UIView commitAnimations];
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
+    [self.view removeGestureRecognizer:tapRecognizer];
+    
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary* userInfo = [notification userInfo];
@@ -469,11 +489,20 @@
 
 }
 
+- (void)dismissKeyboard
+{
+    [addHappyItemField resignFirstResponder];
+    [addHappyItemField removeFromSuperview];
+    [homeView addSubview:addButton];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
 
-    [self addNewHappyItem:textField.text];
+    if ([textField.text length] > 0) {
+        [self addNewHappyItem:textField.text];
+    }
 
     [textField removeFromSuperview];
     [homeView addSubview:addButton];

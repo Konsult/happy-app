@@ -25,6 +25,8 @@
     BOOL canSlideToRightView;
     BOOL canSlideToLeftView;
     KSTAddButton *addButton;
+    UITapGestureRecognizer *tapRecognizer;
+    UITextField *addHappyItemField;
 }
 
 @end
