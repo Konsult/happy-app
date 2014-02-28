@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KSTViewController : UIViewController
+#import "KSTPanningScrollView.h"
+
+@interface KSTViewController : UIViewController <KSTPanningScrollViewDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
