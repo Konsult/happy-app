@@ -8,15 +8,21 @@
 
 #import "KSTViewController.h"
 #import "KSTHappyTypeButton.h"
+#import "KSTAddButton.h"
 #import "KSTBarGraphItem.h"
 
+// Keys to Happy Item dictionary
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
 #define HAPPY_ITEM_KEY_TITLE @"title"
+
+// Main view properties
 #define SCREEN_WIDTH 320
 #define CONTAINER_WIDTH 640
 #define CONTAINER_HEIGHT 568
 #define BG_WIDTH 600
+
+// Pan/swipe animation options
 #define SLIDE_THRESHOLD 80
 #define VELOCITY_THRESHOLD 750
 #define LAYER1_LTR_MULT 2
@@ -27,26 +33,47 @@
 #define LAYER3_RTL_MULT 1.75
 #define SWIPE_ANIM_DUR 0.5f
 #define SWIPE_BOUNCEBACK_DUR 0.1f
+
+// Button properties
+#define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
+#define BUTTON_SLOTS 5
+
+// Add properties
+#define TEXT_FIELD_WIDTH 296
+#define TEXT_FIELD_PLACEHOLDER @"What makes you happy?"
+
+// Rotation helper functions
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define X_POINT_ON_CIRCLE(centerX, radius, angle) centerX + radius * cos(angle)
+#define Y_POINT_ON_CIRCLE(centerY, radius, angle) centerY + radius * sin(angle)
+
+// Rotation properties
 #define CIRCLE_RADIUS 185
 #define CIRCLE_CENTER_X 75
 #define CIRCLE_CENTER_Y 340
-#define CIRCLE_ANIMATION_DUR 0.8f
-#define CIRCLE_ANIMATION_INTERVAL 0.2f
 #define BUTTON_DEGREE_INTEVAL 30
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
+#define kAnimationCompletionBlock @"animationCompletionBlock"
+typedef void(^animationCompletionBlock)(void);
+
+// Rotation animation options
+#define CIRCLE_ANIMATION_DUR 0.8f
+#define CIRCLE_ANIMATION_INTERVAL 0.2f
 #define BEZIER_CURVE_P1_X 0.2f
 #define BEZIER_CURVE_P1_Y 0.8f
 #define BEZIER_CURVE_P2_X 0.5f
 #define BEZIER_CURVE_P2_Y 0.9f
+
+// Bar graph properties
 #define BAR_WIDTH 50
 #define BAR_INTERVAL 15
 #define ICON_WIDTH 50
 #define ICON_ANIMATION_INTERVAL 0.2f
 
+// Scroll arrows properties
 #define ARROWS_HEIGHT_WIDTH 45
 #define ARROWS_Y 50
 #define ARROWS_CENTER_Y ARROWS_Y + (ARROWS_HEIGHT_WIDTH / 2)
@@ -56,6 +83,8 @@
 #define ARROWS_LEFT_CENTER_X ARROWS_LEFT_X + (ARROWS_HEIGHT_WIDTH / 2)
 #define ARROWS_TRAVEL_DISTANCE 245
 #define ARROWS_PADDING 15
+
+// Scroll arrows animation options
 #define RUNWAY_DUR 1.75f
 #define RUNWAY_DELAY 0.1f
 #define RUNWAY_LOW_ALPHA 0.2f
@@ -71,12 +100,26 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self initPanRecognizer];
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 
     [self getAndShowDate];
     [self addSwipeArrows];
 
     canSlideToRightView = YES;
     canSlideToLeftView = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -274,65 +317,133 @@
 
     NSLog(@"Init with happy items: %@", happyItems);
 
-    [self addHappyItems];
+    [self addButtons];
 }
 
--(void)addHappyItems
+-(void)addButtons
 {
-    for (int i = 0; i <= happyItems.count; i++) {
+    happyItemButtons = [[NSMutableArray alloc] init];
+    
+    int counter = BUTTON_SLOTS;
+    for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem;
 
-        if (i == happyItems.count) {
-            happyItem = [[NSDictionary alloc] initWithObjectsAndKeys:@"Add",HAPPY_ITEM_KEY_TITLE,@"ButtonAdd",HAPPY_ITEM_KEY_IMAGEREF, nil];
+        happyItem = [happyItems objectAtIndex:i];
+
+        KSTHappyTypeButton *happyItemButton = [self createAndPlaceHappyItemButtonWithData:happyItem andCenterPoint:CGPointZero andTag:i];
+        
+        [happyItemButtons insertObject:happyItemButton atIndex:0];
+
+        if (counter >= 0) {
+            [self moveHappyButton:happyItemButton toSlot:counter animate:YES];
         } else {
-            happyItem = [happyItems objectAtIndex:i];
+            [self moveHappyButton:happyItemButton toSlot:-1 animate:NO];
         }
+        counter--;
+    }
+    
+    addButton = [[KSTAddButton alloc] init];
 
-        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
+    [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
-        [happyItemButton setTag:i];
+    [homeView addSubview:addButton];
+    [self moveHappyButton:addButton toSlot:BUTTON_SLOTS + 1 animate:YES];
+}
 
-        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+- (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
+{
+    KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:buttonData[HAPPY_ITEM_KEY_TITLE] andImageName:buttonData[HAPPY_ITEM_KEY_IMAGEREF]];
+    
+    [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+    
+    if (!CGPointEqualToPoint(center, CGPointZero)) {
+        [happyItemButton setCenter:center];
+    } else {
         CGRect buttonFrame = happyItemButton.frame;
         buttonFrame.origin = CGPointMake(BUTTON_START_X, BUTTON_START_Y);
         happyItemButton.frame = buttonFrame;
+    }
+    
+    [happyItemButton setTag:tag];
+    
+    [homeView addSubview:happyItemButton];
+    
+    return happyItemButton;
+}
 
-        [homeView addSubview:happyItemButton];
+- (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
+{
+    CGFloat endAngle;
+    
+    switch (slot) {
+        case -1:
+            endAngle = DEGREES_TO_RADIANS(210);
+            break;
+        case 0:
+            endAngle = DEGREES_TO_RADIANS(270);
+            break;
+        case 1:
+            endAngle = DEGREES_TO_RADIANS(300);
+            break;
+        case 2:
+            endAngle = DEGREES_TO_RADIANS(330);
+            break;
+        case 3:
+            endAngle = DEGREES_TO_RADIANS(0);
+            break;
+        case 4:
+            endAngle = DEGREES_TO_RADIANS(30);
+            break;
+        case 5:
+            endAngle = DEGREES_TO_RADIANS(60);
+            break;
+        case 6:
+            endAngle = DEGREES_TO_RADIANS(90);
+            break;
+        default:
+            endAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            break;
+    }
+    
+    CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
 
-        [self rotateHappyButton:happyItemButton];
+    if (animate) {
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
+        CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
+        
+        CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+        
+        pathAnimation.removedOnCompletion = NO;
+        pathAnimation.path = path;
+        [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
+        [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
+        [pathAnimation setFillMode:kCAFillModeForwards];
+        pathAnimation.duration = CIRCLE_ANIMATION_DUR;
+        pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
+        
+        animationCompletionBlock pathAnimationCompleteBlock = ^void(void) {
+            [button setCenter:endPoint];
+            [button.layer removeAnimationForKey:@"rotate"];
+        };
+        [pathAnimation setValue:pathAnimationCompleteBlock forKey:kAnimationCompletionBlock];
+
+        [pathAnimation setDelegate:self];
+        
+        CGPathRelease(path);
+        
+        [button.layer addAnimation:pathAnimation forKey:@"rotate"];
+    } else {
+        [button setCenter:endPoint];
     }
 }
 
-- (void)rotateHappyButton:(UIButton *)button
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    CGPoint endPoint = CGPointMake((CIRCLE_CENTER_X + CIRCLE_RADIUS * cos(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))), (CIRCLE_CENTER_Y + CIRCLE_RADIUS * sin(DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)))));
-
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), DEGREES_TO_RADIANS(CIRCLE_ANIMATION_END_DEGREE + ([button tag] * BUTTON_DEGREE_INTEVAL)), YES);
-    CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
-
-    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-
-    pathAnimation.removedOnCompletion = NO;
-    pathAnimation.path = path;
-    [pathAnimation setCalculationMode:kCAAnimationCubicPaced];
-    [pathAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:BEZIER_CURVE_P1_X :BEZIER_CURVE_P1_Y :BEZIER_CURVE_P2_X :BEZIER_CURVE_P2_Y]];
-    [pathAnimation setFillMode:kCAFillModeForwards];
-    pathAnimation.duration = CIRCLE_ANIMATION_DUR;
-    pathAnimation.beginTime = CACurrentMediaTime() + (([button tag] + 1) * CIRCLE_ANIMATION_INTERVAL);
-
-    [pathAnimation setDelegate:self];
-
-    CGPathRelease(path);
-
-    [button.layer addAnimation:pathAnimation forKey:nil];
-    NSDictionary *buttonDic = [[NSDictionary alloc] initWithObjectsAndKeys:button,@"view",[NSValue valueWithCGPoint:endPoint],@"point",nil];
-    [self performSelector:@selector(setButtonCenter:) withObject:buttonDic afterDelay: happyItems.count * CIRCLE_ANIMATION_INTERVAL + CIRCLE_ANIMATION_DUR];
-}
-
-- (void)setButtonCenter:(NSDictionary *)buttonDic
-{
-    [buttonDic[@"view"] setCenter:[buttonDic[@"point"] CGPointValue]];
+    if ([anim valueForKey:kAnimationCompletionBlock]) {
+        animationCompletionBlock completionBlock = [anim valueForKey:kAnimationCompletionBlock];
+        completionBlock();
+    }
 }
 
 -(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
@@ -345,6 +456,123 @@
     NSLog(@"Updated happy item: %@", happyItem);
 
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+}
+
+- (void)addButtonPressed:(KSTAddButton *)button
+{
+    addHappyItemField = [[UITextField alloc] initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, TEXT_FIELD_WIDTH, button.frame.size.height)];
+    addHappyItemField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [addHappyItemField setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.7f]];
+    [addHappyItemField setPlaceholder:TEXT_FIELD_PLACEHOLDER];
+    [addHappyItemField setTextColor:[UIColor darkGrayColor]];
+    [addHappyItemField setBorderStyle:UITextBorderStyleRoundedRect];
+
+    // Initializing empty text string to fix invalid context 0x0 error per these 2 sources:
+    // 1. http://stackoverflow.com/questions/19599266/invalid-context-0x0-under-ios-7-0-and-system-degradation
+    // 2. http://stackoverflow.com/questions/12800758/invalid-context-error-0x0-when-editing-uitextfield-using-mult-byte-keybord-w
+    addHappyItemField.text = @"";
+
+    addHappyItemField.delegate = self;
+
+    UIImageView *addIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:ADD_BUTTON_IMAGE]];
+
+    [addHappyItemField setLeftView:addIcon];
+    [addHappyItemField setLeftViewMode:UITextFieldViewModeAlways];
+
+    [button removeFromSuperview];
+    [homeView addSubview:addHappyItemField];
+    [addHappyItemField becomeFirstResponder];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    [self.view addGestureRecognizer:tapRecognizer];
+
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary* userInfo = [notification userInfo];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    if (!keyboardFrame.size.height) {
+        return;
+    }
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    [self.view setFrame:CGRectOffset(self.view.frame, 0, -keyboardFrame.size.height)];
+    [UIView commitAnimations];
+    
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    [self.view removeGestureRecognizer:tapRecognizer];
+    
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary* userInfo = [notification userInfo];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+
+    if (CGPointEqualToPoint(self.view.frame.origin, CGPointZero)) {
+        return;
+    }
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    [self.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [UIView commitAnimations];
+
+}
+
+- (void)dismissKeyboard
+{
+    [addHappyItemField resignFirstResponder];
+    [addHappyItemField removeFromSuperview];
+    [homeView addSubview:addButton];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+
+    NSString *text = textField.text;
+    text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if ([text length] > 0) {
+        [self addNewHappyItem:textField.text];
+    }
+
+    [textField removeFromSuperview];
+    [homeView addSubview:addButton];
+
+    return YES;
+}
+
+- (void)addNewHappyItem:(NSString *)happyItemText
+{
+    NSMutableDictionary *newHappyItem = [[NSMutableDictionary alloc] init];
+    [newHappyItem setValue:happyItemText forKey:HAPPY_ITEM_KEY_TITLE];
+    [newHappyItem setValue:[NSNumber numberWithInt:0] forKey:HAPPY_ITEM_KEY_VALUE];
+    [newHappyItem setValue:@"ButtonWeather" forKey:HAPPY_ITEM_KEY_IMAGEREF];
+
+    KSTHappyTypeButton *newHappyItemButton = [self createAndPlaceHappyItemButtonWithData:newHappyItem andCenterPoint:CGPointZero andTag:(int)happyItems.count];
+    
+    [happyItemButtons addObject:newHappyItemButton];
+
+    [happyItems addObject:newHappyItem];
+    [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+
+    int counter = BUTTON_SLOTS;
+    for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
+        [self moveHappyButton:happyItemButtons[i] toSlot:counter animate:NO];
+        counter--;
+    }
 }
 
 - (void)showHappyItemStats

@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KSTAddButton.h"
 
 #import "KSTPanningScrollView.h"
 
-@interface KSTViewController : UIViewController <KSTPanningScrollViewDelegate>
+@interface KSTViewController : UIViewController <KSTPanningScrollViewDelegate, UITextFieldDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
+    NSMutableArray *happyItemButtons;
     NSString *happyItemsPlistPath;
     __weak IBOutlet UIImageView *backgroundImageView;
     __weak IBOutlet UIImageView *blurImageView;
@@ -24,6 +26,9 @@
     UIControl *arrowsGroup;
     BOOL canSlideToRightView;
     BOOL canSlideToLeftView;
+    KSTAddButton *addButton;
+    UITapGestureRecognizer *tapRecognizer;
+    UITextField *addHappyItemField;
 }
 
 @end
