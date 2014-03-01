@@ -335,9 +335,9 @@ typedef void(^animationCompletionBlock)(void);
         [happyItemButtons insertObject:happyItemButton atIndex:0];
 
         if (counter >= 0) {
-            [self moveHappyButton:happyItemButton toSlot:counter withRotation:YES];
+            [self moveHappyButton:happyItemButton toSlot:counter animate:YES];
         } else {
-            [self moveHappyButton:happyItemButton toSlot:-1 withRotation:NO];
+            [self moveHappyButton:happyItemButton toSlot:-1 animate:NO];
         }
         counter--;
     }
@@ -347,7 +347,7 @@ typedef void(^animationCompletionBlock)(void);
     [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     [homeView addSubview:addButton];
-    [self moveHappyButton:addButton toSlot:BUTTON_SLOTS + 1 withRotation:YES];
+    [self moveHappyButton:addButton toSlot:BUTTON_SLOTS + 1 animate:YES];
 }
 
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
@@ -371,7 +371,7 @@ typedef void(^animationCompletionBlock)(void);
     return happyItemButton;
 }
 
-- (void)moveHappyButton:(UIButton *)button toSlot:(int)slot withRotation:(BOOL)rotate
+- (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
 {
     CGFloat endAngle;
     
@@ -407,7 +407,7 @@ typedef void(^animationCompletionBlock)(void);
     
     CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
 
-    if (rotate) {
+    if (animate) {
         CGMutablePathRef path = CGPathCreateMutable();
         CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
         CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
@@ -496,7 +496,7 @@ typedef void(^animationCompletionBlock)(void);
 
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    if (keyboardFrame.size.height == 0) {
+    if (!keyboardFrame.size.height) {
         return;
     }
 
@@ -570,7 +570,7 @@ typedef void(^animationCompletionBlock)(void);
 
     int counter = BUTTON_SLOTS;
     for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
-        [self moveHappyButton:happyItemButtons[i] toSlot:counter withRotation:NO];
+        [self moveHappyButton:happyItemButtons[i] toSlot:counter animate:NO];
         counter--;
     }
 }
