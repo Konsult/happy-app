@@ -8,6 +8,7 @@
 
 #import "KSTBarGraphItem.h"
 
+#define SCREEN_WIDTH 320
 #define BAR_WIDTH 50
 #define BAR_VIEW_HEIGHT 450
 #define BAR_GRAPH_MAX_HEIGHT 360
@@ -32,7 +33,7 @@
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
 {
-    self = [super initWithFrame:CGRectMake(-BAR_WIDTH, 0, BAR_WIDTH, BAR_VIEW_HEIGHT)];
+    self = [super initWithFrame:CGRectMake(320 + BAR_WIDTH, 0, BAR_WIDTH, BAR_VIEW_HEIGHT)];
     if (!self) {
         return nil;
     }

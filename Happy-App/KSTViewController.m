@@ -585,7 +585,7 @@ typedef void(^animationCompletionBlock)(void);
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.contentSize.height);
 
-    for (int i = happyItems.count - 1; i >= 0; i--) {
+    for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
         KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
@@ -594,7 +594,7 @@ typedef void(^animationCompletionBlock)(void);
 
         CGPoint center = CGPointMake(BAR_INTERVAL + i * (BAR_WIDTH + BAR_INTERVAL) + (ICON_WIDTH / 2), happyItemBarView.center.y);
 
-        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(abs((float)i - happyItems.count) * ICON_ANIMATION_INTERVAL)];
+        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(i * ICON_ANIMATION_INTERVAL)];
 
         // Add 1 to delay multiple here to allow small bit of additional time for icon in bounce to finish before animating bars
         [happyItemBarView performSelector:@selector(animateInBarRelativeToMax:) withObject:max afterDelay:(float)(happyItems.count + 1) * ICON_ANIMATION_INTERVAL];
