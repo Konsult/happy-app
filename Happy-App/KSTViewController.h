@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "KSTAddButton.h"
-
+#import "KSTRotaryScrollView.h"
 #import "KSTPanningScrollView.h"
 
-@interface KSTViewController : UIViewController <KSTPanningScrollViewDelegate, UITextFieldDelegate>
+@interface KSTViewController : UIViewController <UIGestureRecognizerDelegate, KSTPanningScrollViewDelegate, UITextFieldDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
@@ -20,6 +20,7 @@
     __weak IBOutlet UIImageView *backgroundImageView;
     __weak IBOutlet UIImageView *blurImageView;
     __weak IBOutlet UIView *containerView;
+    KSTRotaryScrollView *rotaryScrollView;
     __weak IBOutlet UIView *homeView;
     __weak IBOutlet UIView *graphView;
     __weak IBOutlet UIScrollView *graphScrollView;
