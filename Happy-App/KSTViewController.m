@@ -196,7 +196,16 @@ typedef void(^animationCompletionBlock)(void);
 
     if (translation.x < 0) {
         CGAffineTransform currentTransform = arrowsGroup.transform;
-        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
+        
+        double newAngle = DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0);
+        
+        // Prevents arrows from over-rotating
+        if (canSlideToLeftView && newAngle < 0) {
+            newAngle = 0;
+        }
+        
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, newAngle);
+
         [arrowsGroup setTransform:newTransform];
 
         CGPoint arrowsCenter = arrowsGroup.center;
@@ -211,7 +220,15 @@ typedef void(^animationCompletionBlock)(void);
         // Need to readjust BG sizes or find better way to move back to home view
 
         CGAffineTransform currentTransform = arrowsGroup.transform;
-        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
+        double newAngle = DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0);
+        
+        // Prevents arrows from over-rotating
+        if (canSlideToRightView && newAngle > 0) {
+            newAngle = 0;
+        }
+
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, newAngle);
+
         [arrowsGroup setTransform:newTransform];
 
         CGPoint arrowsCenter = arrowsGroup.center;
