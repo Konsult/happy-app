@@ -11,7 +11,6 @@
 @interface KSTRotaryScrollView : UIScrollView
 
 {
-    NSMutableArray *buttonStartPositions;
     CGPoint otherContentOffset;
 }
 

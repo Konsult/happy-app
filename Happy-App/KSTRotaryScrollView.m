@@ -25,13 +25,13 @@
 #define CIRCLE_RADIUS 185.0
 #define CIRCLE_CENTER_X 75.0
 #define CIRCLE_CENTER_Y 340.0
+#define BUTTON_RAD_INTERVAL DEGREES_TO_RADIANS(30)
+#define SET_OPACITY_OFFSET 0.02
 
 @implementation KSTRotaryScrollView
 
 - (id)init
 {
-    buttonStartPositions = [[NSMutableArray alloc] init];
-    
     self = [super initWithFrame:CGRectMake(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)];
     self.contentSize = CGSizeMake(SCROLL_WIDTH, SCROLL_HEIGHT);
     self.maximumZoomScale = 1;
@@ -63,13 +63,20 @@
     for (int i = 0; i < self.subviews.count; i++) {
         UIButton *button = self.subviews[i];
         
-        double theta = -1 * DEGREES_TO_RADIANS(contentOffset.y);
-        double offset = DEGREES_TO_RADIANS(30);
+        double theta = -1 * DEGREES_TO_RADIANS(contentOffset.y) + BUTTON_RAD_INTERVAL * i;
+
+        if (theta >= SET_OPACITY_OFFSET && theta <= M_PI + SET_OPACITY_OFFSET) {
+            [button.layer setOpacity:1];
+        } else  if (theta < SET_OPACITY_OFFSET) {
+            [button.layer setOpacity:(1 + theta)];
+        } else {
+            [button.layer setOpacity:(1 - (theta - M_PI))];
+        }
         
         CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformRotate(transform, theta + i * offset);
+        transform = CGAffineTransformRotate(transform, theta);
         transform = CGAffineTransformTranslate(transform, 0, -CIRCLE_RADIUS);
-        transform = CGAffineTransformRotate(transform, -1 * theta - i * offset);
+        transform = CGAffineTransformRotate(transform, -theta);
         
         [button setTransform:transform];
     }
