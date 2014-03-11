@@ -39,7 +39,7 @@
 #define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
-#define ZERO_INDEXED_BUTTON_SLOTS 5
+#define ZERO_INDEXED_BUTTON_SLOTS 7
 
 // Add properties
 #define TEXT_FIELD_WIDTH 296
@@ -339,7 +339,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - (ZERO_INDEXED_BUTTON_SLOTS + 1)) * 10))];
+    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS) * 30))];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
@@ -374,13 +374,6 @@ typedef void(^animationCompletionBlock)(void);
         }
         counter++;
     }
-    
-    addButton = [[KSTAddButton alloc] init];
-
-    [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-
-    [rotaryScrollView addSubview:addButton];
-    [self moveHappyButton:addButton toSlot:ZERO_INDEXED_BUTTON_SLOTS + 1 animate:YES];
 }
 
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag

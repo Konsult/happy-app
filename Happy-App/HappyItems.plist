@@ -4,6 +4,30 @@
 <array>
 	<dict>
 		<key>title</key>
+		<string>Thing 3</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Thing 2</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Thing 1</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
 		<string>Being Alive</string>
 		<key>value</key>
 		<integer>0</integer>
