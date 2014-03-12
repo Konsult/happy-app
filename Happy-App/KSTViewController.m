@@ -339,7 +339,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS) * 30))];
+    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS) * 33))];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
@@ -399,47 +399,57 @@ typedef void(^animationCompletionBlock)(void);
 
 - (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
 {   
-    CGFloat endAngle;
+    double animationEndAngle;
+    double placementEndAngle;
     
     switch (slot) {
         case -1:
-            endAngle = DEGREES_TO_RADIANS(210);
+            animationEndAngle = DEGREES_TO_RADIANS(210);
+            placementEndAngle = DEGREES_TO_RADIANS(-30);
             break;
         case 0:
-            endAngle = DEGREES_TO_RADIANS(270);
+            animationEndAngle = DEGREES_TO_RADIANS(271.86572247);
+            placementEndAngle = DEGREES_TO_RADIANS(1.86572247);
             break;
         case 1:
-            endAngle = DEGREES_TO_RADIANS(300);
+            animationEndAngle = DEGREES_TO_RADIANS(308.3457734);
+            placementEndAngle = DEGREES_TO_RADIANS(38.3457734);
             break;
         case 2:
-            endAngle = DEGREES_TO_RADIANS(330);
+            animationEndAngle = DEGREES_TO_RADIANS(339.4257544);
+            placementEndAngle = DEGREES_TO_RADIANS(69.4257544);
             break;
         case 3:
-            endAngle = DEGREES_TO_RADIANS(0);
+            animationEndAngle = DEGREES_TO_RADIANS(5.3592566);
+            placementEndAngle = DEGREES_TO_RADIANS(95.3592566);
             break;
         case 4:
-            endAngle = DEGREES_TO_RADIANS(30);
+            animationEndAngle = DEGREES_TO_RADIANS(33.379242);
+            placementEndAngle = DEGREES_TO_RADIANS(123.379242);
             break;
         case 5:
-            endAngle = DEGREES_TO_RADIANS(60);
+            animationEndAngle = DEGREES_TO_RADIANS(66.79924);
+            placementEndAngle = DEGREES_TO_RADIANS(156.79924);
             break;
         case 6:
-            endAngle = DEGREES_TO_RADIANS(90);
+            animationEndAngle = DEGREES_TO_RADIANS(105.61925);
+            placementEndAngle = DEGREES_TO_RADIANS(195.61925);
             break;
         default:
-            endAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            animationEndAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            placementEndAngle = DEGREES_TO_RADIANS(240);
             break;
     }
     
     CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformRotate(transform, slot * BUTTON_CIRCLE_OFFSET);
+    transform = CGAffineTransformRotate(transform, placementEndAngle);
     transform = CGAffineTransformTranslate(transform, 0, -CIRCLE_RADIUS);
-    transform = CGAffineTransformRotate(transform, -1 * slot * BUTTON_CIRCLE_OFFSET);
+    transform = CGAffineTransformRotate(transform, -1 * placementEndAngle);
     
     if (animate) {
         CGMutablePathRef path = CGPathCreateMutable();
 
-        CGPathAddArc(path, NULL, CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
+        CGPathAddArc(path, NULL, CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), animationEndAngle, YES);
         
         CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         
@@ -455,6 +465,11 @@ typedef void(^animationCompletionBlock)(void);
             [button setCenter:CGPointMake(CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y)];
             [button setTransform:transform];
             [button.layer removeAnimationForKey:@"rotate"];
+            
+            if (slot == 6) {
+                [rotaryScrollView setContentOffset:CGPointMake(0, -6.5)];
+                [rotaryScrollView setContentInset:UIEdgeInsetsMake(6.5, 0, 0, 0)];
+            }
         };
         
         [pathAnimation setValue:pathAnimationCompleteBlock forKey:kAnimationCompletionBlock];
