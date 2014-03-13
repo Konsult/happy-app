@@ -194,12 +194,6 @@ typedef void(^animationCompletionBlock)(void);
     CGPoint translation = [recognizer translationInView:self.view];
     CGPoint velocity = [recognizer velocityInView:self.view];
 
-    // Autoscroll graphview to front if attempting pan to homescreen
-    // while graphview is scrolled right
-    if (graphScrollView.contentOffset.x > 0 && translation.x > 0) {
-        [graphScrollView setContentOffset:CGPointZero animated:NO];
-    }
-
     if (translation.x < 0) {
         CGAffineTransform currentTransform = arrowsGroup.transform;
         CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
