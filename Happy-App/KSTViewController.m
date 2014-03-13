@@ -259,6 +259,12 @@ typedef void(^animationCompletionBlock)(void);
 
 -(void)slideToView
 {
+    // Autoscroll graphview to front before sliding
+    if (graphScrollView.contentOffset.x > 0) {
+        [graphScrollView setContentOffset:CGPointZero animated:YES];
+        return;
+    }
+
     if (canSlideToRightView) {
         // sliding to graph
         [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
@@ -622,6 +628,11 @@ typedef void(^animationCompletionBlock)(void);
 - (void)panScrollView:(KSTPanningScrollView *)view
 {
     [self slideViewWithPan:view.panGestureRecognizer];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self slideToView];
 }
 
 @end
