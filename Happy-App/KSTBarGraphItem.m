@@ -8,6 +8,7 @@
 
 #import "KSTBarGraphItem.h"
 
+#define SCREEN_HEIGHT 568
 #define SCREEN_WIDTH 320
 #define BAR_WIDTH 50
 #define BAR_VIEW_HEIGHT 450
@@ -33,7 +34,7 @@
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
 {
-    self = [super initWithFrame:CGRectMake(320 + BAR_WIDTH, 0, BAR_WIDTH, BAR_VIEW_HEIGHT)];
+    self = [super initWithFrame:CGRectMake(SCREEN_WIDTH + BAR_WIDTH, SCREEN_HEIGHT - BAR_VIEW_HEIGHT, BAR_WIDTH, BAR_VIEW_HEIGHT)];
     if (!self) {
         return nil;
     }
@@ -63,9 +64,22 @@
 {
     CGPoint center = [centerPointValue CGPointValue];
     
+    UIView *superView = self.superview;
+    UIScrollView *scrollView;
+    if ([superView isKindOfClass:[UIScrollView class]]) {
+        scrollView = (UIScrollView *)superView;
+    };
+
     [UIView animateWithDuration:ICON_INTRO_ANIM_DUR delay:0 usingSpringWithDamping:ICON_INTRO_SPRING initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self setCenter:center];
-    } completion:NULL];
+        if (scrollView) {
+            scrollView.scrollEnabled = NO;
+        }
+    } completion:^(BOOL finished){
+        if (scrollView) {
+            scrollView.scrollEnabled = YES;
+        }
+    }];
 }
 
 // Max value is greatest value across all happy items
