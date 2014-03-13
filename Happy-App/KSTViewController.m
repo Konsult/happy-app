@@ -39,7 +39,7 @@
 #define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
-#define ZERO_INDEXED_BUTTON_SLOTS 7
+#define ZERO_INDEXED_BUTTON_SLOTS 6
 
 // Add properties
 #define TEXT_FIELD_WIDTH 296
@@ -59,6 +59,8 @@
 #define BUTTON_CIRCLE_OFFSET DEGREES_TO_RADIANS(BUTTON_DEGREE_INTERVAL)
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
+#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 33
+#define ROTARY_SCROLL_CONTENTINSET 6.5
 #define kAnimationCompletionBlock @"animationCompletionBlock"
 typedef void(^animationCompletionBlock)(void);
 
@@ -339,7 +341,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS) * 33))];
+    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS - 1) * ROTARY_SCROLL_CONTENTSIZE_OFFSET))];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
@@ -466,9 +468,9 @@ typedef void(^animationCompletionBlock)(void);
             [button setTransform:transform];
             [button.layer removeAnimationForKey:@"rotate"];
             
-            if (slot == 6) {
-                [rotaryScrollView setContentOffset:CGPointMake(0, -6.5)];
-                [rotaryScrollView setContentInset:UIEdgeInsetsMake(6.5, 0, 0, 0)];
+            if (slot == ZERO_INDEXED_BUTTON_SLOTS) {
+                [rotaryScrollView setContentOffset:CGPointMake(0, -ROTARY_SCROLL_CONTENTINSET)];
+                [rotaryScrollView setContentInset:UIEdgeInsetsMake(ROTARY_SCROLL_CONTENTINSET, 0, 0, 0)];
             }
         };
         
