@@ -25,7 +25,11 @@
 #define MULTIPLIER_BASE_ANGLE DEGREES_TO_RADIANS(25)
 #define MULTIPLER_COEFFICIENT 0.075f
 #define OPACITY_ANGLE_OFFSET 1
-#define GRADIENT_X_ENDPOINT 0.15f
+
+// Enter/exit gradient properties (editable)
+#define ENDPOINT_X 1.0f
+#define START_ALPHA 1.0f
+#define END_ALPHA 1.0f
 
 // Circle properties
 #define CIRCLE_RADIUS 185.0
@@ -48,13 +52,12 @@
     self.alwaysBounceVertical = YES;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.bouncesZoom = NO;
-    
-    
+
     CAGradientLayer *enterGradient = [CAGradientLayer layer];
     enterGradient.frame = self.frame;
-    enterGradient.colors = [NSArray arrayWithObjects:(id)[UIColor clearColor].CGColor, (id)[UIColor whiteColor].CGColor, nil];
+    enterGradient.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:1.0f alpha:START_ALPHA].CGColor, (id)[UIColor colorWithWhite:1.0f alpha:END_ALPHA].CGColor, nil];
     enterGradient.startPoint = CGPointMake(0.0f, 1.0f);
-    enterGradient.endPoint = CGPointMake(GRADIENT_X_ENDPOINT, 1.0f);
+    enterGradient.endPoint = CGPointMake(ENDPOINT_X, 1.0f);
     self.layer.mask = enterGradient;
     
     return self;
