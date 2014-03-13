@@ -9,12 +9,6 @@
 #import "KSTRotaryScrollView.h"
 #import "KSTHappyTypeButton.h"
 
-#define WINDOW_WIDTH 320.0
-#define WINDOW_HEIGHT 568.0
-#define SCROLL_WIDTH 320
-#define SCROLL_HEIGHT 568
-#define BOUNCE_MULTIPLIER 1
-
 // Rotation helper functions
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define X_POINT_ON_CIRCLE(centerX, radius, angle) centerX + radius * cos(angle)
@@ -41,8 +35,8 @@
 
 - (id)init
 {
-    self = [super initWithFrame:CGRectMake(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)];
-    self.contentSize = CGSizeMake(SCROLL_WIDTH, SCROLL_HEIGHT);
+    self = [super initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    self.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     self.maximumZoomScale = 1;
     self.minimumZoomScale = 1;
     self.showsHorizontalScrollIndicator = NO;
@@ -75,7 +69,7 @@
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset
-{
+{   
     for (int i = 0; i < self.subviews.count; i++) {
         UIButton *button = self.subviews[i];
         

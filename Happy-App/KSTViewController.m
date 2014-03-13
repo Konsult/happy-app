@@ -341,7 +341,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, CONTAINER_HEIGHT + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS - 1) * ROTARY_SCROLL_CONTENTSIZE_OFFSET))];
+    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, [UIScreen mainScreen].bounds.size.height + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS - 1) * ROTARY_SCROLL_CONTENTSIZE_OFFSET))];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
