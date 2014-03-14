@@ -162,11 +162,6 @@ typedef void(^animationCompletionBlock)(void);
 }
 
 #pragma gesture delegate methods
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return NO;
-}
-
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
 {
     if ([self.view.gestureRecognizers containsObject:gestureRecognizer] && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
@@ -384,6 +379,7 @@ typedef void(^animationCompletionBlock)(void);
     }
 }
 
+// FIXME: This method is no longer used by addButtons, but is used in the add new item implementation. Should be eventually removed when add functionality is done.
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
 {
     KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:buttonData[HAPPY_ITEM_KEY_TITLE] andImageName:buttonData[HAPPY_ITEM_KEY_IMAGEREF]];
@@ -407,57 +403,57 @@ typedef void(^animationCompletionBlock)(void);
 
 - (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
 {   
-    double animationEndAngle;
-    double placementEndAngle;
+    double endAngleFromPositiveXAxis;
+    double endAngleFromPositiveYAxis;
     
     switch (slot) {
         case -1:
-            animationEndAngle = DEGREES_TO_RADIANS(210);
-            placementEndAngle = DEGREES_TO_RADIANS(-30);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(210);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(-30);
             break;
         case 0:
-            animationEndAngle = DEGREES_TO_RADIANS(271.86572247);
-            placementEndAngle = DEGREES_TO_RADIANS(1.86572247);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(271.86572247);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(1.86572247);
             break;
         case 1:
-            animationEndAngle = DEGREES_TO_RADIANS(308.3457734);
-            placementEndAngle = DEGREES_TO_RADIANS(38.3457734);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(308.3457734);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(38.3457734);
             break;
         case 2:
-            animationEndAngle = DEGREES_TO_RADIANS(339.4257544);
-            placementEndAngle = DEGREES_TO_RADIANS(69.4257544);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(339.4257544);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(69.4257544);
             break;
         case 3:
-            animationEndAngle = DEGREES_TO_RADIANS(5.3592566);
-            placementEndAngle = DEGREES_TO_RADIANS(95.3592566);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(5.3592566);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(95.3592566);
             break;
         case 4:
-            animationEndAngle = DEGREES_TO_RADIANS(33.379242);
-            placementEndAngle = DEGREES_TO_RADIANS(123.379242);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(33.379242);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(123.379242);
             break;
         case 5:
-            animationEndAngle = DEGREES_TO_RADIANS(66.79924);
-            placementEndAngle = DEGREES_TO_RADIANS(156.79924);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(66.79924);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(156.79924);
             break;
         case 6:
-            animationEndAngle = DEGREES_TO_RADIANS(105.61925);
-            placementEndAngle = DEGREES_TO_RADIANS(195.61925);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(105.61925);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(195.61925);
             break;
         default:
-            animationEndAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
-            placementEndAngle = DEGREES_TO_RADIANS(240);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(240);
             break;
     }
     
     CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformRotate(transform, placementEndAngle);
+    transform = CGAffineTransformRotate(transform, endAngleFromPositiveYAxis);
     transform = CGAffineTransformTranslate(transform, 0, -CIRCLE_RADIUS);
-    transform = CGAffineTransformRotate(transform, -1 * placementEndAngle);
+    transform = CGAffineTransformRotate(transform, -1 * endAngleFromPositiveYAxis);
     
     if (animate) {
         CGMutablePathRef path = CGPathCreateMutable();
 
-        CGPathAddArc(path, NULL, CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), animationEndAngle, YES);
+        CGPathAddArc(path, NULL, CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngleFromPositiveXAxis, YES);
         
         CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         

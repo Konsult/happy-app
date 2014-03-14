@@ -77,7 +77,7 @@
         double evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + i * BUTTON_RAD_INTERVAL;
         
         // Need to calcualte a displayAngle (different from evenlySpacedAngle) to prevent buttons' text from overlapping
-        double displayAngle = [self calculateDisplayAngleBasedOnCalculatedAngle:evenlySpacedAngle AndMultiplerBaseAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
+        double displayAngle = [self calculateDisplayAngleBasedOnEvenlySpacedAngle:evenlySpacedAngle AndOffsetOriginAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
 
         if (displayAngle >= -HIDING_ANGLE_THRESHOLD && displayAngle <= M_PI + HIDING_ANGLE_THRESHOLD) {
             [button.layer setOpacity:1];
@@ -96,16 +96,16 @@
     linearContentOffset = contentOffset;
 }
 
-- (double)calculateDisplayAngleBasedOnCalculatedAngle:(double)evenlySpacedAngle AndMultiplerBaseAngle:(double)multAngle AndMultipler:(float)multiplier
+- (double)calculateDisplayAngleBasedOnEvenlySpacedAngle:(double)evenlySpacedAngle AndOffsetOriginAngle:(double)offsetOriginAngle AndMultipler:(float)multiplier
 {
-    // The multAngle on horizontally mirrored quandrant of circle
-    double inverseOfMultAngle = M_PI - multAngle;
+    // The multAngle mirrored over the horizontal axis
+    double inverseOfMultAngle = M_PI - offsetOriginAngle;
     
     // The normalized distance from PI/2
     double distanceFromPI_2N = (M_PI_2 - evenlySpacedAngle) / M_PI_2;
     
     // The normaled distance from the base angle
-    double distanceFromMultAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOfMultAngle) / multAngle : (multAngle - evenlySpacedAngle) / multAngle;
+    double distanceFromMultAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOfMultAngle) / offsetOriginAngle : (offsetOriginAngle - evenlySpacedAngle) / offsetOriginAngle;
 
     // The final display angle difference from PI/2 normalized
     double displayAngleFromPI_2N = (1 + multiplier * distanceFromMultAngle) * distanceFromPI_2N;
