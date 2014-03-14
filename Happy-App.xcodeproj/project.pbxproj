@@ -46,6 +46,7 @@
 		BFC3B06718BD73A100503741 /* SwipeArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC3B06518BD73A100503741 /* SwipeArrow@2x.png */; };
 		EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */; };
 		EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */; };
+		EE21C6CB18C518D8001D57B0 /* KSTRotaryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE21C6CA18C518D8001D57B0 /* KSTRotaryScrollView.m */; };
 		EE538EC818BEB3B9004DA42D /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE538EC718BEB3B9004DA42D /* HappyItems.plist */; };
 		EE538ECB18BFC2DE004DA42D /* KSTAddButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
@@ -119,6 +120,8 @@
 		EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTHappyTypeButton.m; sourceTree = "<group>"; };
 		EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTBarGraphItem.h; sourceTree = "<group>"; };
 		EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTBarGraphItem.m; sourceTree = "<group>"; };
+		EE21C6C918C518D8001D57B0 /* KSTRotaryScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTRotaryScrollView.h; sourceTree = "<group>"; };
+		EE21C6CA18C518D8001D57B0 /* KSTRotaryScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTRotaryScrollView.m; sourceTree = "<group>"; };
 		EE538EC718BEB3B9004DA42D /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 		EE538EC918BFC2DD004DA42D /* KSTAddButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTAddButton.h; sourceTree = "<group>"; };
 		EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTAddButton.m; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 				EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */,
 				EE15DCCB18BD5B4100BE8337 /* KSTBarGraphItem.h */,
 				EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */,
+				EE21C6C918C518D8001D57B0 /* KSTRotaryScrollView.h */,
+				EE21C6CA18C518D8001D57B0 /* KSTRotaryScrollView.m */,
 				BF482D4318C0099700478604 /* KSTDirection.h */,
 				EE15DCC618BD301C00BE8337 /* KSTHappyTypeButton.h */,
 				EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */,
@@ -445,6 +450,7 @@
 				EE538ECB18BFC2DE004DA42D /* KSTAddButton.m in Sources */,
 				EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */,
 				EE845D3618A988C800431CBC /* main.m in Sources */,
+				EE21C6CB18C518D8001D57B0 /* KSTRotaryScrollView.m in Sources */,
 				BF482D4118BFDE8B00478604 /* KSTPanningScrollView.m in Sources */,
 				EE845D3A18A988C800431CBC /* KSTAppDelegate.m in Sources */,
 			);

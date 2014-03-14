@@ -4,7 +4,31 @@
 <array>
 	<dict>
 		<key>title</key>
-		<string>Being Alive</string>
+		<string>Beautiful Weather</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Beautiful Weather</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Beautiful Weather</string>
+		<key>value</key>
+		<integer>0</integer>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Beautiful Weather</string>
 		<key>value</key>
 		<integer>0</integer>
 		<key>imageRef</key>
@@ -14,7 +38,7 @@
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
-		<string>Family &amp; Friends</string>
+		<string>Beautiful Weather</string>
 		<key>imageRef</key>
 		<string>ButtonFamily</string>
 	</dict>
@@ -22,7 +46,7 @@
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
-		<string>My Lover</string>
+		<string>Beautiful Weather</string>
 		<key>imageRef</key>
 		<string>ButtonLover</string>
 	</dict>
@@ -30,7 +54,7 @@
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
-		<string>My Work</string>
+		<string>Beautiful Weather</string>
 		<key>imageRef</key>
 		<string>ButtonWork</string>
 	</dict>
@@ -38,7 +62,7 @@
 		<key>value</key>
 		<integer>0</integer>
 		<key>title</key>
-		<string>My Hobbies</string>
+		<string>Beautiful Weather</string>
 		<key>imageRef</key>
 		<string>ButtonHobbies</string>
 	</dict>

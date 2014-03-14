@@ -7,6 +7,7 @@
 //
 
 #import "KSTViewController.h"
+#import "KSTRotaryScrollView.h"
 #import "KSTHappyTypeButton.h"
 #import "KSTAddButton.h"
 #import "KSTBarGraphItem.h"
@@ -38,7 +39,7 @@
 #define ADD_BUTTON_IMAGE @"ButtonAdd"
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
-#define BUTTON_SLOTS 5
+#define ZERO_INDEXED_BUTTON_SLOTS 6
 
 // Add properties
 #define TEXT_FIELD_WIDTH 296
@@ -51,11 +52,15 @@
 
 // Rotation properties
 #define CIRCLE_RADIUS 185
-#define CIRCLE_CENTER_X 75
+#define CIRCLE_CENTER_X 35
 #define CIRCLE_CENTER_Y 340
-#define BUTTON_DEGREE_INTEVAL 30
+#define BUTTON_X_CENTER_OFFSET 37.5
+#define BUTTON_DEGREE_INTERVAL 30
+#define BUTTON_CIRCLE_OFFSET DEGREES_TO_RADIANS(BUTTON_DEGREE_INTERVAL)
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
+#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 33
+#define ROTARY_SCROLL_CONTENTINSET 6.5
 #define kAnimationCompletionBlock @"animationCompletionBlock"
 typedef void(^animationCompletionBlock)(void);
 
@@ -102,6 +107,7 @@ typedef void(^animationCompletionBlock)(void);
     [self initPanRecognizer];
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 
+    [self addRotaryScrollView];
     [self getAndShowDate];
     [self addSwipeArrows];
 
@@ -150,10 +156,29 @@ typedef void(^animationCompletionBlock)(void);
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
+    panRecognizer.delegate = self;
+    
     [self.view addGestureRecognizer:panRecognizer];
 }
 
+#pragma gesture delegate methods
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    if ([self.view.gestureRecognizers containsObject:gestureRecognizer] && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint velocity = [gestureRecognizer velocityInView:self.view];
+        return fabs(velocity.y) < 100;
+    }
+    
+    return YES;
+}
+
 #pragma mark Helper methods
+- (void)addRotaryScrollView
+{
+    rotaryScrollView = [[KSTRotaryScrollView alloc] init];
+    [containerView addSubview:rotaryScrollView];
+}
+
 
 - (void)addSwipeArrows
 {
@@ -193,7 +218,7 @@ typedef void(^animationCompletionBlock)(void);
 {
     CGPoint translation = [recognizer translationInView:self.view];
     CGPoint velocity = [recognizer velocityInView:self.view];
-
+    
     if (translation.x < 0) {
         CGPoint arrowsCenter = arrowsGroup.center;
         arrowsCenter.x = MAX(arrowsCenter.x + (translation.x * LAYER1_LTR_MULT), ARROWS_LEFT_CENTER_X);
@@ -316,7 +341,9 @@ typedef void(^animationCompletionBlock)(void);
 
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
-
+    
+    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, [UIScreen mainScreen].bounds.size.height + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS - 1) * ROTARY_SCROLL_CONTENTSIZE_OFFSET))];
+    
     NSLog(@"Init with happy items: %@", happyItems);
 
     [self addButtons];
@@ -326,36 +353,37 @@ typedef void(^animationCompletionBlock)(void);
 {
     happyItemButtons = [[NSMutableArray alloc] init];
     
-    int counter = BUTTON_SLOTS;
+    int counter = 0;
     for (int i = (int)happyItems.count - 1; i >= 0; i--) {
         NSDictionary *happyItem;
 
         happyItem = [happyItems objectAtIndex:i];
 
-        KSTHappyTypeButton *happyItemButton = [self createAndPlaceHappyItemButtonWithData:happyItem andCenterPoint:CGPointZero andTag:i];
+        KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+
+        [happyItemButton setTag:i];
+        
+        [happyItemButton setCenter:CGPointMake(BUTTON_START_X, BUTTON_START_Y)];
+        
+        [rotaryScrollView addSubview:happyItemButton];
         
         [happyItemButtons insertObject:happyItemButton atIndex:0];
 
-        if (counter >= 0) {
+        if (counter <= ZERO_INDEXED_BUTTON_SLOTS) {
             [self moveHappyButton:happyItemButton toSlot:counter animate:YES];
         } else {
-            [self moveHappyButton:happyItemButton toSlot:-1 animate:NO];
+            [self moveHappyButton:happyItemButton toSlot:counter animate:NO];
         }
-        counter--;
+        counter++;
     }
-    
-    addButton = [[KSTAddButton alloc] init];
-
-    [addButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-
-    [homeView addSubview:addButton];
-    [self moveHappyButton:addButton toSlot:BUTTON_SLOTS + 1 animate:YES];
 }
 
+// FIXME: This method is no longer used by addButtons, but is used in the add new item implementation. Should be eventually removed when add functionality is done.
 - (KSTHappyTypeButton*)createAndPlaceHappyItemButtonWithData:(NSDictionary *)buttonData andCenterPoint:(CGPoint)center andTag:(int)tag
 {
     KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:buttonData[HAPPY_ITEM_KEY_TITLE] andImageName:buttonData[HAPPY_ITEM_KEY_IMAGEREF]];
-    
+
     [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
     
     if (!CGPointEqualToPoint(center, CGPointZero)) {
@@ -368,51 +396,64 @@ typedef void(^animationCompletionBlock)(void);
     
     [happyItemButton setTag:tag];
     
-    [homeView addSubview:happyItemButton];
+    [rotaryScrollView addSubview:happyItemButton];
     
     return happyItemButton;
 }
 
 - (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
-{
-    CGFloat endAngle;
+{   
+    double endAngleFromPositiveXAxis;
+    double endAngleFromPositiveYAxis;
     
     switch (slot) {
         case -1:
-            endAngle = DEGREES_TO_RADIANS(210);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(210);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(-30);
             break;
         case 0:
-            endAngle = DEGREES_TO_RADIANS(270);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(271.86572247);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(1.86572247);
             break;
         case 1:
-            endAngle = DEGREES_TO_RADIANS(300);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(308.3457734);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(38.3457734);
             break;
         case 2:
-            endAngle = DEGREES_TO_RADIANS(330);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(339.4257544);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(69.4257544);
             break;
         case 3:
-            endAngle = DEGREES_TO_RADIANS(0);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(5.3592566);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(95.3592566);
             break;
         case 4:
-            endAngle = DEGREES_TO_RADIANS(30);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(33.379242);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(123.379242);
             break;
         case 5:
-            endAngle = DEGREES_TO_RADIANS(60);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(66.79924);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(156.79924);
             break;
         case 6:
-            endAngle = DEGREES_TO_RADIANS(90);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(105.61925);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(195.61925);
             break;
         default:
-            endAngle = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            endAngleFromPositiveXAxis = DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE);
+            endAngleFromPositiveYAxis = DEGREES_TO_RADIANS(240);
             break;
     }
     
-    CGPoint endPoint = CGPointMake(X_POINT_ON_CIRCLE(CIRCLE_CENTER_X, CIRCLE_RADIUS, endAngle), Y_POINT_ON_CIRCLE(CIRCLE_CENTER_Y, CIRCLE_RADIUS, endAngle));
-
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform = CGAffineTransformRotate(transform, endAngleFromPositiveYAxis);
+    transform = CGAffineTransformTranslate(transform, 0, -CIRCLE_RADIUS);
+    transform = CGAffineTransformRotate(transform, -1 * endAngleFromPositiveYAxis);
+    
     if (animate) {
         CGMutablePathRef path = CGPathCreateMutable();
-        CGPathAddArc(path, NULL, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngle, YES);
-        CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
+
+        CGPathAddArc(path, NULL, CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y, CIRCLE_RADIUS, DEGREES_TO_RADIANS(CIRCLE_ANIMATION_START_DEGREE), endAngleFromPositiveXAxis, YES);
         
         CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
         
@@ -425,18 +466,26 @@ typedef void(^animationCompletionBlock)(void);
         pathAnimation.beginTime = CACurrentMediaTime() + ((slot + 1) * CIRCLE_ANIMATION_INTERVAL);
         
         animationCompletionBlock pathAnimationCompleteBlock = ^void(void) {
-            [button setCenter:endPoint];
+            [button setCenter:CGPointMake(CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y)];
+            [button setTransform:transform];
             [button.layer removeAnimationForKey:@"rotate"];
+            
+            if (slot == ZERO_INDEXED_BUTTON_SLOTS) {
+                [rotaryScrollView setContentOffset:CGPointMake(0, -ROTARY_SCROLL_CONTENTINSET)];
+                [rotaryScrollView setContentInset:UIEdgeInsetsMake(ROTARY_SCROLL_CONTENTINSET, 0, 0, 0)];
+            }
         };
+        
         [pathAnimation setValue:pathAnimationCompleteBlock forKey:kAnimationCompletionBlock];
 
         [pathAnimation setDelegate:self];
         
         CGPathRelease(path);
-        
+
         [button.layer addAnimation:pathAnimation forKey:@"rotate"];
     } else {
-        [button setCenter:endPoint];
+        [button setCenter:CGPointMake(CIRCLE_CENTER_X + BUTTON_X_CENTER_OFFSET, CIRCLE_CENTER_Y)];
+        [button setTransform:transform];
     }
 }
 
@@ -536,7 +585,7 @@ typedef void(^animationCompletionBlock)(void);
 {
     [addHappyItemField resignFirstResponder];
     [addHappyItemField removeFromSuperview];
-    [homeView addSubview:addButton];
+    [rotaryScrollView addSubview:addButton];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -551,7 +600,7 @@ typedef void(^animationCompletionBlock)(void);
     }
 
     [textField removeFromSuperview];
-    [homeView addSubview:addButton];
+    [rotaryScrollView addSubview:addButton];
 
     return YES;
 }
@@ -570,7 +619,7 @@ typedef void(^animationCompletionBlock)(void);
     [happyItems addObject:newHappyItem];
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
 
-    int counter = BUTTON_SLOTS;
+    int counter = ZERO_INDEXED_BUTTON_SLOTS;
     for (int i = (int)happyItemButtons.count - 1; i >= 0; i--) {
         [self moveHappyButton:happyItemButtons[i] toSlot:counter animate:NO];
         counter--;
