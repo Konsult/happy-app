@@ -11,7 +11,7 @@
 @interface KSTRotaryScrollView : UIScrollView
 
 {
-    CGPoint otherContentOffset;
+    CGPoint linearContentOffset;
 }
 
 @end

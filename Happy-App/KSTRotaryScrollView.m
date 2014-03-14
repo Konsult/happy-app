@@ -18,7 +18,7 @@
 // Rotation properties (editable)
 #define MULTIPLIER_BASE_ANGLE DEGREES_TO_RADIANS(25)
 #define MULTIPLER_COEFFICIENT 0.075f
-#define OPACITY_ANGLE_OFFSET 1
+#define HIDING_ANGLE_THRESHOLD 1
 
 // Enter/exit gradient properties (editable)
 #define ENDPOINT_X 1.0f
@@ -46,13 +46,13 @@
     self.alwaysBounceVertical = YES;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.bouncesZoom = NO;
-
-    CAGradientLayer *enterGradient = [CAGradientLayer layer];
-    enterGradient.frame = self.frame;
-    enterGradient.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:1.0f alpha:START_ALPHA].CGColor, (id)[UIColor colorWithWhite:1.0f alpha:END_ALPHA].CGColor, nil];
-    enterGradient.startPoint = CGPointMake(0.0f, 1.0f);
-    enterGradient.endPoint = CGPointMake(ENDPOINT_X, 1.0f);
-    self.layer.mask = enterGradient;
+    
+    CAGradientLayer *fadingMask = [CAGradientLayer layer];
+    fadingMask.frame = self.frame;
+    fadingMask.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:1.0f alpha:START_ALPHA].CGColor, (id)[UIColor colorWithWhite:1.0f alpha:END_ALPHA].CGColor, nil];
+    fadingMask.startPoint = CGPointMake(0.0f, 1.0f);
+    fadingMask.endPoint = CGPointMake(ENDPOINT_X, 1.0f);
+    self.layer.mask = fadingMask;
     
     return self;
 }
@@ -63,21 +63,23 @@
     return nil;
 }
 
+// To allow the native intertial bouncing, this is a hacky way to set the private contentOffset
 - (CGPoint)contentOffset
 {
-    return otherContentOffset;
+    return linearContentOffset;
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset
-{   
+{
     for (int i = 0; i < self.subviews.count; i++) {
         UIButton *button = self.subviews[i];
         
-        double calculatedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + i * BUTTON_RAD_INTERVAL;
+        double evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + i * BUTTON_RAD_INTERVAL;
         
-        double displayAngle = [self calculateDisplayAngleBasedOnCalculatedAngle:calculatedAngle AndMultiplerBaseAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
+        // Need to calcualte a displayAngle (different from evenlySpacedAngle) to prevent buttons' text from overlapping
+        double displayAngle = [self calculateDisplayAngleBasedOnCalculatedAngle:evenlySpacedAngle AndMultiplerBaseAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
 
-        if (displayAngle >= 0 - OPACITY_ANGLE_OFFSET && displayAngle <= M_PI + OPACITY_ANGLE_OFFSET) {
+        if (displayAngle >= -HIDING_ANGLE_THRESHOLD && displayAngle <= M_PI + HIDING_ANGLE_THRESHOLD) {
             [button.layer setOpacity:1];
         } else {
             [button.layer setOpacity:0];
@@ -91,19 +93,19 @@
         [button setTransform:transform];
     }
     
-    otherContentOffset = contentOffset;
+    linearContentOffset = contentOffset;
 }
 
-- (double)calculateDisplayAngleBasedOnCalculatedAngle:(double)calculatedAngle AndMultiplerBaseAngle:(double)multAngle AndMultipler:(float)multiplier
+- (double)calculateDisplayAngleBasedOnCalculatedAngle:(double)evenlySpacedAngle AndMultiplerBaseAngle:(double)multAngle AndMultipler:(float)multiplier
 {
     // The multAngle on horizontally mirrored quandrant of circle
     double inverseOfMultAngle = M_PI - multAngle;
     
     // The normalized distance from PI/2
-    double distanceFromPI_2N = (M_PI_2 - calculatedAngle) / M_PI_2;
+    double distanceFromPI_2N = (M_PI_2 - evenlySpacedAngle) / M_PI_2;
     
     // The normaled distance from the base angle
-    double distanceFromMultAngle = calculatedAngle > M_PI_2 ? (calculatedAngle - inverseOfMultAngle) / multAngle : (multAngle - calculatedAngle) / multAngle;
+    double distanceFromMultAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOfMultAngle) / multAngle : (multAngle - evenlySpacedAngle) / multAngle;
 
     // The final display angle difference from PI/2 normalized
     double displayAngleFromPI_2N = (1 + multiplier * distanceFromMultAngle) * distanceFromPI_2N;

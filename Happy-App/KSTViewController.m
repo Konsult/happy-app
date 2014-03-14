@@ -169,8 +169,12 @@ typedef void(^animationCompletionBlock)(void);
 
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
 {
-    CGPoint velocity = [gestureRecognizer velocityInView:self.view];
-    return fabs(velocity.y) < 100;
+    if ([self.view.gestureRecognizers containsObject:gestureRecognizer] && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint velocity = [gestureRecognizer velocityInView:self.view];
+        return fabs(velocity.y) < 100;
+    }
+    
+    return YES;
 }
 
 #pragma mark Helper methods
