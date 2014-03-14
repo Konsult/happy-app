@@ -98,17 +98,17 @@
 
 - (double)calculateDisplayAngleBasedOnEvenlySpacedAngle:(double)evenlySpacedAngle AndOffsetOriginAngle:(double)offsetOriginAngle AndMultipler:(float)multiplier
 {
-    // The multAngle mirrored over the horizontal axis
-    double inverseOfMultAngle = M_PI - offsetOriginAngle;
+    // The offsetOriginAngle mirrored over the horizontal axis
+    double inverseOffsetOriginAngle = M_PI - offsetOriginAngle;
     
     // The normalized distance from PI/2
     double distanceFromPI_2N = (M_PI_2 - evenlySpacedAngle) / M_PI_2;
     
     // The normaled distance from the base angle
-    double distanceFromMultAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOfMultAngle) / offsetOriginAngle : (offsetOriginAngle - evenlySpacedAngle) / offsetOriginAngle;
+    double distanceFromOffsetOriginAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOffsetOriginAngle) / offsetOriginAngle : (offsetOriginAngle - evenlySpacedAngle) / offsetOriginAngle;
 
     // The final display angle difference from PI/2 normalized
-    double displayAngleFromPI_2N = (1 + multiplier * distanceFromMultAngle) * distanceFromPI_2N;
+    double displayAngleFromPI_2N = (1 + multiplier * distanceFromOffsetOriginAngle) * distanceFromPI_2N;
     
     // The final display angle denormalized
     double displayAngleFromPI_2 = displayAngleFromPI_2N * M_PI_2;
