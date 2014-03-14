@@ -86,6 +86,7 @@ you happy?</string>
                         <outlet property="blurImageView" destination="3AS-Xg-GQN" id="vwl-jE-sbE"/>
                         <outlet property="containerView" destination="Fu7-xQ-jg0" id="3tf-Cg-P9I"/>
                         <outlet property="dateLabel" destination="DJD-Iv-SQB" id="8vp-uZ-QUO"/>
+                        <outlet property="graphLabel" destination="uj5-IV-5d3" id="oJg-St-cNQ"/>
                         <outlet property="graphScrollView" destination="CeN-eX-c6V" id="fVX-TJ-chK"/>
                         <outlet property="graphView" destination="NSs-ES-TNl" id="SL2-xk-96k"/>
                         <outlet property="homeView" destination="wtE-W3-gjX" id="XWK-5O-unX"/>

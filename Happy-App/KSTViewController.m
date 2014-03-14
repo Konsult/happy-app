@@ -636,10 +636,12 @@ typedef void(^animationCompletionBlock)(void);
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.contentSize.height);
 
+    double height = [UIScreen mainScreen].bounds.size.height - (graphLabel.frame.origin.y + graphLabel.frame.size.height + 20);
+    
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
-        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithHeight:height andTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
 
         [graphScrollView addSubview:happyItemBarView];
 

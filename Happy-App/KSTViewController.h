@@ -24,6 +24,7 @@
     __weak IBOutlet UIView *homeView;
     __weak IBOutlet UIView *graphView;
     __weak IBOutlet UIScrollView *graphScrollView;
+    __weak IBOutlet UILabel *graphLabel;
     UIControl *arrowsGroup;
     BOOL canSlideToRightView;
     BOOL canSlideToLeftView;

@@ -8,11 +8,7 @@
 
 #import "KSTBarGraphItem.h"
 
-#define SCREEN_HEIGHT 568
-#define SCREEN_WIDTH 320
 #define BAR_WIDTH 50
-#define BAR_VIEW_HEIGHT 450
-#define BAR_GRAPH_MAX_HEIGHT 360
 #define ICON_LABEL_HEIGHT 40
 #define ICON_HEIGHT_WIDTH 50
 #define ICON_LABEL_FONT_SIZE 12.0f
@@ -32,16 +28,16 @@
     return nil;
 }
 
-- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
+- (id)initWithHeight:(float)height andTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
 {
-    self = [super initWithFrame:CGRectMake(SCREEN_WIDTH + BAR_WIDTH, SCREEN_HEIGHT - BAR_VIEW_HEIGHT, BAR_WIDTH, BAR_VIEW_HEIGHT)];
+    self = [super initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width + BAR_WIDTH, [UIScreen mainScreen].bounds.size.height - height, BAR_WIDTH, height)];
     if (!self) {
         return nil;
     }
     
     value = barValue;
     
-    UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT, BAR_WIDTH, ICON_LABEL_HEIGHT)];
+    UILabel *happyItemLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height - ICON_LABEL_HEIGHT, BAR_WIDTH, ICON_LABEL_HEIGHT)];
     [happyItemLabel setText:title];
     [happyItemLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:ICON_LABEL_FONT_SIZE]];
     [happyItemLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -52,7 +48,7 @@
     [self addSubview:happyItemLabel];
     
     UIImage *circleIcon = [UIImage imageNamed:imageName];
-    UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH)];
+    UIImageView *circleIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, height - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH)];
     [circleIconView setImage:circleIcon];
     
     [self addSubview:circleIconView];
@@ -91,21 +87,21 @@
 
     int max = [maxValue intValue];
     
-    UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, BAR_WIDTH, 0)];
+    UIView *rectangle = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, BAR_WIDTH, 0)];
     [rectangle setBackgroundColor:[UIColor whiteColor]];
     rectangle.alpha = BAR_ALPHA;
     
     [self addSubview:rectangle];
     
     UIImage *graphBarBottom = [UIImage imageNamed:GRAPH_BAR_BOTTOM_IMG];
-    UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(0, BAR_VIEW_HEIGHT - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH / 2)];
+    UIImageView *graphBarBottomView = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH, ICON_HEIGHT_WIDTH / 2)];
     [graphBarBottomView setImage:graphBarBottom];
     
     CGRect frame = rectangle.frame;
-    float height = BAR_GRAPH_MAX_HEIGHT * ([value floatValue] / (float)max);
+    float height = self.frame.size.height - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH * ([value floatValue] / (float)max);
     if (height > 0) {
         frame.size.height = height;
-        frame.origin.y = BAR_GRAPH_MAX_HEIGHT - height;
+        frame.origin.y = self.frame.size.height - ICON_LABEL_HEIGHT - ICON_HEIGHT_WIDTH - height;
     }
     
     CGRect labelRect = CGRectMake(0, 0, BAR_WIDTH, GRAPH_LABEL_HEIGHT);

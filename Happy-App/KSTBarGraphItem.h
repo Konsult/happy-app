@@ -13,7 +13,7 @@
     NSNumber* value;
 }
 
-- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)value;
+- (id)initWithHeight:(float)height andTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)value;
 
 - (void)slideInBarToCenterPoint:(NSValue *)centerPointValue;
 
