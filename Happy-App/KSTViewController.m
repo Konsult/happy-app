@@ -86,7 +86,7 @@ typedef void(^animationCompletionBlock)(void);
 #define ARROWS_RIGHT_CENTER_X ARROWS_RIGHT_X + (ARROWS_HEIGHT_WIDTH / 2)
 #define ARROWS_LEFT_X 15
 #define ARROWS_LEFT_CENTER_X ARROWS_LEFT_X + (ARROWS_HEIGHT_WIDTH / 2)
-#define ARROWS_TRAVEL_DISTANCE 245
+#define ARROWS_TRAVEL_DISTANCE 245.0
 #define ARROWS_PADDING 15
 
 // Scroll arrows animation options
@@ -225,10 +225,6 @@ typedef void(^animationCompletionBlock)(void);
     CGPoint velocity = [recognizer velocityInView:self.view];
     
     if (translation.x < 0) {
-        CGAffineTransform currentTransform = arrowsGroup.transform;
-        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
-        [arrowsGroup setTransform:newTransform];
-
         CGPoint arrowsCenter = arrowsGroup.center;
         arrowsCenter.x = MAX(arrowsCenter.x + (translation.x * LAYER1_LTR_MULT), ARROWS_LEFT_CENTER_X);
         [arrowsGroup setCenter:arrowsCenter];
@@ -240,10 +236,6 @@ typedef void(^animationCompletionBlock)(void);
         // FIXME: These translation multipliers do not give proper parallax effect.
         // Need to readjust BG sizes or find better way to move back to home view
 
-        CGAffineTransform currentTransform = arrowsGroup.transform;
-        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform, DEGREES_TO_RADIANS((translation.x / ARROWS_TRAVEL_DISTANCE) * 180.0));
-        [arrowsGroup setTransform:newTransform];
-
         CGPoint arrowsCenter = arrowsGroup.center;
         arrowsCenter.x = MIN(arrowsCenter.x + (translation.x * LAYER1_RTL_MULT), ARROWS_RIGHT_CENTER_X);
         [arrowsGroup setCenter:arrowsCenter];
@@ -252,6 +244,10 @@ typedef void(^animationCompletionBlock)(void);
         [blurImageView setFrame:CGRectMake(MIN(blurImageView.frame.origin.x + translation.x * LAYER2_RTL_MULT, 0), 0, BG_WIDTH, CONTAINER_HEIGHT)];
         [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * LAYER1_RTL_MULT, 0), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
     }
+    
+    double newAngle = DEGREES_TO_RADIANS((ARROWS_TRAVEL_DISTANCE / self.view.window.frame.size.width) * containerView.frame.origin.x / ARROWS_TRAVEL_DISTANCE * 180);
+    CGAffineTransform arrowsTransform = CGAffineTransformMakeRotation(newAngle);
+    [arrowsGroup setTransform:arrowsTransform];
     
     // reset translation to 0 for next move
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -293,6 +289,12 @@ typedef void(^animationCompletionBlock)(void);
 
 -(void)slideToView
 {
+    // Autoscroll graphview to front before sliding
+    if (graphScrollView.contentOffset.x > 0) {
+        [graphScrollView setContentOffset:CGPointZero animated:YES];
+        return;
+    }
+
     if (canSlideToRightView) {
         // sliding to graph
         [UIView animateWithDuration:SWIPE_ANIM_DUR animations:^{
@@ -679,6 +681,11 @@ typedef void(^animationCompletionBlock)(void);
 - (void)panScrollView:(KSTPanningScrollView *)view
 {
     [self slideViewWithPan:view.panGestureRecognizer];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self slideToView];
 }
 
 @end
