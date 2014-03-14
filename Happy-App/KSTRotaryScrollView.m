@@ -46,6 +46,13 @@
     self.alwaysBounceVertical = YES;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.bouncesZoom = NO;
+
+    // Detect if screen is iPhone4
+    if ([UIScreen mainScreen].bounds.size.height == 480.0) {
+        self.panGestureRecognizer.enabled = NO;
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(manualScroll:)];
+        [self addGestureRecognizer:panRecognizer];
+    }
     
     CAGradientLayer *fadingMask = [CAGradientLayer layer];
     fadingMask.frame = self.frame;
@@ -117,6 +124,25 @@
     double displayAngle = M_PI_2 - displayAngleFromPI_2;
     
     return displayAngle;
+}
+
+// If phone is iPhone4, we degrade to manual scrolling
+- (void)manualScroll:(UIPanGestureRecognizer *)recognizer
+{
+    CGPoint translation = [recognizer translationInView:self];
+    
+    double maxContentOffset = (self.subviews.count - 5) * 28;
+    
+    double newY;
+    if (translation.y >= 0) {
+        newY = MAX(-6.5, linearContentOffset.y - translation.y);
+    } else {
+        newY = MIN(maxContentOffset, linearContentOffset.y - translation.y);
+    }
+    
+    [self setContentOffset:CGPointMake(0, newY)];
+    
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self];
 }
 
 @end
