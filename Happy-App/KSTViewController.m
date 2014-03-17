@@ -60,7 +60,7 @@
 #define BUTTON_CIRCLE_OFFSET DEGREES_TO_RADIANS(BUTTON_DEGREE_INTERVAL)
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
-#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 23.0f
+#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 22.5f
 #define ROTARY_SCROLL_CONTENTINSET 6.5
 #define kAnimationCompletionBlock @"animationCompletionBlock"
 typedef void(^animationCompletionBlock)(void);
@@ -343,7 +343,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setScrollViewContentSizeBasedOnSubviewCount:(int)happyItems.count viewableCount:VIEWABLE_BUTTON_COUNT andSizeInterval:22.5f];
+    [rotaryScrollView setScrollViewContentSizeBasedOnSubviewCount:(int)happyItems.count viewableCount:VIEWABLE_BUTTON_COUNT andSizeInterval:ROTARY_SCROLL_CONTENTSIZE_OFFSET];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
@@ -472,7 +472,11 @@ typedef void(^animationCompletionBlock)(void);
             [button.layer removeAnimationForKey:@"rotate"];
             
             if (slot == ZERO_INDEXED_BUTTON_SLOTS) {
+                // Setting contentInset prevents top button from moving too far
                 [rotaryScrollView setScrollViewContentInset:UIEdgeInsetsMake(ROTARY_SCROLL_CONTENTINSET, 0, 0, 0)];
+                // Setting contentOffset prevents top button from quickly moving
+                // off screen on initial scroll when contentOffset get's set to 0
+                [rotaryScrollView setScrollViewContentOffset:CGPointMake(0, -ROTARY_SCROLL_CONTENTINSET)];
             }
         };
         

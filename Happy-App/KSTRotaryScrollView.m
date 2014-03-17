@@ -97,9 +97,8 @@
     for (int i = 1; i < self.subviews.count; i++) {
         UIView *view = self.subviews[i];
         
-        int interval =  i - 1;
-        
-        float evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + interval * BUTTON_RAD_INTERVAL;
+        // Subtract i by 1 to make it 0-indexed for calculations
+        float evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + (i - 1) * BUTTON_RAD_INTERVAL;
         
         // Need to calcualte a displayAngle (different from evenlySpacedAngle) to prevent buttons' text from overlapping
         float displayAngle = [self calculateDisplayAngleBasedOnEvenlySpacedAngle:evenlySpacedAngle AndOffsetOriginAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
