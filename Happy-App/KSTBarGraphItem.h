@@ -10,10 +10,10 @@
 
 @interface KSTBarGraphItem : UIView
 {
-    NSNumber* value;
+    int value;
 }
 
-- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)value;
+- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(int)value;
 
 - (void)slideInBarToCenterPoint:(NSValue *)centerPointValue;
 
