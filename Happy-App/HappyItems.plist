@@ -6,7 +6,7 @@
 		<key>dates</key>
 		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>Sleeping</string>
 		<key>imageRef</key>
 		<string>ButtonWeather</string>
 	</dict>
@@ -14,13 +14,13 @@
 		<key>dates</key>
 		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>Working Out</string>
 		<key>imageRef</key>
 		<string>ButtonWeather</string>
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>Good Food</string>
 		<key>dates</key>
 		<array/>
 		<key>imageRef</key>
@@ -28,7 +28,7 @@
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>Being Alive</string>
 		<key>dates</key>
 		<array/>
 		<key>imageRef</key>
@@ -36,7 +36,7 @@
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Family</string>
 		<key>dates</key>
 		<array/>
 		<key>imageRef</key>
@@ -46,7 +46,7 @@
 		<key>dates</key>
 		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Lover</string>
 		<key>imageRef</key>
 		<string>ButtonLover</string>
 	</dict>
@@ -54,7 +54,7 @@
 		<key>dates</key>
 		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Work</string>
 		<key>imageRef</key>
 		<string>ButtonWork</string>
 	</dict>
@@ -62,7 +62,7 @@
 		<key>dates</key>
 		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Hobbies</string>
 		<key>imageRef</key>
 		<string>ButtonHobbies</string>
 	</dict>
