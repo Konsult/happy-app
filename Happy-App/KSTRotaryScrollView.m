@@ -75,7 +75,7 @@
 
 - (void)setScrollViewContentSizeBasedOnSubviewCount:(int)count viewableCount:(int)viewableCount andSizeInterval:(float)interval
 {
-    [_scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height + ((count - viewableCount) * interval))];
+    [_scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height + ((count - (viewableCount - 1)) * interval))];
     
     [self bringSubviewToFront:_scrollView];
 }

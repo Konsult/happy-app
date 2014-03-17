@@ -40,6 +40,7 @@
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
 #define ZERO_INDEXED_BUTTON_SLOTS 6
+#define VIEWABLE_BUTTON_COUNT [UIScreen mainScreen].bounds.size.height < 481.0f ?5 : 7
 
 // Add properties
 #define TEXT_FIELD_WIDTH 296
@@ -342,7 +343,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setScrollViewContentSizeBasedOnSubviewCount:(int)happyItems.count viewableCount:ZERO_INDEXED_BUTTON_SLOTS andSizeInterval:22.0f];
+    [rotaryScrollView setScrollViewContentSizeBasedOnSubviewCount:(int)happyItems.count viewableCount:VIEWABLE_BUTTON_COUNT andSizeInterval:22.5f];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
