@@ -125,23 +125,23 @@
 		EE538EC718BEB3B9004DA42D /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 		EE538EC918BFC2DD004DA42D /* KSTAddButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTAddButton.h; sourceTree = "<group>"; };
 		EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTAddButton.m; sourceTree = "<group>"; };
-		EE845D2618A988C800431CBC /* Happy-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE845D2618A988C800431CBC /* Think Happy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Think Happy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D2918A988C800431CBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE845D2B18A988C800431CBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		EE845D2D18A988C800431CBC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		EE845D3118A988C800431CBC /* Happy-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Happy-App-Info.plist"; sourceTree = "<group>"; };
+		EE845D3118A988C800431CBC /* Think Happy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Think Happy-Info.plist"; sourceTree = "<group>"; };
 		EE845D3318A988C800431CBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EE845D3518A988C800431CBC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		EE845D3718A988C800431CBC /* Happy-App-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Happy-App-Prefix.pch"; sourceTree = "<group>"; };
+		EE845D3718A988C800431CBC /* Think Happy-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Think Happy-Prefix.pch"; sourceTree = "<group>"; };
 		EE845D3818A988C800431CBC /* KSTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSTAppDelegate.h; sourceTree = "<group>"; };
 		EE845D3918A988C800431CBC /* KSTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSTAppDelegate.m; sourceTree = "<group>"; };
 		EE845D3C18A988C800431CBC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EE845D3E18A988C800431CBC /* KSTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSTViewController.h; sourceTree = "<group>"; };
 		EE845D3F18A988C800431CBC /* KSTViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSTViewController.m; sourceTree = "<group>"; };
 		EE845D4118A988C800431CBC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		EE845D4718A988C800431CBC /* Happy-AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Happy-AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE845D4718A988C800431CBC /* Think HappyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Think HappyTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE845D4818A988C800431CBC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		EE845D5018A988C800431CBC /* Happy-AppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Happy-AppTests-Info.plist"; sourceTree = "<group>"; };
+		EE845D5018A988C800431CBC /* Think HappyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Think HappyTests-Info.plist"; sourceTree = "<group>"; };
 		EE845D5218A988C800431CBC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EE845D5418A988C800431CBC /* Happy_AppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Happy_AppTests.m; sourceTree = "<group>"; };
 		EE9A2F2518A9AE2F0027D29B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -236,8 +236,8 @@
 		EE845D2718A988C800431CBC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EE845D2618A988C800431CBC /* Happy-App.app */,
-				EE845D4718A988C800431CBC /* Happy-AppTests.xctest */,
+				EE845D2618A988C800431CBC /* Think Happy.app */,
+				EE845D4718A988C800431CBC /* Think HappyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -284,10 +284,10 @@
 			isa = PBXGroup;
 			children = (
 				EE538EC718BEB3B9004DA42D /* HappyItems.plist */,
-				EE845D3118A988C800431CBC /* Happy-App-Info.plist */,
+				EE845D3118A988C800431CBC /* Think Happy-Info.plist */,
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
-				EE845D3718A988C800431CBC /* Happy-App-Prefix.pch */,
+				EE845D3718A988C800431CBC /* Think Happy-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -304,7 +304,7 @@
 		EE845D4F18A988C800431CBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				EE845D5018A988C800431CBC /* Happy-AppTests-Info.plist */,
+				EE845D5018A988C800431CBC /* Think HappyTests-Info.plist */,
 				EE845D5118A988C800431CBC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -313,9 +313,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EE845D2518A988C800431CBC /* Happy-App */ = {
+		EE845D2518A988C800431CBC /* Think Happy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EE845D5818A988C800431CBC /* Build configuration list for PBXNativeTarget "Happy-App" */;
+			buildConfigurationList = EE845D5818A988C800431CBC /* Build configuration list for PBXNativeTarget "Think Happy" */;
 			buildPhases = (
 				EE845D2218A988C800431CBC /* Sources */,
 				EE845D2318A988C800431CBC /* Frameworks */,
@@ -325,14 +325,14 @@
 			);
 			dependencies = (
 			);
-			name = "Happy-App";
+			name = "Think Happy";
 			productName = "Happy-App";
-			productReference = EE845D2618A988C800431CBC /* Happy-App.app */;
+			productReference = EE845D2618A988C800431CBC /* Think Happy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EE845D4618A988C800431CBC /* Happy-AppTests */ = {
+		EE845D4618A988C800431CBC /* Think HappyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EE845D5B18A988C800431CBC /* Build configuration list for PBXNativeTarget "Happy-AppTests" */;
+			buildConfigurationList = EE845D5B18A988C800431CBC /* Build configuration list for PBXNativeTarget "Think HappyTests" */;
 			buildPhases = (
 				EE845D4318A988C800431CBC /* Sources */,
 				EE845D4418A988C800431CBC /* Frameworks */,
@@ -343,9 +343,9 @@
 			dependencies = (
 				EE845D4D18A988C800431CBC /* PBXTargetDependency */,
 			);
-			name = "Happy-AppTests";
+			name = "Think HappyTests";
 			productName = "Happy-AppTests";
-			productReference = EE845D4718A988C800431CBC /* Happy-AppTests.xctest */;
+			productReference = EE845D4718A988C800431CBC /* Think HappyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -363,7 +363,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EE845D2118A988C800431CBC /* Build configuration list for PBXProject "Happy-App" */;
+			buildConfigurationList = EE845D2118A988C800431CBC /* Build configuration list for PBXProject "Think Happy" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -376,8 +376,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EE845D2518A988C800431CBC /* Happy-App */,
-				EE845D4618A988C800431CBC /* Happy-AppTests */,
+				EE845D2518A988C800431CBC /* Think Happy */,
+				EE845D4618A988C800431CBC /* Think HappyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -469,7 +469,7 @@
 /* Begin PBXTargetDependency section */
 		EE845D4D18A988C800431CBC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = EE845D2518A988C800431CBC /* Happy-App */;
+			target = EE845D2518A988C800431CBC /* Think Happy */;
 			targetProxy = EE845D4C18A988C800431CBC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -537,6 +537,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -569,6 +570,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -580,9 +582,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Happy-App/Happy-App-Prefix.pch";
-				INFOPLIST_FILE = "Happy-App/Happy-App-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Happy-App/Think Happy-Prefix.pch";
+				INFOPLIST_FILE = "Happy-App/Think Happy-Info.plist";
+				PRODUCT_NAME = "Think Happy";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -593,9 +595,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Happy-App/Happy-App-Prefix.pch";
-				INFOPLIST_FILE = "Happy-App/Happy-App-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Happy-App/Think Happy-Prefix.pch";
+				INFOPLIST_FILE = "Happy-App/Think Happy-Info.plist";
+				PRODUCT_NAME = "Think Happy";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -616,8 +618,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Happy-AppTests/Happy-AppTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "Happy-AppTests/Think HappyTests-Info.plist";
+				PRODUCT_NAME = "Think HappyTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -635,8 +637,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Happy-App/Happy-App-Prefix.pch";
-				INFOPLIST_FILE = "Happy-AppTests/Happy-AppTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "Happy-AppTests/Think HappyTests-Info.plist";
+				PRODUCT_NAME = "Think HappyTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -645,7 +647,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EE845D2118A988C800431CBC /* Build configuration list for PBXProject "Happy-App" */ = {
+		EE845D2118A988C800431CBC /* Build configuration list for PBXProject "Think Happy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EE845D5618A988C800431CBC /* Debug */,
@@ -654,7 +656,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EE845D5818A988C800431CBC /* Build configuration list for PBXNativeTarget "Happy-App" */ = {
+		EE845D5818A988C800431CBC /* Build configuration list for PBXNativeTarget "Think Happy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EE845D5918A988C800431CBC /* Debug */,
@@ -663,7 +665,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EE845D5B18A988C800431CBC /* Build configuration list for PBXNativeTarget "Happy-AppTests" */ = {
+		EE845D5B18A988C800431CBC /* Build configuration list for PBXNativeTarget "Think HappyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EE845D5C18A988C800431CBC /* Debug */,
