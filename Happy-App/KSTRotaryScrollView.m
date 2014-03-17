@@ -36,16 +36,26 @@
 - (id)init
 {
     self = [super initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    self.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    self.maximumZoomScale = 1;
-    self.minimumZoomScale = 1;
-    self.showsHorizontalScrollIndicator = NO;
-    self.showsVerticalScrollIndicator = NO;
-    self.directionalLockEnabled = YES;
-    self.alwaysBounceHorizontal = NO;
-    self.alwaysBounceVertical = YES;
-    self.decelerationRate = UIScrollViewDecelerationRateFast;
-    self.bouncesZoom = NO;
+
+    if (!self)
+        return nil;
+
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    
+    _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    _scrollView.maximumZoomScale = 1;
+    _scrollView.minimumZoomScale = 1;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.directionalLockEnabled = YES;
+    _scrollView.alwaysBounceHorizontal = NO;
+    _scrollView.alwaysBounceVertical = YES;
+    _scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
+    _scrollView.bouncesZoom = NO;
+    
+    _scrollView.delegate = self;
+    
+    [self addSubview:_scrollView];
     
     CAGradientLayer *fadingMask = [CAGradientLayer layer];
     fadingMask.frame = self.frame;
@@ -53,7 +63,7 @@
     fadingMask.startPoint = CGPointMake(0.0f, 1.0f);
     fadingMask.endPoint = CGPointMake(ENDPOINT_X, 1.0f);
     self.layer.mask = fadingMask;
-    
+
     return self;
 }
 
@@ -63,26 +73,41 @@
     return nil;
 }
 
-// To allow the native intertial bouncing, this is a hacky way to set the private contentOffset
-- (CGPoint)contentOffset
+- (void)setScrollViewContentSizeBasedOnSubviewCount:(int)count viewableCount:(int)viewableCount andSizeInterval:(float)interval
 {
-    return linearContentOffset;
+    [_scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height + ((count - viewableCount) * interval))];
+    
+    [self bringSubviewToFront:_scrollView];
 }
 
-- (void)setContentOffset:(CGPoint)contentOffset
+- (void)setScrollViewContentOffset:(CGPoint)contentOffset
 {
-    for (int i = 0; i < self.subviews.count; i++) {
-        UIButton *button = self.subviews[i];
+    [_scrollView setContentOffset:contentOffset];
+}
+
+- (void)setScrollViewContentInset:(UIEdgeInsets)contentInset
+{
+    [_scrollView setContentInset:contentInset];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint contentOffset = _scrollView.contentOffset;
+
+    for (int i = 1; i < self.subviews.count; i++) {
+        UIView *view = self.subviews[i];
         
-        double evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + i * BUTTON_RAD_INTERVAL;
+        int interval =  i - 1;
+        
+        float evenlySpacedAngle = -1 * DEGREES_TO_RADIANS(contentOffset.y) + interval * BUTTON_RAD_INTERVAL;
         
         // Need to calcualte a displayAngle (different from evenlySpacedAngle) to prevent buttons' text from overlapping
-        double displayAngle = [self calculateDisplayAngleBasedOnEvenlySpacedAngle:evenlySpacedAngle AndOffsetOriginAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
-
+        float displayAngle = [self calculateDisplayAngleBasedOnEvenlySpacedAngle:evenlySpacedAngle AndOffsetOriginAngle:MULTIPLIER_BASE_ANGLE AndMultipler:MULTIPLER_COEFFICIENT];
+        
         if (displayAngle >= -HIDING_ANGLE_THRESHOLD && displayAngle <= M_PI + HIDING_ANGLE_THRESHOLD) {
-            [button.layer setOpacity:1];
+            [view.layer setOpacity:1];
         } else {
-            [button.layer setOpacity:0];
+            [view.layer setOpacity:0];
         }
         
         CGAffineTransform transform = CGAffineTransformIdentity;
@@ -90,31 +115,30 @@
         transform = CGAffineTransformTranslate(transform, 0, -CIRCLE_RADIUS);
         transform = CGAffineTransformRotate(transform, -displayAngle);
         
-        [button setTransform:transform];
+        [view setTransform:transform];
     }
     
-    linearContentOffset = contentOffset;
 }
 
-- (double)calculateDisplayAngleBasedOnEvenlySpacedAngle:(double)evenlySpacedAngle AndOffsetOriginAngle:(double)offsetOriginAngle AndMultipler:(float)multiplier
+- (float)calculateDisplayAngleBasedOnEvenlySpacedAngle:(float)evenlySpacedAngle AndOffsetOriginAngle:(float)offsetOriginAngle AndMultipler:(float)multiplier
 {
     // The offsetOriginAngle mirrored over the horizontal axis
-    double inverseOffsetOriginAngle = M_PI - offsetOriginAngle;
+    float inverseOffsetOriginAngle = M_PI - offsetOriginAngle;
     
     // The normalized distance from PI/2
-    double distanceFromPI_2N = (M_PI_2 - evenlySpacedAngle) / M_PI_2;
+    float distanceFromPI_2N = (M_PI_2 - evenlySpacedAngle) / M_PI_2;
     
     // The normaled distance from the base angle
-    double distanceFromOffsetOriginAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOffsetOriginAngle) / offsetOriginAngle : (offsetOriginAngle - evenlySpacedAngle) / offsetOriginAngle;
+    float distanceFromOffsetOriginAngle = evenlySpacedAngle > M_PI_2 ? (evenlySpacedAngle - inverseOffsetOriginAngle) / offsetOriginAngle : (offsetOriginAngle - evenlySpacedAngle) / offsetOriginAngle;
 
     // The final display angle difference from PI/2 normalized
-    double displayAngleFromPI_2N = (1 + multiplier * distanceFromOffsetOriginAngle) * distanceFromPI_2N;
+    float displayAngleFromPI_2N = (1 + multiplier * distanceFromOffsetOriginAngle) * distanceFromPI_2N;
     
     // The final display angle denormalized
-    double displayAngleFromPI_2 = displayAngleFromPI_2N * M_PI_2;
+    float displayAngleFromPI_2 = displayAngleFromPI_2N * M_PI_2;
     
     // The final display angle with respect to vertical origin
-    double displayAngle = M_PI_2 - displayAngleFromPI_2;
+    float displayAngle = M_PI_2 - displayAngleFromPI_2;
     
     return displayAngle;
 }

@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KSTRotaryScrollView : UIScrollView
-
+@interface KSTRotaryScrollView : UIView <UIScrollViewDelegate>
 {
     CGPoint linearContentOffset;
+    UIScrollView *_scrollView;
 }
+
+- (void)setScrollViewContentSizeBasedOnSubviewCount:(int)count viewableCount:(int)viewableCount andSizeInterval:(float)interval;
+
+- (void)setScrollViewContentOffset:(CGPoint)contentOffset;
+
+- (void)setScrollViewContentInset:(UIEdgeInsets)contentInset;
 
 @end
