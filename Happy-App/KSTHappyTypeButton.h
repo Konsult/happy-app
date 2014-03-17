@@ -15,4 +15,6 @@
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName;
 
+- (void)highlightIconView;
+
 @end

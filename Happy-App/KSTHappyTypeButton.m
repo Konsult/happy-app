@@ -60,6 +60,11 @@
     return self;
 }
 
+- (void)highlightIconView
+{
+    iconView.highlighted = YES;
+}
+
 @end
 
 @implementation KSTHappyTypeButton (Private)
