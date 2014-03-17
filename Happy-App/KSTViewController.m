@@ -40,6 +40,7 @@
 #define BUTTON_START_X -150
 #define BUTTON_START_Y 200
 #define ZERO_INDEXED_BUTTON_SLOTS 6
+#define VIEWABLE_BUTTON_COUNT [UIScreen mainScreen].bounds.size.height < 481.0f ?5 : 7
 
 // Add properties
 #define TEXT_FIELD_WIDTH 296
@@ -59,7 +60,7 @@
 #define BUTTON_CIRCLE_OFFSET DEGREES_TO_RADIANS(BUTTON_DEGREE_INTERVAL)
 #define CIRCLE_ANIMATION_START_DEGREE 140
 #define CIRCLE_ANIMATION_END_DEGREE 270
-#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 33
+#define ROTARY_SCROLL_CONTENTSIZE_OFFSET 22.5f
 #define ROTARY_SCROLL_CONTENTINSET 6.5
 #define kAnimationCompletionBlock @"animationCompletionBlock"
 typedef void(^animationCompletionBlock)(void);
@@ -240,7 +241,7 @@ typedef void(^animationCompletionBlock)(void);
         [containerView setFrame:CGRectMake(MIN(containerView.frame.origin.x + translation.x * LAYER1_RTL_MULT, 0), 0, CONTAINER_WIDTH, CONTAINER_HEIGHT)];
     }
     
-    double newAngle = DEGREES_TO_RADIANS((ARROWS_TRAVEL_DISTANCE / self.view.window.frame.size.width) * containerView.frame.origin.x / ARROWS_TRAVEL_DISTANCE * 180);
+    float newAngle = DEGREES_TO_RADIANS((ARROWS_TRAVEL_DISTANCE / [UIScreen mainScreen].bounds.size.width) * containerView.frame.origin.x / ARROWS_TRAVEL_DISTANCE * 180);
     CGAffineTransform arrowsTransform = CGAffineTransformMakeRotation(newAngle);
     [arrowsGroup setTransform:arrowsTransform];
     
@@ -342,7 +343,7 @@ typedef void(^animationCompletionBlock)(void);
     NSMutableArray *happyItemsArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
     happyItems = happyItemsArray;
     
-    [rotaryScrollView setContentSize:CGSizeMake(SCREEN_WIDTH, [UIScreen mainScreen].bounds.size.height + ((happyItems.count - ZERO_INDEXED_BUTTON_SLOTS - 1) * ROTARY_SCROLL_CONTENTSIZE_OFFSET))];
+    [rotaryScrollView setScrollViewContentSizeBasedOnSubviewCount:(int)happyItems.count viewableCount:VIEWABLE_BUTTON_COUNT andSizeInterval:ROTARY_SCROLL_CONTENTSIZE_OFFSET];
     
     NSLog(@"Init with happy items: %@", happyItems);
 
@@ -403,8 +404,8 @@ typedef void(^animationCompletionBlock)(void);
 
 - (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
 {   
-    double endAngleFromPositiveXAxis;
-    double endAngleFromPositiveYAxis;
+    float endAngleFromPositiveXAxis;
+    float endAngleFromPositiveYAxis;
     
     switch (slot) {
         case -1:
@@ -471,8 +472,11 @@ typedef void(^animationCompletionBlock)(void);
             [button.layer removeAnimationForKey:@"rotate"];
             
             if (slot == ZERO_INDEXED_BUTTON_SLOTS) {
-                [rotaryScrollView setContentOffset:CGPointMake(0, -ROTARY_SCROLL_CONTENTINSET)];
-                [rotaryScrollView setContentInset:UIEdgeInsetsMake(ROTARY_SCROLL_CONTENTINSET, 0, 0, 0)];
+                // Setting contentInset prevents top button from moving too far
+                [rotaryScrollView setScrollViewContentInset:UIEdgeInsetsMake(ROTARY_SCROLL_CONTENTINSET, 0, 0, 0)];
+                // Setting contentOffset prevents top button from quickly moving
+                // off screen on initial scroll when contentOffset get's set to 0
+                [rotaryScrollView setScrollViewContentOffset:CGPointMake(0, -ROTARY_SCROLL_CONTENTINSET)];
             }
         };
         
