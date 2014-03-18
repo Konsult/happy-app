@@ -667,7 +667,7 @@ typedef void(^animationCompletionBlock)(void);
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
         NSArray *happyItemDates = happyItem[HAPPY_ITEM_KEY_DATES];
-        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItemDates.count];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:(int)happyItemDates.count];
 
         [graphScrollView addSubview:happyItemBarView];
 
@@ -691,7 +691,7 @@ typedef void(^animationCompletionBlock)(void);
         NSArray *happyItemDates = item[HAPPY_ITEM_KEY_DATES];
 
         if (happyItemDates.count > max) {
-            max = happyItemDates.count;
+            max = (int)happyItemDates.count;
         }
     }
 
