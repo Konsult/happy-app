@@ -11,12 +11,14 @@
 #import "KSTRotaryScrollView.h"
 #import "KSTPanningScrollView.h"
 
-@interface KSTViewController : UIViewController <UIGestureRecognizerDelegate, KSTPanningScrollViewDelegate, UITextFieldDelegate>
+@interface KSTViewController : UIViewController <UIGestureRecognizerDelegate, KSTPanningScrollViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
     __weak IBOutlet UILabel *dateLabel;
     NSMutableArray *happyItems;
     NSMutableArray *happyItemButtons;
     NSString *happyItemsPlistPath;
+    NSString *usageTrackingPlistPath;
+    NSMutableArray *usageDates;
     __weak IBOutlet UIImageView *backgroundImageView;
     __weak IBOutlet UIImageView *blurImageView;
     __weak IBOutlet UIView *containerView;
