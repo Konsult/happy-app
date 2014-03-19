@@ -15,6 +15,6 @@
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName;
 
-- (void)highlightIconView;
+- (void)toggleButtonWithAnimation:(BOOL)animated;
 
 @end

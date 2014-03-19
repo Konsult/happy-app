@@ -60,9 +60,15 @@
     return self;
 }
 
-- (void)highlightIconView
+- (void)toggleButtonWithAnimation:(BOOL)animated
 {
-    iconView.highlighted = YES;
+    if (animated) {
+        [self toggleButton:self];
+    } else {
+        self.highlighted = !self.highlighted;
+        iconView.highlighted = !iconView.highlighted;
+        self.selected = !self.selected;
+    }
 }
 
 @end
