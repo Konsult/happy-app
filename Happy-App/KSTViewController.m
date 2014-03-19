@@ -371,8 +371,9 @@ typedef void(^animationCompletionBlock)(void);
             NSDate *lastSelectedDate = [cal dateFromComponents:components];
             
             if ([today isEqualToDate:lastSelectedDate] && !happyItemButton.selected) {
-                happyItemButton.selected = YES;
-                [happyItemButton highlightIconView];
+                // Since we are always entering app from blank slate, this will always highlight button
+                // If/when there is some state saving upon exit, we may need to adjust how this works to not unhighlight a button
+                [happyItemButton toggleButtonWithAnimation:NO];
             }
         }
 
