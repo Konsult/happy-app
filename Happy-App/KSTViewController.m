@@ -16,6 +16,7 @@
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
 #define HAPPY_ITEM_KEY_TITLE @"title"
+#define HAPPY_ITEM_KEY_DATES @"dates"
 
 // Main view properties
 #define SCREEN_WIDTH 320
@@ -95,6 +96,15 @@ typedef void(^animationCompletionBlock)(void);
 #define RUNWAY_DELAY 0.1f
 #define RUNWAY_LOW_ALPHA 0.2f
 
+// Rating alert
+#define CONSECUTIVE_DAYS_TO_ALERT 2 // minimum is 2
+#define ALERT_TITLE @"Does Think Happy Make You Happy?"
+#define ALERT_MESSAGE @"If so, we'd really appreciate if you took a moment to rate us in the App Store. It makes us happy! =]"
+#define ALERT_CANCEL @"No, Thanks"
+#define ALERT_OK @"App Store"
+#define APP_STORE_URL @"http://apple.com" // Should be of format http://itunes.apple.com/app/appID
+#define ALERT_ALWAYS_SHOW NO //YES = debug, NO = production
+
 @interface KSTViewController (Private)
 
 @end
@@ -114,6 +124,8 @@ typedef void(^animationCompletionBlock)(void);
 
     canSlideToRightView = YES;
     canSlideToLeftView = NO;
+    
+    [self setupUsageTracking];    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -151,7 +163,7 @@ typedef void(^animationCompletionBlock)(void);
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark Init methods
+#pragma mark Setup methods
 - (IBAction)initPanRecognizer
 {
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
@@ -160,6 +172,27 @@ typedef void(^animationCompletionBlock)(void);
     panRecognizer.delegate = self;
     
     [self.view addGestureRecognizer:panRecognizer];
+}
+
+- (void)setupUsageTracking
+{
+    NSError *error;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsDir stringByAppendingPathComponent:@"UsageTracking.plist"];
+    usageTrackingPlistPath = plistPath;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath:plistPath]) {
+        NSString *bundle = [[NSBundle mainBundle] pathForResource:@"UsageTracking" ofType:@"plist"];
+        
+        [fileManager copyItemAtPath:bundle toPath:plistPath error:&error];
+    }
+    
+    usageDates = [NSMutableArray arrayWithContentsOfFile:plistPath];
+    
+    NSLog(@"Usage: %@", usageDates);
 }
 
 #pragma gesture delegate methods
@@ -359,10 +392,25 @@ typedef void(^animationCompletionBlock)(void);
         NSDictionary *happyItem;
 
         happyItem = [happyItems objectAtIndex:i];
-
         KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
-        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        
+        NSArray *happyItemDates = happyItem[HAPPY_ITEM_KEY_DATES];
+        if (happyItemDates.count) {
+            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+            NSDate *today = [cal dateFromComponents:components];
+            components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[happyItemDates lastObject]];
+            NSDate *lastSelectedDate = [cal dateFromComponents:components];
+            
+            if ([today isEqualToDate:lastSelectedDate] && !happyItemButton.selected) {
+                // Since we are always entering app from blank slate, this will always highlight button
+                // If/when there is some state saving upon exit, we may need to adjust how this works to not unhighlight a button
+                [happyItemButton toggleButtonWithAnimation:NO];
+            }
+        }
 
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        
         [happyItemButton setTag:i];
         
         [happyItemButton setCenter:CGPointMake(BUTTON_START_X, BUTTON_START_Y)];
@@ -503,14 +551,81 @@ typedef void(^animationCompletionBlock)(void);
 
 -(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
+    [self trackUse];
+    
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    int change = button.selected ? 1 : -1;
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + change];
-    happyItem[@"value"] = newHappyValue;
+
+    NSMutableArray *dates = happyItem[HAPPY_ITEM_KEY_DATES];
+    if (button.selected) {
+        NSDate *now = [NSDate date];
+        [dates addObject:now];
+    } else {
+        [dates removeLastObject];
+    }
+    happyItem[HAPPY_ITEM_KEY_DATES] = dates;
 
     NSLog(@"Updated happy item: %@", happyItem);
 
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+}
+
+- (void)trackUse
+{
+    if (ALERT_ALWAYS_SHOW) {
+        [self showRatingReminder];
+        return;
+    }
+
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+    NSDate *today = [cal dateFromComponents:components];
+    [components setDay:-1];
+    NSDate *yesterday = [cal dateFromComponents:components];
+    [components setDay:0];
+
+    if (usageDates.count) {
+        components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[usageDates lastObject]];
+        NSDate *lastSelectedDate = [cal dateFromComponents:components];
+        if ([lastSelectedDate isEqualToDate:yesterday]) {
+            [usageDates addObject:today];
+            if (usageDates.count == CONSECUTIVE_DAYS_TO_ALERT) {
+                [self showRatingReminder];
+            }
+        } else if ([lastSelectedDate isEqualToDate:today]) {
+            return;
+        } else {
+            [usageDates removeAllObjects];
+        }
+    } else {
+        [usageDates addObject:today];
+    }
+    
+    [usageDates writeToFile:usageTrackingPlistPath atomically:YES];
+    
+    NSLog(@"updated usage: %@", usageDates);
+}
+
+- (void)showRatingReminder
+{
+    UIAlertView *reminder = [[UIAlertView alloc] initWithTitle:ALERT_TITLE
+                                                       message:ALERT_MESSAGE
+                                                      delegate:nil
+                                             cancelButtonTitle:ALERT_CANCEL
+                                             otherButtonTitles:ALERT_OK, nil];
+    reminder.delegate = self;
+    [reminder show];
+}
+
+#pragma mark UIAlertView delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:ALERT_TITLE]) {
+        if (buttonIndex == 0) {
+            NSLog(@"cancel button");
+        } else if (buttonIndex == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_URL]];
+        }
+    }
 }
 
 - (void)addButtonPressed:(KSTAddButton *)button
@@ -643,7 +758,8 @@ typedef void(^animationCompletionBlock)(void);
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
-        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
+        NSArray *happyItemDates = happyItem[HAPPY_ITEM_KEY_DATES];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:(int)happyItemDates.count];
 
         [graphScrollView addSubview:happyItemBarView];
 
@@ -662,8 +778,10 @@ typedef void(^animationCompletionBlock)(void);
 
     for (int i = 0; i < items.count; i++) {
         NSDictionary *item = [items objectAtIndex:i];
-        if ([item[HAPPY_ITEM_KEY_VALUE] intValue] > max) {
-            max = [item[HAPPY_ITEM_KEY_VALUE] intValue];
+        NSArray *happyItemDates = item[HAPPY_ITEM_KEY_DATES];
+
+        if (happyItemDates.count > max) {
+            max = (int)happyItemDates.count;
         }
     }
 

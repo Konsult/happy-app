@@ -32,7 +32,7 @@
     return nil;
 }
 
-- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(NSNumber *)barValue
+- (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName andValue:(int)barValue
 {
     self = [super initWithFrame:CGRectMake(SCREEN_WIDTH + BAR_WIDTH, SCREEN_HEIGHT - BAR_VIEW_HEIGHT, BAR_WIDTH, BAR_VIEW_HEIGHT)];
     if (!self) {
@@ -85,7 +85,7 @@
 // Max value is greatest value across all happy items
 - (void)animateInBarRelativeToMax:(NSNumber *)maxValue
 {
-    if ([value intValue] == 0) {
+    if (!value) {
         return;
     }
 
@@ -102,7 +102,7 @@
     [graphBarBottomView setImage:graphBarBottom];
     
     CGRect frame = rectangle.frame;
-    float height = BAR_GRAPH_MAX_HEIGHT * ([value floatValue] / (float)max);
+    float height = BAR_GRAPH_MAX_HEIGHT * (value / (float)max);
     if (height > 0) {
         frame.size.height = height;
         frame.origin.y = BAR_GRAPH_MAX_HEIGHT - height;
@@ -116,7 +116,7 @@
     }
     
     UILabel *valueLabel = [[UILabel alloc] initWithFrame:labelRect];
-    [valueLabel setText:[NSString stringWithFormat:@"%@", value]];
+    [valueLabel setText:[NSString stringWithFormat:@"%d", value]];
     [valueLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:ICON_LABEL_FONT_SIZE * 2]];
     valueLabel.textAlignment = NSTextAlignmentCenter;
     [valueLabel setTextColor:labelColor];
