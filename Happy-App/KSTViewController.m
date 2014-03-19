@@ -16,6 +16,7 @@
 #define HAPPY_ITEM_KEY_VALUE @"value"
 #define HAPPY_ITEM_KEY_IMAGEREF @"imageRef"
 #define HAPPY_ITEM_KEY_TITLE @"title"
+#define HAPPY_ITEM_KEY_DATES @"dates"
 
 // Main view properties
 #define SCREEN_WIDTH 320
@@ -359,10 +360,25 @@ typedef void(^animationCompletionBlock)(void);
         NSDictionary *happyItem;
 
         happyItem = [happyItems objectAtIndex:i];
-
         KSTHappyTypeButton *happyItemButton = [[KSTHappyTypeButton alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF]];
-        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        
+        NSArray *happyItemDates = happyItem[HAPPY_ITEM_KEY_DATES];
+        if (happyItemDates.count) {
+            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+            NSDate *today = [cal dateFromComponents:components];
+            components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[happyItemDates lastObject]];
+            NSDate *lastSelectedDate = [cal dateFromComponents:components];
+            
+            if ([today isEqualToDate:lastSelectedDate] && !happyItemButton.selected) {
+                // Since we are always entering app from blank slate, this will always highlight button
+                // If/when there is some state saving upon exit, we may need to adjust how this works to not unhighlight a button
+                [happyItemButton toggleButtonWithAnimation:NO];
+            }
+        }
 
+        [happyItemButton addObserver:self forKeyPath:@"selected" options:0 context:nil];
+        
         [happyItemButton setTag:i];
         
         [happyItemButton setCenter:CGPointMake(BUTTON_START_X, BUTTON_START_Y)];
@@ -504,9 +520,15 @@ typedef void(^animationCompletionBlock)(void);
 -(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
-    int change = button.selected ? 1 : -1;
-    NSNumber *newHappyValue = [NSNumber numberWithInt:[happyItem[@"value"] intValue] + change];
-    happyItem[@"value"] = newHappyValue;
+
+    NSMutableArray *dates = happyItem[HAPPY_ITEM_KEY_DATES];
+    if (button.selected) {
+        NSDate *now = [NSDate date];
+        [dates addObject:now];
+    } else {
+        [dates removeLastObject];
+    }
+    happyItem[HAPPY_ITEM_KEY_DATES] = dates;
 
     NSLog(@"Updated happy item: %@", happyItem);
 
@@ -643,7 +665,8 @@ typedef void(^animationCompletionBlock)(void);
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
-        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:happyItem[HAPPY_ITEM_KEY_VALUE]];
+        NSArray *happyItemDates = happyItem[HAPPY_ITEM_KEY_DATES];
+        KSTBarGraphItem *happyItemBarView = [[KSTBarGraphItem alloc] initWithTitle:happyItem[HAPPY_ITEM_KEY_TITLE] andImageName:happyItem[HAPPY_ITEM_KEY_IMAGEREF] andValue:(int)happyItemDates.count];
 
         [graphScrollView addSubview:happyItemBarView];
 
@@ -662,8 +685,10 @@ typedef void(^animationCompletionBlock)(void);
 
     for (int i = 0; i < items.count; i++) {
         NSDictionary *item = [items objectAtIndex:i];
-        if ([item[HAPPY_ITEM_KEY_VALUE] intValue] > max) {
-            max = [item[HAPPY_ITEM_KEY_VALUE] intValue];
+        NSArray *happyItemDates = item[HAPPY_ITEM_KEY_DATES];
+
+        if (happyItemDates.count > max) {
+            max = (int)happyItemDates.count;
         }
     }
 

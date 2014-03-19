@@ -3,74 +3,74 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>dates</key>
+		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
+		<string>Sleeping</string>
+		<key>imageRef</key>
+		<string>ButtonWeather</string>
+	</dict>
+	<dict>
+		<key>dates</key>
+		<array/>
+		<key>title</key>
+		<string>Working Out</string>
 		<key>imageRef</key>
 		<string>ButtonWeather</string>
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
+		<string>Good Food</string>
+		<key>dates</key>
+		<array/>
 		<key>imageRef</key>
 		<string>ButtonWeather</string>
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonWeather</string>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
+		<string>Being Alive</string>
+		<key>dates</key>
+		<array/>
 		<key>imageRef</key>
 		<string>ButtonAlive</string>
 	</dict>
 	<dict>
-		<key>value</key>
-		<integer>0</integer>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Family</string>
+		<key>dates</key>
+		<array/>
 		<key>imageRef</key>
 		<string>ButtonFamily</string>
 	</dict>
 	<dict>
-		<key>value</key>
-		<integer>0</integer>
+		<key>dates</key>
+		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Lover</string>
 		<key>imageRef</key>
 		<string>ButtonLover</string>
 	</dict>
 	<dict>
-		<key>value</key>
-		<integer>0</integer>
+		<key>dates</key>
+		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Work</string>
 		<key>imageRef</key>
 		<string>ButtonWork</string>
 	</dict>
 	<dict>
-		<key>value</key>
-		<integer>0</integer>
+		<key>dates</key>
+		<array/>
 		<key>title</key>
-		<string>Beautiful Weather</string>
+		<string>My Hobbies</string>
 		<key>imageRef</key>
 		<string>ButtonHobbies</string>
 	</dict>
 	<dict>
 		<key>title</key>
 		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
+		<key>dates</key>
+		<array/>
 		<key>imageRef</key>
 		<string>ButtonWeather</string>
 	</dict>

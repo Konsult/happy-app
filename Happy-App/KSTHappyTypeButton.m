@@ -60,6 +60,17 @@
     return self;
 }
 
+- (void)toggleButtonWithAnimation:(BOOL)animated
+{
+    if (animated) {
+        [self toggleButton:self];
+    } else {
+        self.highlighted = !self.highlighted;
+        iconView.highlighted = !iconView.highlighted;
+        self.selected = !self.selected;
+    }
+}
+
 @end
 
 @implementation KSTHappyTypeButton (Private)
