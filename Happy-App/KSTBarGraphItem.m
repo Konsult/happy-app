@@ -63,23 +63,10 @@
 - (void)slideInBarToCenterPoint:(NSValue *)centerPointValue
 {
     CGPoint center = [centerPointValue CGPointValue];
-    
-    UIView *superView = self.superview;
-    UIScrollView *scrollView;
-    if ([superView isKindOfClass:[UIScrollView class]]) {
-        scrollView = (UIScrollView *)superView;
-    };
 
     [UIView animateWithDuration:ICON_INTRO_ANIM_DUR delay:0 usingSpringWithDamping:ICON_INTRO_SPRING initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self setCenter:center];
-        if (scrollView) {
-            scrollView.scrollEnabled = NO;
-        }
-    } completion:^(BOOL finished){
-        if (scrollView) {
-            scrollView.scrollEnabled = YES;
-        }
-    }];
+    } completion:nil];
 }
 
 // Max value is greatest value across all happy items
@@ -125,6 +112,7 @@
     [UIView animateWithDuration:BAR_ANIM_DUR delay:0 usingSpringWithDamping:BAR_ANIM_SPRING initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self addSubview:graphBarBottomView];
         [rectangle setFrame:frame];
+
     } completion:^(BOOL finished){
         [rectangle addSubview:valueLabel];
     }];

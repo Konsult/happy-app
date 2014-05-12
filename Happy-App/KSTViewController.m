@@ -661,9 +661,8 @@ typedef void(^animationCompletionBlock)(void);
     NSNumber *max = [NSNumber numberWithInt:[self findMaxValue:happyItems]];
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.contentSize.height);
+    graphScrollView.scrollEnabled = NO;
 
-    // Using a countdown counter to get buttons to scroll in in same order as wheel on home screen
-    int counter = (int)happyItems.count - 1;
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
@@ -672,15 +671,23 @@ typedef void(^animationCompletionBlock)(void);
 
         [graphScrollView addSubview:happyItemBarView];
 
-        CGPoint center = CGPointMake(BAR_INTERVAL + counter * (BAR_WIDTH + BAR_INTERVAL) + (ICON_WIDTH / 2), happyItemBarView.center.y);
+        int animationIdx = abs(i - (int)happyItems.count + 1);
         
-        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(counter * ICON_ANIMATION_INTERVAL)];
+        CGPoint center = CGPointMake(BAR_INTERVAL + animationIdx * (BAR_WIDTH + BAR_INTERVAL) + (ICON_WIDTH / 2), happyItemBarView.center.y);
+
+        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(animationIdx * ICON_ANIMATION_INTERVAL)];
 
         // Add 1 to delay multiple here to allow small bit of additional time for icon in bounce to finish before animating bars
-        [happyItemBarView performSelector:@selector(animateInBarRelativeToMax:) withObject:max afterDelay:(float)(happyItems.count + 1) * ICON_ANIMATION_INTERVAL];
-        
-        counter--;
+        // Changed delay to use '5', the number of icons that fit on bar graph screen on inital animation
+        [happyItemBarView performSelector:@selector(animateInBarRelativeToMax:) withObject:max afterDelay:5 * ICON_ANIMATION_INTERVAL];
+
     }
+    
+    float animationTimeMs = happyItems.count * ICON_ANIMATION_INTERVAL * 1000;
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, animationTimeMs * NSEC_PER_MSEC);
+    dispatch_after(time, dispatch_get_main_queue(), ^{
+        graphScrollView.scrollEnabled = YES;
+    });
 }
 
 - (int)findMaxValue:(NSArray *)items
