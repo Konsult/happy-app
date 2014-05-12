@@ -640,6 +640,8 @@ typedef void(^animationCompletionBlock)(void);
 
     graphScrollView.contentSize = CGSizeMake((happyItems.count * (BAR_WIDTH + BAR_INTERVAL) + BAR_INTERVAL), graphScrollView.contentSize.height);
 
+    // Using a countdown counter to get buttons to scroll in in same order as wheel on home screen
+    int counter = (int)happyItems.count - 1;
     for (int i = 0; i < happyItems.count; i++) {
         NSDictionary *happyItem = [happyItems objectAtIndex:i];
 
@@ -647,12 +649,14 @@ typedef void(^animationCompletionBlock)(void);
 
         [graphScrollView addSubview:happyItemBarView];
 
-        CGPoint center = CGPointMake(BAR_INTERVAL + i * (BAR_WIDTH + BAR_INTERVAL) + (ICON_WIDTH / 2), happyItemBarView.center.y);
-
-        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(i * ICON_ANIMATION_INTERVAL)];
+        CGPoint center = CGPointMake(BAR_INTERVAL + counter * (BAR_WIDTH + BAR_INTERVAL) + (ICON_WIDTH / 2), happyItemBarView.center.y);
+        
+        [happyItemBarView performSelector:@selector(slideInBarToCenterPoint:) withObject:[NSValue valueWithCGPoint:center] afterDelay:(counter * ICON_ANIMATION_INTERVAL)];
 
         // Add 1 to delay multiple here to allow small bit of additional time for icon in bounce to finish before animating bars
         [happyItemBarView performSelector:@selector(animateInBarRelativeToMax:) withObject:max afterDelay:(float)(happyItems.count + 1) * ICON_ANIMATION_INTERVAL];
+        
+        counter--;
     }
 }
 
