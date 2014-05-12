@@ -2,77 +2,117 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonWeather</string>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonWeather</string>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonWeather</string>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonAlive</string>
-	</dict>
-	<dict>
-		<key>value</key>
-		<integer>0</integer>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>imageRef</key>
-		<string>ButtonFamily</string>
-	</dict>
-	<dict>
-		<key>value</key>
-		<integer>0</integer>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>imageRef</key>
-		<string>ButtonLover</string>
-	</dict>
-	<dict>
-		<key>value</key>
-		<integer>0</integer>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>imageRef</key>
-		<string>ButtonWork</string>
-	</dict>
-	<dict>
-		<key>value</key>
-		<integer>0</integer>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>imageRef</key>
-		<string>ButtonHobbies</string>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Beautiful Weather</string>
-		<key>value</key>
-		<integer>0</integer>
-		<key>imageRef</key>
-		<string>ButtonWeather</string>
-	</dict>
+  <dict>
+    <key>imageRef</key>
+    <string>happyIcon</string>
+    <key>title</key>
+    <string>I&apos;m Just Happy!</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>helpingIcon</string>
+    <key>title</key>
+    <string>Helping Others</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>musicIcon</string>
+    <key>title</key>
+    <string>Art &amp; Music</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>travelIcon</string>
+    <key>title</key>
+    <string>Travel</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>exerciseIcon</string>
+    <key>title</key>
+    <string>Exercise</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>sleepIcon</string>
+    <key>title</key>
+    <string>Sleep</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>foodIcon</string>
+    <key>title</key>
+    <string>Yummy Food</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>imageRef</key>
+    <string>newsIcon</string>
+    <key>title</key>
+    <string>Good News</string>
+    <key>value</key>
+    <integer>0</integer>
+  </dict>
+  <dict>
+    <key>title</key>
+    <string>Beautiful Weather</string>
+    <key>value</key>
+    <integer>0</integer>
+    <key>imageRef</key>
+    <string>ButtonWeather</string>
+  </dict>
+  <dict>
+    <key>value</key>
+    <integer>0</integer>
+    <key>title</key>
+    <string>My Hobbies</string>
+    <key>imageRef</key>
+    <string>ButtonHobbies</string>
+  </dict>
+  <dict>
+    <key>title</key>
+    <string>My Work</string>
+    <key>value</key>
+    <integer>0</integer>
+    <key>imageRef</key>
+    <string>ButtonWork</string>
+  </dict>
+  <dict>
+    <key>title</key>
+    <string>My Lover</string>
+    <key>value</key>
+    <integer>0</integer>
+    <key>imageRef</key>
+    <string>ButtonLover</string>
+  </dict>
+  <dict>
+    <key>title</key>
+    <string>My Friends</string>
+    <key>value</key>
+    <integer>0</integer>
+    <key>imageRef</key>
+    <string>ButtonFamily</string>
+  </dict>
+  <dict>
+    <key>title</key>
+    <string>My Family</string>
+    <key>value</key>
+    <integer>0</integer>
+    <key>imageRef</key>
+    <string>familyIcon</string>
+  </dict>
 </array>
 </plist>
