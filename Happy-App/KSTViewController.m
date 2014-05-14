@@ -97,7 +97,7 @@ typedef void(^animationCompletionBlock)(void);
 #define RUNWAY_LOW_ALPHA 0.2f
 
 // Rating alert
-#define CONSECUTIVE_DAYS_TO_ALERT 2 // minimum is 2
+#define CONSECUTIVE_DAYS_TO_ALERT 5 // minimum is 2
 #define ALERT_TITLE @"Does Think Happy Make You Happy?"
 #define ALERT_MESSAGE @"If so, we'd really appreciate if you took a moment to rate us in the App Store. It makes us happy! =]"
 #define ALERT_CANCEL @"No, Thanks"
