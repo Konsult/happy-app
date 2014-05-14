@@ -102,7 +102,7 @@ typedef void(^animationCompletionBlock)(void);
 #define ALERT_MESSAGE @"If so, we'd really appreciate if you took a moment to rate us in the App Store. It makes us happy! =]"
 #define ALERT_CANCEL @"No, Thanks"
 #define ALERT_OK @"App Store"
-#define APP_STORE_URL @"http://apple.com" // Should be of format http://itunes.apple.com/app/appID
+#define APP_STORE_URL @"http://itunes.apple.com/" // Should be of format http://itunes.apple.com/app/appID
 #define ALERT_ALWAYS_SHOW NO //YES = debug, NO = production
 
 @interface KSTViewController (Private)
