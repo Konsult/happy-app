@@ -96,6 +96,15 @@ typedef void(^animationCompletionBlock)(void);
 #define RUNWAY_DELAY 0.1f
 #define RUNWAY_LOW_ALPHA 0.2f
 
+// Rating alert
+#define CONSECUTIVE_DAYS_TO_ALERT 5 // minimum is 2
+#define ALERT_TITLE @"Does Think Happy Make You Happy?"
+#define ALERT_MESSAGE @"If so, we'd really appreciate if you took a moment to rate us in the App Store. It makes us happy! =]"
+#define ALERT_CANCEL @"No, Thanks"
+#define ALERT_OK @"App Store"
+#define APP_STORE_URL @"http://apple.com" // Should be of format http://itunes.apple.com/app/appID
+#define ALERT_ALWAYS_SHOW NO //YES = debug, NO = production
+
 @interface KSTViewController (Private)
 
 @end
@@ -115,6 +124,8 @@ typedef void(^animationCompletionBlock)(void);
 
     canSlideToRightView = YES;
     canSlideToLeftView = NO;
+    
+    [self setupUsageTracking];    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,7 +163,7 @@ typedef void(^animationCompletionBlock)(void);
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark Init methods
+#pragma mark Setup methods
 - (IBAction)initPanRecognizer
 {
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(slideViewWithPan:)];
@@ -161,6 +172,27 @@ typedef void(^animationCompletionBlock)(void);
     panRecognizer.delegate = self;
     
     [self.view addGestureRecognizer:panRecognizer];
+}
+
+- (void)setupUsageTracking
+{
+    NSError *error;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsDir stringByAppendingPathComponent:@"UsageTracking.plist"];
+    usageTrackingPlistPath = plistPath;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath:plistPath]) {
+        NSString *bundle = [[NSBundle mainBundle] pathForResource:@"UsageTracking" ofType:@"plist"];
+        
+        [fileManager copyItemAtPath:bundle toPath:plistPath error:&error];
+    }
+    
+    usageDates = [NSMutableArray arrayWithContentsOfFile:plistPath];
+    
+    NSLog(@"Usage: %@", usageDates);
 }
 
 #pragma gesture delegate methods
@@ -519,6 +551,8 @@ typedef void(^animationCompletionBlock)(void);
 
 -(void)updateAndSaveHappyItem:(KSTHappyTypeButton *)button
 {
+    [self trackUse];
+    
     NSMutableDictionary *happyItem = [happyItems objectAtIndex:[button tag]];
 
     NSMutableArray *dates = happyItem[HAPPY_ITEM_KEY_DATES];
@@ -533,6 +567,65 @@ typedef void(^animationCompletionBlock)(void);
     NSLog(@"Updated happy item: %@", happyItem);
 
     [happyItems writeToFile:happyItemsPlistPath atomically:YES];
+}
+
+- (void)trackUse
+{
+    if (ALERT_ALWAYS_SHOW) {
+        [self showRatingReminder];
+        return;
+    }
+
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+    NSDate *today = [cal dateFromComponents:components];
+    [components setDay:-1];
+    NSDate *yesterday = [cal dateFromComponents:components];
+    [components setDay:0];
+
+    if (usageDates.count) {
+        components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[usageDates lastObject]];
+        NSDate *lastSelectedDate = [cal dateFromComponents:components];
+        if ([lastSelectedDate isEqualToDate:yesterday]) {
+            [usageDates addObject:today];
+            if (usageDates.count == CONSECUTIVE_DAYS_TO_ALERT) {
+                [self showRatingReminder];
+            }
+        } else if ([lastSelectedDate isEqualToDate:today]) {
+            return;
+        } else {
+            [usageDates removeAllObjects];
+        }
+    } else {
+        [usageDates addObject:today];
+    }
+    
+    [usageDates writeToFile:usageTrackingPlistPath atomically:YES];
+    
+    NSLog(@"updated usage: %@", usageDates);
+}
+
+- (void)showRatingReminder
+{
+    UIAlertView *reminder = [[UIAlertView alloc] initWithTitle:ALERT_TITLE
+                                                       message:ALERT_MESSAGE
+                                                      delegate:nil
+                                             cancelButtonTitle:ALERT_CANCEL
+                                             otherButtonTitles:ALERT_OK, nil];
+    reminder.delegate = self;
+    [reminder show];
+}
+
+#pragma mark UIAlertView delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:ALERT_TITLE]) {
+        if (buttonIndex == 0) {
+            NSLog(@"cancel button");
+        } else if (buttonIndex == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_URL]];
+        }
+    }
 }
 
 - (void)addButtonPressed:(KSTAddButton *)button

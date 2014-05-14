@@ -47,6 +47,7 @@
 		EE15DCC818BD301C00BE8337 /* KSTHappyTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCC718BD301C00BE8337 /* KSTHappyTypeButton.m */; };
 		EE15DCCD18BD5B4100BE8337 /* KSTBarGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */; };
 		EE21C6CB18C518D8001D57B0 /* KSTRotaryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE21C6CA18C518D8001D57B0 /* KSTRotaryScrollView.m */; };
+		EE4A4AD918D8EC52006DA658 /* UsageTracking.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE4A4AD818D8EC52006DA658 /* UsageTracking.plist */; };
 		EE538EC818BEB3B9004DA42D /* HappyItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE538EC718BEB3B9004DA42D /* HappyItems.plist */; };
 		EE538ECB18BFC2DE004DA42D /* KSTAddButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */; };
 		EE845D2A18A988C800431CBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE845D2918A988C800431CBC /* Foundation.framework */; };
@@ -158,6 +159,7 @@
 		EE15DCCC18BD5B4100BE8337 /* KSTBarGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTBarGraphItem.m; sourceTree = "<group>"; };
 		EE21C6C918C518D8001D57B0 /* KSTRotaryScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTRotaryScrollView.h; sourceTree = "<group>"; };
 		EE21C6CA18C518D8001D57B0 /* KSTRotaryScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTRotaryScrollView.m; sourceTree = "<group>"; };
+		EE4A4AD818D8EC52006DA658 /* UsageTracking.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UsageTracking.plist; sourceTree = "<group>"; };
 		EE538EC718BEB3B9004DA42D /* HappyItems.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HappyItems.plist; sourceTree = "<group>"; };
 		EE538EC918BFC2DD004DA42D /* KSTAddButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTAddButton.h; sourceTree = "<group>"; };
 		EE538ECA18BFC2DE004DA42D /* KSTAddButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTAddButton.m; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 				EE845D3218A988C800431CBC /* InfoPlist.strings */,
 				EE845D3518A988C800431CBC /* main.m */,
 				EE845D3718A988C800431CBC /* Think Happy-Prefix.pch */,
+				EE4A4AD818D8EC52006DA658 /* UsageTracking.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -466,6 +469,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Konsult;
 				TargetAttributes = {
+					EE845D2518A988C800431CBC = {
+						DevelopmentTeam = 6G7XV948SU;
+					};
 					EE845D4618A988C800431CBC = {
 						TestTargetID = EE845D2518A988C800431CBC;
 					};
@@ -535,6 +541,7 @@
 				EEC4FBE3192173A80017EB00 /* newsIconAlt.png in Resources */,
 				EEC4FBE9192173A80017EB00 /* travelIcon.png in Resources */,
 				BFC3B04818BD701E00503741 /* ButtonAliveAlt.png in Resources */,
+				EE4A4AD918D8EC52006DA658 /* UsageTracking.plist in Resources */,
 				BFC3B04618BD701E00503741 /* ButtonAlive.png in Resources */,
 				BFC3B05A18BD701E00503741 /* ButtonWork.png in Resources */,
 				BFC3B05818BD701E00503741 /* ButtonWeatherAlt.png in Resources */,
@@ -663,6 +670,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -679,7 +687,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
@@ -703,6 +711,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Konsult, LLC (6G7XV948SU)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -713,7 +722,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -725,10 +734,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Happy-App/Think Happy-Prefix.pch";
 				INFOPLIST_FILE = "Happy-App/Think Happy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "Think Happy";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -738,10 +750,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Konsult, LLC (6G7XV948SU)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Happy-App/Think Happy-Prefix.pch";
 				INFOPLIST_FILE = "Happy-App/Think Happy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "Think Happy";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
