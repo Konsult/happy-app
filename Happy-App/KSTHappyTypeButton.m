@@ -9,7 +9,7 @@
 #import "KSTHappyTypeButton.h"
 
 #define ICON_DIAMETER 50
-#define TEXT_WIDTH 75
+#define TEXT_WIDTH 70
 #define ALT_IMG_SUFFX @"Alt"
 #define TITLE_LEFT_MARGIN 8
 
@@ -27,6 +27,12 @@
 @end
 
 @implementation KSTHappyTypeButton
+{
+    UIButton *icon;
+    UIImage *iconImage;
+    UIImage *highlightedIconImage;
+    UILabel *label;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -41,23 +47,44 @@
         return nil;
     
     NSString *altImageName = [imageName stringByAppendingString:ALT_IMG_SUFFX];
-    iconView = [[UIImageView alloc]
-                initWithImage:[UIImage imageNamed:imageName]
-                highlightedImage:[UIImage imageNamed:altImageName]];
-    [self addSubview:iconView];
-    
-    [self setTitleEdgeInsets:UIEdgeInsetsMake(0, ICON_DIAMETER + TITLE_LEFT_MARGIN, 0, 0)];
-    [self setTitle:title forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:14.0]];
-    self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    
-    [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
-    [self addTarget:self action:@selector(buttonUnpressed:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
-    [self addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
 
+    icon = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ICON_DIAMETER, ICON_DIAMETER)];
+    iconImage = [UIImage imageNamed:imageName];
+    highlightedIconImage = [UIImage imageNamed:altImageName];
+    [icon setImage:iconImage forState:UIControlStateNormal];
+    [icon setImage:highlightedIconImage forState:UIControlStateHighlighted];
+    [icon setImage:highlightedIconImage forState:UIControlStateSelected];
+    icon.highlighted = NO;
+    
+    [icon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
+    [icon addTarget:self action:@selector(buttonUnpressed:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
+    [icon addTarget:self action:@selector(toggleButton:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self addSubview:icon];
+
+    label = [[UILabel alloc] initWithFrame:CGRectMake(ICON_DIAMETER + TITLE_LEFT_MARGIN, 0, TEXT_WIDTH, ICON_DIAMETER)];
+    label.text = title;
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.userInteractionEnabled = NO;
+
+    [self addSubview:label];
+    [self sendSubviewToBack:label];
+
+    self.selected = NO;
+    
     return self;
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if ([icon pointInside:[self convertPoint:point toView:icon] withEvent:event]) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)toggleButtonWithAnimation:(BOOL)animated
@@ -65,9 +92,8 @@
     if (animated) {
         [self toggleButton:self];
     } else {
-        self.highlighted = !self.highlighted;
-        iconView.highlighted = !iconView.highlighted;
         self.selected = !self.selected;
+        icon.highlighted = self.selected;
     }
 }
 
@@ -77,9 +103,9 @@
 
 - (void)buttonPressed:(KSTHappyTypeButton *)button
 {
-    iconView.highlighted = YES;
+    icon.highlighted = !self.selected;
     [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
-        iconView.layer.affineTransform = CGAffineTransformMakeScale(BUTTON_PRESS_SCALE, BUTTON_PRESS_SCALE);
+        icon.layer.affineTransform = CGAffineTransformMakeScale(BUTTON_PRESS_SCALE, BUTTON_PRESS_SCALE);
     }];
 }
 
@@ -88,8 +114,8 @@
     self.selected = !self.selected;
     
     if (self.selected) {
-        UIImageView *bloom = [[UIImageView alloc] initWithImage:iconView.image];
-        [self addSubview:bloom];
+        UIImageView *bloom = [[UIImageView alloc] initWithImage:icon.imageView.image];
+        [icon addSubview:bloom];
         [UIView animateWithDuration:BLOOM_ANIMATION_DURATION delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             bloom.layer.affineTransform = CGAffineTransformMakeScale(BLOOM_ANIMATION_SCALE, BLOOM_ANIMATION_SCALE);
             bloom.layer.opacity = 0;
@@ -103,10 +129,10 @@
 
 - (void)buttonUnpressed:(KSTHappyTypeButton *)button
 {
-    iconView.highlighted = self.selected;
     [UIView animateWithDuration:BUTTON_PRESS_TRANSITION_DURATION animations:^{
-        iconView.layer.affineTransform = CGAffineTransformMakeScale(1, 1);
+        icon.layer.affineTransform = CGAffineTransformMakeScale(1, 1);
     }];
+    icon.selected = self.selected;
 }
 
 @end

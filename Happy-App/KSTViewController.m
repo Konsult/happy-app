@@ -116,7 +116,7 @@ typedef void(^animationCompletionBlock)(void);
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self initPanRecognizer];
-    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+//    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 
     [self addRotaryScrollView];
     [self getAndShowDate];
@@ -191,8 +191,6 @@ typedef void(^animationCompletionBlock)(void);
     }
     
     usageDates = [NSMutableArray arrayWithContentsOfFile:plistPath];
-    
-    NSLog(@"Usage: %@", usageDates);
 }
 
 #pragma gesture delegate methods
@@ -450,7 +448,7 @@ typedef void(^animationCompletionBlock)(void);
     return happyItemButton;
 }
 
-- (void)moveHappyButton:(UIButton *)button toSlot:(int)slot animate:(BOOL)animate
+- (void)moveHappyButton:(UIView *)button toSlot:(int)slot animate:(BOOL)animate
 {   
     float endAngleFromPositiveXAxis;
     float endAngleFromPositiveYAxis;

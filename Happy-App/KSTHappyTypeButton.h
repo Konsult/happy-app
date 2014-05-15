@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KSTHappyTypeButton : UIButton
-{
-    UIImageView *iconView;
-}
+@interface KSTHappyTypeButton : UIView
+
+@property BOOL selected;
 
 - (id)initWithTitle:(NSString *)title andImageName:(NSString *)imageName;
 
